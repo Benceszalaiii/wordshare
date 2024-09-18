@@ -6,8 +6,15 @@ module.exports = {
   future: {
     hoverOnlyWhenSupported: true,
   },
+  darkMode: "class",
   theme: {
     extend: {
+      textShadow: {
+        sm: '0 1px 2px var(--tw-shadow-color)',
+        DEFAULT: '0 2px 4px var(--tw-shadow-color)',
+        lg: '0 8px 16px var(--tw-shadow-color)',
+        xl: '0 16px 32px var(--tw-shadow-color)',
+      },
       fontFamily: {
         display: ["var(--font-sf)", "system-ui", "sans-serif"],
         default: ["var(--font-inter)", "system-ui", "sans-serif"],
@@ -61,6 +68,16 @@ module.exports = {
     },
   },
   plugins: [
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          'text-shadow': (value) => ({
+            textShadow: value,
+          }),
+        },
+        { values: theme('textShadow') }
+      )
+    }),
     require("@tailwindcss/forms"),
     require("@tailwindcss/typography"),
     plugin(({ addVariant }) => {

@@ -6,7 +6,10 @@ import useScroll from "@/lib/hooks/use-scroll";
 import { useSignInModal } from "./sign-in-modal";
 import UserDropdown from "./user-dropdown";
 import { Session } from "next-auth";
+import { Lobster, Caveat } from "next/font/google";
 
+const labster = Lobster({weight: ["400"], subsets: ["latin"], preload: true});
+const caveat = Caveat({weight: ["700"], subsets: ["latin"], preload: true});
 export default function NavBar({ session }: { session: Session | null }) {
   const { SignInModal, setShowSignInModal } = useSignInModal();
   const scrolled = useScroll(50);
@@ -17,27 +20,20 @@ export default function NavBar({ session }: { session: Session | null }) {
       <div
         className={`fixed top-0 w-full flex justify-center ${
           scrolled
-            ? "border-b border-gray-200 bg-white/50 backdrop-blur-xl"
-            : "bg-white/0"
+            ? " bg-white/50 dark:bg-black/70 backdrop-blur-xl"
+            : "bg-white/0 dark:bg-black/0"
         } z-30 transition-all`}
       >
         <div className="mx-5 flex h-16 max-w-screen-xl items-center justify-between w-full">
           <Link href="/" className="flex items-center font-display text-2xl">
-            <Image
-              src="/logo.png"
-              alt="Precedent logo"
-              width="30"
-              height="30"
-              className="mr-2 rounded-sm"
-            ></Image>
-            <p>Precedent</p>
+            <p className={"text-indigo-800 tracking-wider dark:text-indigo-600 text-shadow-xl shadow-indigo-700 dark:hover:text-indigo-500  " + caveat.className}>Cukikak</p>
           </Link>
           <div>
             {session ? (
               <UserDropdown session={session} />
             ) : (
               <button
-                className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black"
+                className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white dark:hover:bg-neutral-800 dark:hover:text-white hover:text-black"
                 onClick={() => setShowSignInModal(true)}
               >
                 Sign In

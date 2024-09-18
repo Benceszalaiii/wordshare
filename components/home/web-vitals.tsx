@@ -25,7 +25,7 @@ export default function WebVitals() {
           cx="50"
           cy="50"
           r="45"
-          fill="#DCFCE7"
+          fill="#2C2C27"
           stroke="#22C55E"
         />
       </motion.svg>
