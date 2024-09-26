@@ -9,6 +9,14 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      colors: {
+        dark: "#090909",
+        light: "#e4e8d5",
+      },
+      backgroundImage: {
+        "main-light": "url('/bg_light.jpg')",
+        "main-dark": "url('/bg_dark.jpg')",
+      },
       textShadow: {
         sm: '0 1px 2px var(--tw-shadow-color)',
         DEFAULT: '0 2px 4px var(--tw-shadow-color)',
@@ -20,15 +28,15 @@ module.exports = {
         default: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       animation: {
-        // Fade up and down
+
         "fade-up": "fade-up 0.5s",
         "fade-down": "fade-down 0.5s",
-        // Tooltip
+
         "slide-up-fade": "slide-up-fade 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
         "slide-down-fade": "slide-down-fade 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
       },
       keyframes: {
-        // Fade up and down
+
         "fade-up": {
           "0%": {
             opacity: 0,
@@ -55,7 +63,7 @@ module.exports = {
             transform: "translateY(0px)",
           },
         },
-        // Tooltip
+
         "slide-up-fade": {
           "0%": { opacity: 0, transform: "translateY(6px)" },
           "100%": { opacity: 1, transform: "translateY(0)" },
