@@ -19,7 +19,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="scroll-smooth " suppressHydrationWarning>
 
       <body className={cx(sfPro.variable, inter.variable)}>
       <ThemeProvider attribute="class" defaultTheme="light">
