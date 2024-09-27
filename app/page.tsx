@@ -22,6 +22,10 @@ export default async function Home() {
           </span>{" "}
           with ease.
         </h1>
+        <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m19 9-7 7-7-7"/>
+</svg>
+
         <div className="text-dark dark:text-light">
           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure culpa porro non repellendus rem, cupiditate cumque explicabo cum et. Non exercitationem minus pariatur deserunt libero eius obcaecati, nostrum iusto nesciunt!</p>
         </div>  

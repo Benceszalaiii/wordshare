@@ -22,7 +22,7 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
 
       <body className={cx(sfPro.variable, inter.variable)}>
-      <ThemeProvider attribute="class" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="light">
         <div className="fixed h-screen w-full bg-cover bg-main-light dark:bg-main-dark dark:to-black dark:text-light text-dark" />
         <Suspense fallback="...">
           <Nav />

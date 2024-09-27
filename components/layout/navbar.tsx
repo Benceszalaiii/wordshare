@@ -7,7 +7,7 @@ import { useSignInModal } from "./sign-in-modal";
 import UserDropdown from "./user-dropdown";
 import { Session } from "next-auth";
 import {  Caveat } from "next/font/google";
-
+import ThemeSwitch from "../theme";
 const caveat = Caveat({weight: ["700"], subsets: ["latin"], preload: true});
 export default function NavBar({ session }: { session: Session | null }) {
   const { SignInModal, setShowSignInModal } = useSignInModal();
@@ -40,6 +40,7 @@ export default function NavBar({ session }: { session: Session | null }) {
             )}
           </div>
         </div>
+        <ThemeSwitch className="gap-5" />
       </div>
     </>
   );
