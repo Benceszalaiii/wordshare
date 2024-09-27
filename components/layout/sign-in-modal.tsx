@@ -7,7 +7,7 @@ import {
   useCallback,
   useMemo,
 } from "react";
-import { LoadingDots, Google } from "@/components/shared/icons";
+import { LoadingDots, Google, Spotify } from "@/components/shared/icons";
 import Image from "next/image";
 
 const SignInModal = ({
@@ -49,6 +49,27 @@ const SignInModal = ({
               <>
                 <Google className="h-5 w-5" />
                 <p>Sign In with Google</p>
+              </>
+            )}
+          </button>
+          <button
+            disabled={signInClicked}
+            className={`${
+              signInClicked
+                ? "cursor-not-allowed border-gray-200 bg-gray-100 dark:border-gray-900 dark:bg-black text-gray-400 dark:text-white"
+                : "border border-gray-200 bg-white text-black hover:bg-gray-50 dark:border-indigo-900  dark:bg-black dark:text-white dark:hover:bg-indigo-800"
+            } flex h-10 w-full items-center justify-center space-x-3 rounded-xl border  text-sm shadow-sm transition-all duration-75 focus:outline-none`}
+            onClick={() => {
+              setSignInClicked(true);
+              signIn("spotify");
+            }}
+          >
+            {signInClicked ? (
+              <LoadingDots color="#808080" />
+            ) : (
+              <>
+                <Spotify className="h-5 w-5" />
+                <p>Sign In with Spotify</p>
               </>
             )}
           </button>
