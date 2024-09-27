@@ -13,7 +13,7 @@ export function SignInButton({ session }: { session: Session | null }) {
         
       ) : (
         <button
-          className="rounded-full border px-10 py-3 border-black font-bold bg-white text-black text-sm  transition-all hover:bg-white hover:text-black dark:hover:bg-neutral-800 dark:hover:text-white"
+          className="rounded-full border px-10 py-3 border-black dark:border-white dark:text-light font-bold bg-transparent transition-all duration-300 hover:text-gray-500 hover:border-gray-600 text-black text-sm hover:bg-white  dark:hover:bg-neutral-800 dark:hover:text-white"
           onClick={() => setShowSignInModal(true)}
         >
           Sign In

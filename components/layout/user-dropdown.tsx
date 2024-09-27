@@ -7,10 +7,10 @@ import Popover from "@/components/shared/popover";
 import Image from "next/image";
 import { Session } from "next-auth";
 
+
 export default function UserDropdown({ session }: { session: Session }) {
   const { email, image } = session?.user || {};
   const [openPopover, setOpenPopover] = useState(false);
-
   if (!email) return null;
 
   return (
@@ -29,11 +29,13 @@ export default function UserDropdown({ session }: { session: Session }) {
               </p>
             </div>
             <button
-              className="relative flex w-full cursor-not-allowed items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-300 dark:hover:bg-neutral-800 text-dark dark:text-light "
-              disabled
+              className="relative flex w-full cursor-pointer items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-300 dark:hover:bg-neutral-800 text-dark dark:text-light "
+              onClick={()=> {
+                window.location.href = "/overview";
+              }}
             >
               <LayoutDashboard className="h-4 w-4" />
-              <p className="text-sm">Dashboard</p>
+              <p className="text-sm">Overview</p>
             </button>
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-neutral-800 text-dark dark:text-light"
