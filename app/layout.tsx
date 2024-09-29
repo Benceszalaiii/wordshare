@@ -5,12 +5,10 @@ import Nav from "@/components/layout/nav";
 import Footer from "@/components/layout/footer";
 import { Suspense } from "react";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
-import { ThemeProvider } from 'next-themes';
-
+import { ThemeProvider } from "next-themes";
 export const metadata = {
   title: "Jedlik WordShare",
-  description:
-    "Learn English with daily cards! 📚🔥",
+  description: "Learn English with daily cards! 📚🔥"
 };
 
 export default async function RootLayout({
@@ -20,19 +18,41 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth " suppressHydrationWarning>
-
+      <head>
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+        <meta name="msapplication-TileColor" content="#00aba9" />
+        <meta name="theme-color" content="#c1c1c1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
       <body className={cx(sfPro.variable, inter.variable)}>
-      <ThemeProvider attribute="class" defaultTheme="light">
-        <div className="fixed h-screen w-full bg-cover bg-main-light dark:bg-main-dark dark:to-black dark:text-light text-dark" />
-        <Suspense fallback="...">
-          <Nav />
-        </Suspense>
-        <main className="flex min-h-screen w-full flex-col items-center py-32 z-10">
-          {children}
-        </main>
-        <Footer />
-        <VercelAnalytics />
-      </ThemeProvider>
+        <ThemeProvider attribute="class" defaultTheme="light">
+          <main className="z-10 flex min-h-screen w-full flex-col py-32 ">
+          <Suspense fallback="...">
+            <Nav />
+          </Suspense>
+            {children}
+          </main>
+          <Footer />
+          <VercelAnalytics />
+        </ThemeProvider>
       </body>
     </html>
   );

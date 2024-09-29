@@ -1,8 +1,9 @@
 import NextAuth, { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+
 import { authOptions } from "../api/auth/[...nextauth]/options";
-import { signIn } from "next-auth/react";
+
 import { SignInButton } from '../../components/shared/buttons';
+import { SideBar } from "@/components/sidebar";
 
 export const metadata = {
   title: "Overview",
@@ -24,7 +25,10 @@ export default async function Layout({
   }
   return (
     <>
-      <div className="z-10 text-light">{children}</div>
+        <SideBar />
+        <section className=" z-10">
+        {children}
+        </section>
     </>
   );
 }

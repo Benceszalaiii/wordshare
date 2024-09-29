@@ -1,0 +1,4 @@
+
+body {
+    @apply bg-main-light bg-fixed bg-cover dark:bg-main-dark
+}

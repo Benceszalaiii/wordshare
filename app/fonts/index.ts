@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Inter } from "next/font/google";
+import { Inter, Caveat } from "next/font/google";
 
 export const sfPro = localFont({
   src: "./SF-Pro-Display-Medium.otf",
@@ -9,4 +9,11 @@ export const sfPro = localFont({
 export const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+});
+
+export const caveat = Caveat({
+  variable: "--font-caveat",
+  weight: ["700"],
+  subsets: ["latin"],
+  preload: true,
 });

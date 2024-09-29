@@ -14,8 +14,8 @@ module.exports = {
         light: "#e4e8d5",
       },
       backgroundImage: {
-        "main-light": "url('/bg_light.jpg')",
-        "main-dark": "url('/bg_dark.jpg')",
+        "main-light": "url('/bg_light.webp')",
+        "main-dark": "url('/bg_dark.webp')",
       },
       textShadow: {
         sm: '0 1px 2px var(--tw-shadow-color)',
