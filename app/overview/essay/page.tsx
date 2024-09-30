@@ -7,10 +7,10 @@ export default function Page(){
     )
 }
 
-export async function EssayList({ children }: { children: React.ReactNode }) {
-    const essays = await fetch("/api/essay/get");
-    return <>{children}</>;
-}
-export function EssayCard({ children }: { children: React.ReactNode }) {
-    return <>{children}</>;
-}
+// export async function EssayList({ children }: { children: React.ReactNode }) {
+//     const essays = await fetch("/api/essay/get");
+//     return <>{children}</>;
+// }
+// export function EssayCard({ children }: { children: React.ReactNode }) {
+//     return <>{children}</>;
+// }
