@@ -1,7 +1,7 @@
 import NextAuth, { getServerSession } from "next-auth";
 
 import { authOptions } from "../api/auth/[...nextauth]/options";
-
+import React from 'react';
 import { SignInButton } from '../../components/shared/buttons';
 import { SideBar } from "@/components/sidebar";
 
@@ -15,7 +15,7 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
-  if (!session && false) {
+  if (!session) {
     return (
       <div className="z-10 flex flex-col items-center justify-center gap-5">
         <div className="text-dark dark:text-light">Please sign in to view this page.</div>

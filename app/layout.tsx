@@ -51,7 +51,7 @@ export default async function RootLayout({
             {children}
           </main>
           <Footer />
-          <VercelAnalytics />
+          <VercelAnalytics debug={false} />
         </ThemeProvider>
       </body>
     </html>

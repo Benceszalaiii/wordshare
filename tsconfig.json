@@ -39,6 +39,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "allowUmdGlobalAccess": true,
     "plugins": [
       {
         "name": "next"

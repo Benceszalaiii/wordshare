@@ -3,7 +3,17 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   images: {
-    domains: ["lh3.googleusercontent.com", "vercel.com", "i.scdn.co"],
+    remotePatterns: [
+      {
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        hostname: 'vercel.com',
+      },
+      {
+        hostname: 'i.scdn.co',
+      },
+    ],
   },
   async redirects() {
     return [

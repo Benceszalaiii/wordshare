@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { cn } from '../../../lib/utils';
-
+import { uploadEssay } from "@/lib/db";
 const formSchema = z.object({
   title: z.string().min(2).max(50),
   textarea: z.string().min(2).max(2500),
@@ -24,10 +24,15 @@ const formSchema = z.object({
 
 const inputclassName = "dark:text-light dark:bg-black focus:border focus:ring-none";
 
-function onSubmit(values: z.infer<typeof formSchema>) {
-  // Do something with the form values.
-  // ✅ This will be type-safe and validated.
-  console.log(values);
+async function onSubmit(values: z.infer<typeof formSchema>) {
+  const essay = {title: values.title, content: values.textarea};
+  console.log("Submitted essay titled: ", essay.title);
+  const fetched = await uploadEssay(essay);
+  if (fetched){
+    console.log("Essay uploaded successfully");
+  } else {
+    console.log("Error uploading essay");
+  }
 }
 export default function Page() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,7 +45,7 @@ export default function Page() {
   // TODO Implement spotify here
 const wordcount = countWords(form.watch("textarea"));
   return (
-    <div className="px-32">
+    <div className="px-4 md:px-32">
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField

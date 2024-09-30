@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from "next/link";
 import { cloneElement, ReactElement, ReactNode, useState, useEffect } from "react";
+import React from "react";
 export function SideBar() {
   const { isMobile } = useMediaQuery();
   const sidebar = useSearchParams().get("sidebar");
@@ -12,7 +13,7 @@ export function SideBar() {
   const router = useRouter();
   useEffect(() => {
     router.push("?sidebar=" + isOpen);
-  }, [isOpen]);
+  }, [isOpen, router]);
   return (
     <>
       <button
@@ -50,8 +51,9 @@ export function SideBar() {
               {" "}
               WordShare{" "}
             </SideBarLink>
-            <SideBarLink href="/overview/tasks"> Tasks </SideBarLink>
-            <SideBarLink href="/overview/class"> Class </SideBarLink>
+            <SideBarLink href="/overview/essay"> Essays </SideBarLink>
+            <SideBarLink href="/overview/words"> Words to learn </SideBarLink>
+            <SideBarLink href="/overview/task"> Tasks </SideBarLink>
           </ul>
         </div>
       </aside>
@@ -76,7 +78,7 @@ export function SideBarLink({
         href={href}
         className={cn(
           "group flex items-center rounded-lg p-2 text-gray-900 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-900",
-          className,
+          className
         )}
       >
         {icon
