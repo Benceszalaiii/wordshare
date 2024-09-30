@@ -50,7 +50,7 @@ const wordcount = countWords(form.watch("textarea"));
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Title" maxLength={50} className={inputclassName} {...field} />
+                <Input placeholder="Title" maxLength={50} className={cn( "",inputclassName)} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -65,7 +65,7 @@ const wordcount = countWords(form.watch("textarea"));
               <FormControl>
                 <Textarea
                   placeholder="Start writing your essay here..."
-                  className={cn("ring-0 focus:ring-0 focus:border focus:border-black dark:focus:border-white outline-none focus:outline-none dark:focus:ring-0 ",inputclassName)}
+                  className={cn("ring-0 focus:ring-0 focus:border text-md max-h-96 focus:border-black dark:focus:border-white outline-none focus:outline-none dark:focus:ring-0 ",inputclassName)}
                   rows={25}
                   onKeyDown={(e)=> {
                     if (e.key === "Tab") {

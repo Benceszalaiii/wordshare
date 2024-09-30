@@ -19,22 +19,32 @@ export default function NavBar({ session }: { session: Session | null }) {
     <>
       <SignInModal />
       <div
-        className={`fixed top-0 w-full flex justify-center ${
+        className={`fixed top-0 flex w-full justify-center ${
           needsExpand
-            ? " bg-white/50 dark:bg-black/70 backdrop-blur-xl justify-center"
+            ? " justify-center bg-white/50 backdrop-blur-xl dark:bg-black/70"
             : "bg-white/0 dark:bg-black/0 "
         } z-30 transition-all duration-300`}
       >
-        <div className={`mx-2 flex h-16 items-center justify-between transition-all ease-in-out duration-500 w-full ${needsExpand ? `max-w-screen-2xl`: `max-w-screen-md`}`}>
+        <div
+          className={`mx-2 flex h-16 w-full items-center justify-between transition-all duration-500 ease-in-out ${
+            needsExpand ? `max-w-screen-2xl` : `max-w-screen-md`
+          }`}
+        >
           <Link href="/" className="flex font-display text-2xl">
-            <p className={`text-indigo-800 tracking-wider dark:text-indigo-600 text-shadow-xl shadow-indigo-700 dark:hover:text-indigo-500 ${pathname.startsWith("/overview") ? "hidden" : ""} ${caveat.className} `}>WordShare</p>
+            <p
+              className={`tracking-wider text-indigo-800 shadow-indigo-700 text-shadow-xl dark:text-indigo-600 dark:hover:text-indigo-500 ${
+                pathname.startsWith("/overview") ? "hidden" : ""
+              } ${caveat.className} `}
+            >
+              WordShare
+            </p>
           </Link>
           <div className={`pr-0`}>
             {session ? (
               <UserDropdown session={session} />
             ) : (
               <button
-                className={`rounded-full border border-black bg-black dark:hover:bg-neutral-400 dark:hover:border-neutral-400 dark:hover:text-black dark:text-black dark:bg-white dark:border-white p-1.5 px-4 text-sm text-white transition-all duration-0 }`}
+                className={`} rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all duration-0 dark:border-white dark:bg-white dark:text-black dark:hover:border-neutral-400 dark:hover:bg-neutral-400 dark:hover:text-black`}
                 onClick={() => setShowSignInModal(true)}
               >
                 Sign In

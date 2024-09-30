@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
 import { Warning } from "@/components/alerts";
 import { SideBar } from "@/components/sidebar";
+import { ReactNode } from "react";
 interface IProps {
     params: {};
     searchParams: {
@@ -10,9 +11,9 @@ interface IProps {
   }
 export default async function Page({searchParams}: IProps) {
   const session = await getServerSession(authOptions);
+  const res = await fetch("http://localhost:3000/api/spotify/get", {headers: {redirectUrl: "http://localhost:3000/"}});
   return (
     <>
-
       <div className={`min-w-screen gap-8 flex flex-col items-start ml-12 justify-start transition-all duration-75 ${searchParams.sidebar ==="true" ? `md:pl-72` : `md:pl-12`} px-4`}>
         <p className="z-10 text-dark dark:text-light">
           Welcome back {session?.user?.name}
