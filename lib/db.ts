@@ -16,7 +16,7 @@ export async function uploadEssay(essay: Essay) {
     const user = a?.user;
     if (!user) {
         console.log("User is null");
-        return Response.redirect("/api/auth/signin");
+        return Response.error();
     }
     if (!essay.title || !essay.content) {
         console.log("Essay title or content is null");

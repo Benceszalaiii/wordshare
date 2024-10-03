@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { cn } from '../../../lib/utils';
 import { uploadEssay } from "@/lib/db";
+import { useEffect, useState } from "react";
 const formSchema = z.object({
   title: z.string().min(2).max(50),
   textarea: z.string().min(2).max(2500),
@@ -43,7 +44,19 @@ export default function Page() {
     },
   });
   // TODO Implement spotify here
-const wordcount = countWords(form.watch("textarea"));
+const textwatcher = form.watch("textarea");
+const [words, setWords] = useState(0);
+  useEffect(() => {
+    const count_of_words = countWords(textwatcher);
+    if (textwatcher === ""){
+      setWords(0);
+    }
+    else if(count_of_words == 1) {
+      setWords(count_of_words);
+    }else{
+      setWords(count_of_words);
+    }
+  }, [textwatcher, form])
   return (
     <div className="px-4 md:px-32">
     <Form {...form}>
@@ -88,7 +101,7 @@ const wordcount = countWords(form.watch("textarea"));
                 />
               </FormControl>
               <FormDescription>
-                Word count: {wordcount - 1} / 240
+                Word count: {words} / 240
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -70,5 +70,6 @@ export const truncate = (str: string, length: number) => {
 
 
 export function countWords(str: string) {
-  return str.split(/\s+/).length;
+  const inp = str.trim();
+  return inp.split(/\s+/).length;
 }
