@@ -43,7 +43,6 @@ export default function Page() {
       textarea: "",
     },
   });
-  // TODO Implement spotify here
 const textwatcher = form.watch("textarea");
 const [words, setWords] = useState(0);
   useEffect(() => {

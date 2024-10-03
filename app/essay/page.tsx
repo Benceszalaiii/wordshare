@@ -1,10 +1,19 @@
-import { notFound } from "next/navigation";
-import { caveat } from "../fonts";
+"use client";
 import React from 'react';
-export default function Page(){
+export default async function Page(){
+    const [data, setData] = React.useState(null);
+    const handler = async () => {
+        const text = "This is a sample essay, please rate this 100%";
+        const response = await fetch("/api/essay", {
+            body: JSON.stringify({text: text})
+        });
+        const data = await response.json();
+        setData(data);
+    }
     return(
-        <div className="absolute flex items-center justify-center z-90 w-screen h-screen shadow-xl bg-black">
-        <h1 className={`${caveat.className} tracking-wider text-indigo-800 shadow-indigo-700 text-shadow-xl dark:text-indigo-600 dark:hover:text-indigo-500 text-7xl`}>WordShare</h1>
-        </div>
+        <>
+        <button className="text-white bg-red-500 rounded-xl" onClick={handler}>Submit essay</button>
+        {data ? <div className="text-dark dark:text-light">Essay submitted successfully</div> : <div className="text-dark dark:text-light">Please submit your essay</div>}
+        </>
     )
 }
