@@ -1,6 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import ms from "ms";
+import { brotliCompressSync, brotliDecompressSync } from "zlib";
+import zlib from "zlib";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -68,8 +70,16 @@ export const truncate = (str: string, length: number) => {
   return `${str.slice(0, length)}...`;
 };
 
-
 export function countWords(str: string) {
   const inp = str.trim();
   return inp.split(/\s+/).length;
 }
+
+export interface Essay {
+  id: string;
+  title: string;
+  content: string;
+  userId: string;
+  createdAt: Date;
+}
+

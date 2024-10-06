@@ -1,20 +1,24 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
 import { Warning } from "@/components/alerts";
-import { SideBar } from "@/components/sidebar";
+import { SideBar } from "@/components/layout/sidebar";
 import { ReactNode } from "react";
-import React from 'react';
+import React from "react";
 interface IProps {
-    params: {};
-    searchParams: {
-      sidebar: string;
-    };
-  }
-export default async function Page({searchParams}: IProps) {
+  params: {};
+  searchParams: {
+    sidebar: string;
+  };
+}
+export default async function Page({ searchParams }: IProps) {
   const session = await getServerSession(authOptions);
   return (
     <>
-      <div className={`min-w-screen gap-8 flex flex-col items-start ml-12 justify-start transition-all duration-75 ${searchParams.sidebar ==="true" ? `md:pl-72` : `md:pl-12`} px-4`}>
+      <div
+        className={`min-w-screen ml-12 flex flex-col items-start justify-start gap-8 transition-all duration-75 ${
+          searchParams.sidebar === "true" ? `md:pl-72` : `md:pl-12`
+        } px-4`}
+      >
         <p className="z-10 text-dark dark:text-light">
           Welcome back {session?.user?.name}
         </p>

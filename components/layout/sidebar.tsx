@@ -51,7 +51,7 @@ export function SideBar() {
               {" "}
               WordShare{" "}
             </SideBarLink>
-            <SideBarLink href="/overview/essay"> Essays </SideBarLink>
+            <SideBarLink href="/essay"> Essays </SideBarLink>
             <SideBarLink href="/overview/words"> Words to learn </SideBarLink>
             <SideBarLink href="/overview/task"> Tasks </SideBarLink>
           </ul>

@@ -67,13 +67,14 @@ model VerificationToken {
 }
 
 model Essay {
-  id        String    @id @default(cuid())
-  title     String
-  content   String
-  userId    String
-  createdAt DateTime  @default(now())
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comments  Comment[]
+  id            String    @id @default(cuid())
+  title         String
+  content       String
+  userId        String
+  createdAt     DateTime  @default(now())
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments      Comment[]
+  aiPossibility Float?
 }
 
 model Comment {

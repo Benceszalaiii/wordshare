@@ -18,6 +18,8 @@ import { z } from "zod";
 import { cn } from '../../../lib/utils';
 import { uploadEssay } from "@/lib/db";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 const formSchema = z.object({
   title: z.string().min(2).max(50),
   textarea: z.string().min(2).max(2500),
@@ -25,17 +27,15 @@ const formSchema = z.object({
 
 const inputclassName = "dark:text-light dark:bg-black focus:border focus:ring-none";
 
-async function onSubmit(values: z.infer<typeof formSchema>) {
+async function onSubmit(values: z.infer<typeof formSchema>, router: any) {
   const essay = {title: values.title, content: values.textarea};
-  console.log("Submitted essay titled: ", essay.title);
-  const fetched = await uploadEssay(essay);
-  if (fetched){
-    console.log("Essay uploaded successfully");
-  } else {
-    console.log("Error uploading essay");
-  }
+  toast.promise(async()=>{
+    const fetched = await uploadEssay(essay);
+  }, {richColors: true, loading: "Uploading essay...", success: "Essay uploaded successfully!", error: "Error uploading essay."});
+  router.push("/essay");
 }
 export default function Page() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,7 +59,9 @@ const [words, setWords] = useState(0);
   return (
     <div className="px-4 md:px-32">
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit((values)=> {
+        onSubmit(values, router);
+      })} className="space-y-8">
         <FormField
           control={form.control}
           name="title"
