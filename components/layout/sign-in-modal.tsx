@@ -9,7 +9,7 @@ import {
 } from "react";
 import { LoadingDots, Google, Spotify } from "@/components/shared/icons";
 import Image from "next/image";
-
+import React from "react";
 const SignInModal = ({
   showSignInModal,
   setShowSignInModal,
@@ -52,7 +52,7 @@ const SignInModal = ({
               </>
             )}
           </button>
-          <button
+          {/* <button
             disabled={signInClicked}
             className={`${
               signInClicked
@@ -72,7 +72,7 @@ const SignInModal = ({
                 <p>Sign In with Spotify</p>
               </>
             )}
-          </button>
+          </button> */}
         </div>
       </div>
     </Modal>

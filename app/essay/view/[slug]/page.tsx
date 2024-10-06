@@ -5,6 +5,7 @@ import Link from "next/link";
 import React from "react";
 
 import { countWords } from "@/lib/utils";
+import { Header } from "@/components/blank";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const res = await getEssayById(params.slug);
@@ -78,12 +79,3 @@ export default async function Page({ params }: { params: { slug: string } }) {
   );
 }
 
-export function Header({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return <div className={className}>{children}</div>;
-}
