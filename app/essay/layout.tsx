@@ -1,21 +1,22 @@
 import { getServerSession } from "next-auth";
 import { signIn } from "next-auth/react";
+import { authOptions } from "../api/auth/[...nextauth]/options";
+import { SignInButton } from "@/components/shared/buttons";
 
 export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const auth = await getServerSession();
+  const auth = await getServerSession(authOptions);
   const authenticate = () => {
-    "use server";
-    return signIn("google", { callbackUrl: new URL("/words").href });
+    return (
+      <>
+      Make sure you are logged in.
+      <SignInButton session={auth} />
+      </>
+    );
   };
   const user = auth?.user;
-  if (!user) {
-    console.log("Not authenticated");
-    authenticate();
-  }
-  console.log("Authenticated");
   return <div className="flex flex-col">{children}</div>;
 }

@@ -32,7 +32,7 @@ export default function NavBar({ session }: { session: Session | null }) {
         >
           <Link href="/" className="flex font-display text-2xl">
             <p
-              className={`tracking-wider text-indigo-800 shadow-indigo-700 text-shadow-xl dark:text-indigo-600 dark:hover:text-indigo-500 ${
+              className={`tracking-wider text-indigo-800 shadow-indigo-700 dark:text-indigo-600 dark:hover:text-indigo-500 ${
                 pathname.startsWith("/overview") ? "hidden" : ""
               } ${caveat.className} `}
             >
@@ -52,7 +52,7 @@ export default function NavBar({ session }: { session: Session | null }) {
             )}
           </div>
         </div>
-        <ThemeSwitch className="gap-5" />
+        <ThemeSwitch className="" />
       </div>
     </>
   );

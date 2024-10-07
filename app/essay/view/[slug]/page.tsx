@@ -6,6 +6,7 @@ import React from "react";
 
 import { countWords } from "@/lib/utils";
 import { Header } from "@/components/blank";
+import CommentWrapper from "@/components/commentwrapper";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const res = await getEssayById(params.slug);
@@ -13,11 +14,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
     return <p>Error: {res.statusText}</p>;
   }
   const essay: Essay = await res.json();
-  const authorFetched = await getUserById(essay.userId);
-  if (!authorFetched) {
+  const author = await getUserById(essay.userId);
+  if (!author) {
     return <p>Author not found</p>;
   }
-  const author = await authorFetched.json();
   const createdAtReadable = new Date(essay.createdAt).toLocaleDateString(
     "en-GB",
     {
@@ -75,6 +75,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           {essay.content}
         </p>
       </div>
+      <CommentWrapper essayId={params.slug} />
     </>
   );
 }

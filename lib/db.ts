@@ -3,6 +3,7 @@ import "server-only";
 import { getServerSession, Session } from "next-auth";
 import prisma from "./prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { Comment, User } from "@prisma/client";
 interface Essay {
   title: string;
   content: string;
@@ -97,16 +98,12 @@ export async function getEssayById(id: string) {
   });
 }
 
-export async function getUserById(id: string) {
+export async function getUserById(id: string): Promise<User | null> {
   const user = await prisma.user.findUnique({ where: { id: id } });
   if (!user) {
-    return new Response(null, { status: 404, statusText: "User not found." });
+    return null;
   }
-  return new Response(JSON.stringify(user), {
-    status: 200,
-    statusText: "User found",
-    headers: { "Content-Type": "application/json" },
-  });
+  return user;
 }
 
 export async function isTeacher(id: string) {
@@ -115,13 +112,6 @@ export async function isTeacher(id: string) {
     return false;
   }
   return true;
-}
-
-export async function getCommentsByEssayId(essayId: string) {
-  const comments = await prisma.comment.findMany({
-    where: { essayId: essayId },
-  });
-  return Response.json({ comments: comments });
 }
 
 export async function deleteEssayByEssayId(essayId: string){
@@ -200,4 +190,41 @@ export async function isOwnEssay(essayId: string){
         return true;
     }
     return false;
+}
+
+
+export async function changeRoleById(id: string, value: string | undefined){
+    if (!value){
+        await prisma.user.update({ where: { id: id }, data: { role: null } });
+        return new Response(null, { status: 200, statusText: "User role cleared." });
+    }
+    const updated = await prisma.user.update({ where: { id: id }, data: { role: value } });
+    if (!updated){
+        return new Response(null, { status: 500, statusText: "Error updating role." });
+    }
+    return new Response(null, { status: 200, statusText: "Role updated." });
+}
+
+
+export async function getCommentsByEssayId(essayId: string){
+    const comments: Comment[] = await prisma.comment.findMany({ where: { essayId: essayId } });
+    return comments;
+}
+
+
+export async function getAllRespondents(comments: Comment[]){
+    const userIds = comments.map(comment => comment.userId);
+    const users: User[] = await prisma.user.findMany({ where: { id: { in: userIds } } });
+    return users;
+}
+
+export async function uploadComment(content: string | undefined, author: Session, essayId: string){
+  if (!content){
+    return new Response(null, { status: 400, statusText: "No content found." });
+  }
+    const created = await prisma.comment.create({ data: { content: content, userId: author.user.id, essayId: essayId } });
+    if (!created){
+        return new Response(null, { status: 500, statusText: "Error creating comment." });
+    }
+    return new Response(null, { status: 200, statusText: "Comment created." });
 }
