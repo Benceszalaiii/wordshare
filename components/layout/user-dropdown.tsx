@@ -45,6 +45,15 @@ export default function UserDropdown({ session }: { session: Session }) {
             >
               <EditIcon className="h-4 w-4" />
               <p className="text-sm">Essays</p>
+            </button>            
+            <button
+              className="relative flex w-full cursor-pointer items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-300 dark:hover:bg-neutral-800 text-dark dark:text-light "
+              onClick={()=> {
+                window.location.href = "/word";
+              }}
+            >
+              <EditIcon className="h-4 w-4" />
+              <p className="text-sm">Words</p>
             </button>
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100 dark:hover:bg-neutral-800 text-dark dark:text-light"
