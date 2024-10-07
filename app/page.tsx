@@ -20,7 +20,7 @@ export default async function Home() {
           </h1>
           <ScrollDownButton className="relative" outlineColor="text-dark" />
         </div>
-        <p className="w-full h-full relative dark:text-white font-default backdrop-blur-2xl rounded-2xl antialiased border-orange-500 dark:border-sky-500 border p-4 hover:scale-105 transition-all duration-500 ease-in-out">Welcome to WordShare! Join a class, complete engaging writing tasks, and enhance your vocabulary with personalized word collections. Whether you're looking to improve your essay skills or expand your language knowledge, we're here to help you grow!
+        <p className="w-full h-full relative dark:text-white font-default backdrop-blur-2xl rounded-2xl antialiased border-orange-500 dark:border-sky-500 border p-4 hover:scale-105 transition-all duration-500 ease-in-out">Welcome to WordShare! Join a class, complete engaging writing tasks, and enhance your vocabulary with personalized word collections. Whether you&apos;re looking to improve your essay skills or expand your language knowledge, we&apos;re here to help you grow!
         </p>
         <Button className="mt-8 flex items-center w-full"><a className="index-button" href={"/quickstart"}>Get started now!</a></Button>
       </div>
