@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
-import { Warning } from "@/components/alerts";
+import { Warning } from "@/components/ui/alerts";
 import { SideBar } from "@/components/layout/sidebar";
 import { ReactNode } from "react";
 import React from "react";

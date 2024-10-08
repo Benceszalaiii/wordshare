@@ -9,7 +9,7 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 export const metadata = {
   metadataBase: new URL('http://localhost:3000'),
-  title: "Jedlik WordShare",
+  title: "WordShare",
   description: "Learn English with daily cards! 📚🔥"
 };
 

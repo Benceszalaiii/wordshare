@@ -193,15 +193,15 @@ export async function isOwnEssay(essayId: string){
 }
 
 
-export async function changeRoleById(id: string, value: string | undefined){
-    if (!value){
-        await prisma.user.update({ where: { id: id }, data: { role: null } });
-        return new Response(null, { status: 200, statusText: "User role cleared." });
-    }
-    const updated = await prisma.user.update({ where: { id: id }, data: { role: value } });
-    if (!updated){
-        return new Response(null, { status: 500, statusText: "Error updating role." });
-    }
+export async function changeRoleById(id: string, value: string | null){
+  const updated = await prisma.user.update({ where: { id: id }, data: { role: value } });
+  if (!updated){
+    return new Response(null, { status: 500, statusText: "Error updating role." });
+  }
+  if (!value){
+      await prisma.user.update({ where: { id: id }, data: { role: null } });
+      return new Response(null, { status: 200, statusText: "User role cleared." });
+  }
     return new Response(null, { status: 200, statusText: "Role updated." });
 }
 

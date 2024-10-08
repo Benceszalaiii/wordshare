@@ -8,7 +8,7 @@ import { User } from "@prisma/client";
 import { getServerSession, Session } from "next-auth";
 import { ReactNode } from "react";
 import CommentSection from "./comments";
-import { Button } from "./button";
+import { Button } from "./ui/button";
 import { SendIcon } from "lucide-react";
 import { revalidatePath } from "next/cache";
 

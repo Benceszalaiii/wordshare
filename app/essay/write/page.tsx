@@ -10,7 +10,7 @@ import {
   Input,
   Button,
   Textarea,
-} from "@/components/form";
+} from "@/components/ui/form";
 import { countWords } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
