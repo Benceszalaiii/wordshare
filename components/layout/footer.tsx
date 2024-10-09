@@ -1,5 +1,12 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname.startsWith("/roadmap")){
+    return null;
+  }
   return (
     <div className="w-full flex items-center justify-center">
 

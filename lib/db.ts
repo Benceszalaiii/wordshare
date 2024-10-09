@@ -228,3 +228,43 @@ export async function uploadComment(content: string | undefined, author: Session
     }
     return new Response(null, { status: 200, statusText: "Comment created." });
 }
+
+export async function getRoadmap(){
+    const roadmap = await prisma.roadMap.findMany();
+    return roadmap;
+}
+
+export async function uploadRoadmap(title: string, content: string){
+  if (!title || !content){
+    return new Response(null, { status: 400, statusText: "No title or content found." });
+  }
+    const created = await prisma.roadMap.create({ data: { title: title, description: content } });
+    if (!created){
+        return new Response(null, { status: 500, statusText: "Error creating roadmap." });
+    }
+    return new Response(null, { status: 200, statusText: "Roadmap created." });
+}
+
+export async function deleteRoadmap(id: number){
+    const deleted = await prisma.roadMap.delete({ where: { id: id } });
+    if (!deleted){
+        return new Response(null, { status: 500, statusText: "Error deleting roadmap." });
+    }
+    return new Response(null, { status: 200, statusText: "Roadmap deleted." });
+}
+
+export async function MarkRoadmapDone(id:number){
+    const updated = await prisma.roadMap.update({ where: { id: id }, data: { date: new Date(Date.now()) } });
+    if (!updated){
+        return new Response(null, { status: 500, statusText: "Error updating roadmap." });
+    }
+    return new Response(null, { status: 200, statusText: "Roadmap updated." });
+}
+
+export async function MarkRoadmapUndone(id: number){
+    const updated = await prisma.roadMap.update({ where: { id: id }, data: { date: null } });
+    if (!updated){
+        return new Response(null, { status: 500, statusText: "Error updating roadmap." });
+    }
+    return new Response(null, { status: 200, statusText: "Roadmap updated." });
+}

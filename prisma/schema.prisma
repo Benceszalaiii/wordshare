@@ -113,3 +113,10 @@ model Words {
   classId    String
   Class      Class    @relation(fields: [classId], references: [id])
 }
+
+model RoadMap {
+  id          Int   @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime?
+}

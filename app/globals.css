@@ -9,3 +9,15 @@ body {
 .index-button{
   @apply bg-black text-white dark:bg-sky-500 dark:text-black p-3 rounded-3xl font-bold border border-orange-500 antialiased hover:underline hover:scale-105 transition-all duration-300 ease-out dark:border-black hover:dark:bg-sky-600 hover:bg-neutral-800;
 }
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
+}

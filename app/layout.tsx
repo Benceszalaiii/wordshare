@@ -53,8 +53,8 @@ export default async function RootLayout({
             {children}
           </main>
           <Footer />
-          <Toaster />
-          <VercelAnalytics debug={false} />
+          <Toaster richColors={true} theme="dark" visibleToasts={3} expand />
+          <VercelAnalytics debug={false} mode="auto"  />
         </ThemeProvider>
       </body>
     </html>
