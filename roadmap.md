@@ -46,3 +46,7 @@ At this point the project should be mostly finished and ready to use
 ## WEBSCRAPE AND DO SEARCH ENGINE OPTIMIZATIONS
 
 Need to upload to google etc. `robots.txt` is important
+
+## Word features
+
+Daily 5 words with streak
