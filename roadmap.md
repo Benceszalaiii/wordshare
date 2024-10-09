@@ -1,5 +1,8 @@
 # Developer Roadmap for WordShare
 
+MAKE A FUCKING PAGE FOR THE ROADMAP I DONT WANNA COMMIT EVERYTIME
+
+
 ## Features to develop (priority in descending order)
 
 ### Finish Quickstart
