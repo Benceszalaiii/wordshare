@@ -39,6 +39,10 @@ Like idk daily 5 words, something
 
 shadcn ui blocks would be good
 
+## Add skeletons
+
+Add skeleton to essay, comnments, do loading.ts
+
 ### Add functionality for fun
 
 At this point the project should be mostly finished and ready to use
