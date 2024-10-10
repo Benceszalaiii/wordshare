@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 export default function Footer() {
   const pathname = usePathname();
   return (
-    <div className="w-full bg-orange-200 dark:bg-black flex flex-col items-center justify-center">
+    <div className="w-full bg-beige-400 bg-opacity-50 backdrop-blur-md dark:bg-black flex flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center p-4">
         <h2 className={"text-2xl font-bold " + caveat.className}>WordShare</h2>
         <p className="text-gray-500 text-center">
