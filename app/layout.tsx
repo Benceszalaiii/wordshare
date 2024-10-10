@@ -52,8 +52,8 @@ export default async function RootLayout({
             <Nav />
           </Suspense>
             {children}
-          <Footer />
           </main>
+          <Footer />
           <Toaster richColors={true} theme="dark" visibleToasts={3} expand />
           <VercelAnalytics debug={false} mode="auto"  />
           <SpeedInsights debug={false} />

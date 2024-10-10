@@ -8,7 +8,6 @@ import { SideBar } from "@/components/layout/sidebar";
 export const metadata = {
   title: "Overview",
 };
-
 export default async function Layout({
   children,
 }: {
