@@ -46,13 +46,13 @@ export default async function RootLayout({
       </head>
       <body className={cx(sfPro.variable, inter.variable)}>
         <ThemeProvider attribute="class" defaultTheme="light">
-          <main className="z-10 flex min-h-screen w-full flex-col py-24">
+          <main className="z-10 flex min-h-screen w-full flex-col pt-24">
           <Suspense fallback="...">
             <Nav />
           </Suspense>
             {children}
-          </main>
           <Footer />
+          </main>
           <Toaster richColors={true} theme="dark" visibleToasts={3} expand />
           <VercelAnalytics debug={false} mode="auto"  />
         </ThemeProvider>
