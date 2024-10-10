@@ -56,7 +56,7 @@ export default async function RootLayout({
           </main>
           <Toaster richColors={true} theme="dark" visibleToasts={3} expand />
           <VercelAnalytics debug={false} mode="auto"  />
-          <SpeedInsights />
+          <SpeedInsights debug={false} />
         </ThemeProvider>
       </body>
     </html>
