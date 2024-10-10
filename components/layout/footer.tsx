@@ -15,7 +15,7 @@ export default function Footer() {
         </p>
         </div>
         <div className="flex flex-row gap-6">
-        <Link href={"/roadmap"} className="hover:underline underline-offset-2" prefetch={false}>Roadmap</Link>
+        <a href={"/roadmap"} className="hover:underline underline-offset-2">Roadmap</a>
         </div>
       <p className="text-gray-500 p-4 pb-4">
         A project by{" "}
