@@ -51,7 +51,7 @@ export default async function Page() {
           Roadmap
         </h2>
         <ol className="relative flex flex-col items-start border-s w-full border-neutral-200 dark:border-neutral-700">
-          {roadmap.map((item) => {
+          {roadmap.toSorted((a, b) => a.id - b.id).map((item) => {
             return (
               <RoadmapBlock key={item.id} title={item.title} date={item.date}>
                 {item.description}
