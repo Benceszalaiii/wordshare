@@ -17,7 +17,7 @@ export default async function Home() {
           </h1>
           <ScrollDownButton className="relative" outlineColor="text-dark" />
         </div>
-        <p className="relative h-full w-full rounded-2xl border border-sky-500 p-4 font-default antialiased backdrop-blur-2xl transition-all duration-500 ease-in-out hover:scale-105 dark:border-sky-500 dark:text-white">
+        <p className="relative h-full w-full rounded-2xl border border-sky-500 p-4 font-default antialiased backdrop-blur-lg transition-all duration-500 ease-in-out hover:scale-105 dark:border-sky-500 dark:text-white">
           Welcome to WordShare! Join a class, complete engaging writing tasks,
           and enhance your vocabulary with personalized word collections.
           Whether you&apos;re looking to improve your essay writing skills or expand

@@ -7,7 +7,7 @@ body {
 }
 
 .index-button{
-  @apply bg-white/25 text-black dark:bg-sky-500 dark:text-black p-3 rounded-3xl font-bold border border-sky-500 antialiased hover:underline hover:scale-105 transition-all duration-300 ease-out dark:border-black hover:dark:bg-sky-600 hover:bg-white/60;
+  @apply bg-sky-600/25 text-black dark:text-white bg-gradient-to-bl from-white/25 hover:bg-gradient-to-tr hover:to-violet-700/50 hover:from-sky-400 to-sky-500/50 backdrop-blur-3xl p-3 rounded-3xl font-bold border-2 border-sky-500 antialiased hover:underline hover:scale-105 transition-all duration-300 ease-out ;
 }
 
 @layer utilities {
