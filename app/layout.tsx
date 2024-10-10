@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 export const metadata = {
   metadataBase: new URL('http://localhost:3000'),
   title: "WordShare",
@@ -55,6 +56,7 @@ export default async function RootLayout({
           </main>
           <Toaster richColors={true} theme="dark" visibleToasts={3} expand />
           <VercelAnalytics debug={false} mode="auto"  />
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>
