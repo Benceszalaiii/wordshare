@@ -1,11 +1,12 @@
-import Link from "next/link";
-import { caveat } from "./fonts";
-import "./index.css";
 import ScrollDownButton from "@/components/home/scrolldown";
-import { Button } from "@/components/ui/button";
-export default async function Home() {
+import { Suspense } from 'react';
+export default function Home() {
+
   return (
     <div className="flex flex-col items-center">
+      <Suspense fallback={<div className="dark:bg-dark bg-light object-contain -z-10 fixed top-0 left-0 p-0 m-0 w-full h-full" />}>
+        <div className="dark:bg-main-dark bg-main-light bg-cover bg-no-repeat bg-bottom -z-10 fixed top-0 left-0 p-0 m-0 w-full h-full" />
+      </Suspense>
       <div className=" w-full max-w-4xl px-5 py-32 xl:px-0">
         <div className="mb-[50vh] flex flex-col items-center gap-24">
           <h1 className="h-full bg-gradient-to-br from-neutral-700 to-sky-300 bg-clip-text text-center font-display text-4xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm [text-wrap:balance] dark:from-white dark:to-purple-400 md:text-7xl md:leading-[5rem]">

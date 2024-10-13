@@ -8,12 +8,10 @@ export default function GlobalError({
   reset: () => void
 }) {
   return (
-    // global-error must include html and body tags
-    <html>
-      <body>
-        <h2>Something went wrong!</h2>
+      <div className="w-full h-screen flex p-0 m-0 no-scrollbar flex-col justify-center items-center text-center overflow-hidden">
+        <h2 className="text-lg">Something went wrong!</h2>
         <button onClick={() => reset()}>Try again</button>
-      </body>
-    </html>
+      </div>
+
   )
 }

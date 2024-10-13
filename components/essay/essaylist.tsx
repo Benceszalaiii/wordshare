@@ -22,12 +22,12 @@ export async function EssayList() {
       <section className="flex flex-row flex-wrap justify-stretch gap-5">
         {essaylist.map((essay: Essay) => {
           return (
-            <Card key={essay.id} className="group">
+            <Card key={essay.id} className="group min-w-48">
               <CardHeader>
                 <CardTitle className="line-clamp-1">{essay.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="line-clamp-2 max-w-64">
+                <CardDescription className="line-clamp-2 max-w-72">
                   {essay.content}
                 </CardDescription>
               </CardContent>
@@ -42,7 +42,7 @@ export async function EssayList() {
         <Link className="group transition duration-300" href={"/essay/write"}>
           <Button
             title="Create New"
-            className="h-48 w-48 border border-dashed border-gray-200 group-hover:border-white group-hover:bg-neutral-900/75"
+            className="h-48 w-48 border border-dashed border-gray-400 dark:border-gray-200 group-hover:dark:border-white group-hover:bg-neutral-300/75 group-hover:dark:bg-neutral-800/75"
           >
             <svg
               className="h-6 w-6 text-gray-800 dark:text-gray-300 group-hover:dark:text-white"

@@ -10,7 +10,10 @@ import { Toaster } from "sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 export const metadata = {
   metadataBase: new URL('http://localhost:3000'),
-  title: "WordShare",
+  title: {
+    default: "WordShare",
+    template: "%s | WordShare",
+  },
   description: "Learn English with daily cards! 📚🔥"
 };
 
@@ -48,9 +51,7 @@ export default async function RootLayout({
       <body className={cx(sfPro.variable, inter.variable)}>
         <ThemeProvider attribute="class" defaultTheme="light">
           <main className="z-10 flex min-h-screen w-full flex-col pt-24">
-          <Suspense fallback="...">
             <Nav />
-          </Suspense>
             {children}
           </main>
           <Footer />

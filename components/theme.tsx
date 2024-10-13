@@ -1,7 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { SunIcon, MoonIcon } from "@radix-ui/react-icons";
+import { SunIcon, MoonIcon, ColorWheelIcon } from "@radix-ui/react-icons";
+import LoadingCircle from './shared/icons/loading-circle';
+import { LoadingDots } from "./shared/icons";
 // const ThemeSwitch = ({className}: {className?: string}) => {
 //   const [mounted, setMounted] = useState(false);
 //   const { theme, setTheme } = useTheme();
@@ -35,7 +37,11 @@ const ThemeSwitch = ({className}: {className?: string}) => {
   }, []);
 
   if (!mounted) {
-    return <></>;
+    return (
+      <button name="theme-loading" aria-label="Theme settings loading..." className="cursor-progress" disabled>
+      <LoadingDots className={`w-6 h-6 text-gray-800 dark:text-white ${className}`} color="#f0f0f0"  />
+    </button>
+    );
   }
   if (theme === "light") {
     return (<>
@@ -55,7 +61,7 @@ const ThemeSwitch = ({className}: {className?: string}) => {
   }
   else{
     setTheme("light")
-    return null;
+    return "...";
   }
 }
 export default ThemeSwitch;
