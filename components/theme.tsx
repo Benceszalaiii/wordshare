@@ -1,8 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { SunIcon, MoonIcon, ColorWheelIcon } from "@radix-ui/react-icons";
-import LoadingCircle from './shared/icons/loading-circle';
+import { SunIcon, MoonIcon } from "@radix-ui/react-icons";
 import { LoadingDots } from "./shared/icons";
 // const ThemeSwitch = ({className}: {className?: string}) => {
 //   const [mounted, setMounted] = useState(false);

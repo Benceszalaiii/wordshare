@@ -3,7 +3,7 @@ import { changeRoleById } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 export async function GET(req: NextRequest){
-    const role = req.nextUrl.searchParams.get("role") || null;
+    const role = req.nextUrl.searchParams.get("role")?.toLowerCase() || null;
     const auth = await getServerSession(authOptions);
     if (!auth){
         return new Response(null, { status: 401, statusText: "No user found"});

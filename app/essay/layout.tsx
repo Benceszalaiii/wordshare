@@ -1,4 +1,4 @@
-import { EssayNav } from "@/components/essay/nav";
+import { AltNav } from "@/components/alt-nav";
 
 
 export const metadata = {
@@ -11,7 +11,7 @@ export default async function Layout({
 }) {
   return (
     <>
-      <EssayNav className="mb-4" items={[
+      <AltNav className="mb-4" items={[
         { title: "View Essays", path: "/essay"},
         { title: "Write Essay", path: "/essay/write"},
       ]} />

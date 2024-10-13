@@ -268,3 +268,33 @@ export async function MarkRoadmapUndone(id: number){
     }
     return new Response(null, { status: 200, statusText: "Roadmap updated." });
 }
+
+export async function isAdmin(id: string){
+    const user = await prisma.user.findUnique({ where: { id: id } });
+    if (!user){
+        return false;
+    }
+    if (user.role === "admin"){
+        return true;
+    }
+    return false;
+}
+
+export async function getAllUsers(){
+    const users = await prisma.user.findMany();
+    return users;
+}
+
+export async function getVerifyRequests(){
+    const requests = await prisma.user.findMany({where: {teacherVerified: false, role: "teacher"}});
+    return requests;
+}
+
+export async function addTeacher(userId: string){
+    const updated = await prisma.user.update({ where: { id: userId }, data: { teacherVerified: true } });
+    const teacher = await prisma.teacher.create({data: {userId: userId}});
+    if (!updated || !teacher){
+        return new Response(null, { status: 500, statusText: "Error adding teacher." });
+    }
+    return new Response(null, { status: 200, statusText: "Teacher added." });
+}

@@ -39,8 +39,9 @@ export default async function CommentWrapper({ essayId }: { essayId: string }) {
             placeholder="Start writing a comment here..."
           ></textarea>
           <Button
+        variant={"secondary"}
             type="submit"
-            className="h-full border border-dashed border-neutral-400 py-4 text-neutral-400 hover:dark:border-white hover:dark:text-neutral-400"
+            className="h-full"
           >
             <SendIcon className="h-6 w-6" />
             Submit

@@ -41,8 +41,9 @@ export async function EssayList() {
         })}
         <Link className="group transition duration-300" href={"/essay/write"}>
           <Button
+          variant={"outline"}
             title="Create New"
-            className="h-48 w-48 border border-dashed border-gray-400 dark:border-gray-200 group-hover:dark:border-white group-hover:bg-neutral-300/75 group-hover:dark:bg-neutral-800/75"
+            className="h-48 w-48"
           >
             <svg
               className="h-6 w-6 text-gray-800 dark:text-gray-300 group-hover:dark:text-white"

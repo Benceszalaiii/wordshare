@@ -6,15 +6,15 @@ import { LayoutDashboard, LogOut, EditIcon, List } from "lucide-react";
 import Popover from "@/components/shared/popover";
 import Image from "next/image";
 import { Session } from "next-auth";
+import { isAdmin } from "@/lib/db";
 
 
 export default function UserDropdown({ session }: { session: Session }) {
-  const { email, image } = session?.user || {};
+  const { email, image, id } = session?.user || {};
   const [openPopover, setOpenPopover] = useState(false);
   if (!email) return null;
-
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative flex items-center">
       <Popover
         content={
           <div className="w-full rounded-md bg-white p-2 sm:w-56 dark:bg-dark dark:border-gray-700">

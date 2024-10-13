@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
@@ -14,10 +15,14 @@ export default function NotFound() {
 <p className='dark:text-red-200 font-semibold text-2xl text-red-500'>Page not found</p>
 <p>The page you requested does not exist.</p>
 <div className='flex flex-row gap-5'>
-<Link href="/" className={cn("bg-red-950 hover:bg-red-800 border-red-600 text-white ",className)}>Home page</Link>
-<button className={cn("border-red-600 hover:bg-red-950/45 text-black dark:text-white",className)} onClick={()=> {
+  <Link href="/">
+<Button variant={"destructive"}>
+  Home page
+</Button>
+</Link>
+<Button variant={"ghost"} className={cn("",className)} onClick={()=> {
     router.back();
-}}>Previous site</button>
+}}>Previous site</Button>
 </div>
 </div>
   )
