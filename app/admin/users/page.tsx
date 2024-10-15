@@ -15,7 +15,7 @@ async function getData(): Promise<User[]> {
 export default async function Page() {
   const data = await getData()
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-2 md:py-10">
       <h1 className="text-2xl mb-6 font-bold">Users</h1>
       <Suspense>
       <DataTable columns={columns} data={data} />
