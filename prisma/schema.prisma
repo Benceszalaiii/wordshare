@@ -101,10 +101,13 @@ model Class {
 }
 
 model Teacher {
-  id      String  @id @default(cuid())
-  userId  String  @unique
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  classes Class[]
+  id       String  @id @default(cuid())
+  userId   String  @unique
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  classes  Class[]
+  verified Boolean @default(false)
+  subjects String[]
+  nickname String?
 }
 
 model Words {

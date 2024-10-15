@@ -39,7 +39,7 @@ export default async function Page() {
     );
   }
   const dbUser = await getUserById(user.id);
-  if (!dbUser?.role) {
+  if (!dbUser?.role || (dbUser.role !== "teacher" && dbUser.role !== "student")) {
     return (
       <section className={styling.section}>
         <h1 className={styling.h1}>
@@ -64,10 +64,25 @@ export default async function Page() {
         <div className="flex flex-col items-center gap-2">
           <p className={styling.completed}>1. Authenticate with Google ✅ </p>
           <p className={styling.completed}>2. Choose account type ✅</p>
+          <p className={styling.active}>3. Verification submitted</p>
         </div>
-        <VerifyRequest user={dbUser} />
+        <p>You are set up for now. Wait for our team to verify you.</p>
       </section>
     );
   }
-  return <>You&apos;re all set. Your current role is {dbUser.role}</>;
+  if (dbUser.role === "student") {
+  return(
+  <section className={styling.section}>
+  <h1 className={styling.h1}>
+    Get started with{" "}
+    <span className={`${caveat.className}`}>WordShare</span>
+  </h1>
+  <div className="flex flex-col items-center gap-2">
+    <p className={styling.completed}>1. Authenticate with Google ✅ </p>
+    <p className={styling.completed}>2. Choose account type ✅</p>
+    <p className={styling.active}>3. Join class</p>
+  </div>
+  <p>You are set up for now.</p>
+</section>
+);}
 }

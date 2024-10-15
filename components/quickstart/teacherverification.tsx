@@ -1,8 +1,14 @@
+"use client"
+import { toast } from "sonner";
 import { User } from "@prisma/client";
-
+import { Button } from "@/components/ui/button"
 export async function VerifyRequest({user}: {user: User}){
-    return (<>
-        This page is work in progress. Make sure to check back later.
-        <p> Your current status is {user.role}</p>
-    </>)
+
+    return (
+<Button variant={"outline"} onSubmit={()=> {
+    toast.promise(async()=> {
+        
+    })
+}}>Verify</Button>
+    )
 }

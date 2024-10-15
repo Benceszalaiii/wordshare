@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Image from "next/image";
 
 export const columns: ColumnDef<User>[] = [
     {
@@ -20,7 +21,7 @@ export const columns: ColumnDef<User>[] = [
         header: "Avatar",
         cell: ({ row }) => {
             const user = row.original;
-            return <img src={user.image? user.image : "https://via.placeholder.com/150"} alt={"-"} className="w-8 h-8 rounded-full" />;
+            return <Image src={user.image? user.image : "https://via.placeholder.com/150"} alt={"-"} className="w-8 h-8 rounded-full" width={96} height={96} />;
         },
     },
   {

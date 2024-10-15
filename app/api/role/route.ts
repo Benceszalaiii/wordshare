@@ -4,6 +4,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 export async function GET(req: NextRequest){
     const role = req.nextUrl.searchParams.get("role")?.toLowerCase() || null;
+    if (role !== "teacher" && role !== "student"){
+        return new Response(`Your request is fabricated, here's your ip address: ${req.headers.get("X-Forwarded-For")}, also heres your location: ${req.geo?.latitude}, ${req.geo?.longitude}`, { status: 400, statusText: "Invalid role" });
+    }
     const auth = await getServerSession(authOptions);
     if (!auth){
         return new Response(null, { status: 401, statusText: "No user found"});
