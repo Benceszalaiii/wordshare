@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { revalidatePath } from "next/cache";
+import Image from "next/image";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -24,7 +25,9 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const user = row.original;
       return (
-        <img
+        <Image
+        width={96}
+        height={96}
           src={user.image ? user.image : "https://via.placeholder.com/150"}
           alt={"-"}
           className="h-8 w-8 rounded-full"

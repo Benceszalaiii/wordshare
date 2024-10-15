@@ -21,6 +21,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
             {title: "Main", path: "/admin"},
             { title: "Users", path: "/admin/users" },
             { title: "Verify Status", path: "/admin/verification" },
+            {title: "Teachers", path: "/admin/teacher"},
+            {title: "Class", path: "/admin/class"},
         ]} />
         <div className="ml-24 flex flex-col">
             <Suspense>

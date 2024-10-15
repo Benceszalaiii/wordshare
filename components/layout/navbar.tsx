@@ -10,13 +10,13 @@ import { usePathname } from "next/navigation";
 import ThemeSwitch from "../theme";
 import { DashboardIcon } from "@radix-ui/react-icons";
 
-export default function NavBar({ session, admin }: { session: Session | null, admin?: boolean }) {
+export default function NavBar({ session, role }: { session: Session | null, role: string | null | undefined}) {
   const { SignInModal, setShowSignInModal } = useSignInModal();
   const scrolled = useScroll(50);
   const pathname = usePathname();
   const isIndexPage = pathname === "/";
   const needsExpand = (scrolled && isIndexPage) || !isIndexPage;
-  if (admin){
+  if (role === "admin"){
     return (
       <>
         <SignInModal />
@@ -44,7 +44,7 @@ export default function NavBar({ session, admin }: { session: Session | null, ad
             <div className="flex flex-row gap-2 items-center justify-center">
               <div className={`pr-0`}>
                 {session ? (
-                  <UserDropdown session={session} />
+                  <UserDropdown session={session} role={role} />
                 ) : (
                   <button
                     className={`} rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all duration-0 dark:border-white dark:bg-white dark:text-black dark:hover:border-neutral-400 dark:hover:bg-neutral-400 dark:hover:text-black`}
@@ -90,7 +90,7 @@ export default function NavBar({ session, admin }: { session: Session | null, ad
           </Link>
           <div className={`pr-0`}>
             {session ? (
-              <UserDropdown session={session} />
+              <UserDropdown session={session} role={role} />
             ) : (
               <button
                 className={`} rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all duration-0 dark:border-white dark:bg-white dark:text-black dark:hover:border-neutral-400 dark:hover:bg-neutral-400 dark:hover:text-black`}

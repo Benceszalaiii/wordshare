@@ -9,7 +9,7 @@ import { changeRoleById, getUserByEmail, getUserById } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { RoleForm } from "@/components/quickstart/role-form";
-import { VerifyRequest } from "@/components/quickstart/teacherverification";
+import Link from 'next/link';
 
 const styling = {
   section: "flex flex-col gap-2 items-center pt-12",
@@ -39,6 +39,31 @@ export default async function Page() {
     );
   }
   const dbUser = await getUserById(user.id);
+  if (!dbUser){
+    return (
+      <section className={styling.section}>
+        <h1 className={styling.h1}>
+          Get started with{" "}
+          <span className={`${caveat.className}`}>WordShare</span>
+        </h1>
+        <p>Something went wrong. Try signing in again. If that doesn&apos;t work, contact the page developer</p>
+      </section>
+    );
+  }
+  if (dbUser.role === "admin"){
+    return (
+      <section className={styling.section}>
+        <h1 className={styling.h1}>
+          Get started with{" "}
+          <span className={`${caveat.className}`}>WordShare</span>
+        </h1>
+        <div className="flex flex-col items-center gap-2">
+          <p className={styling.completed}>1. Authenticate with Google ✅ </p>
+        </div>
+        <p className="text-center">You are an admin. You can access all features.</p>
+      </section>
+    );
+  }
   if (!dbUser?.role || (dbUser.role !== "teacher" && dbUser.role !== "student")) {
     return (
       <section className={styling.section}>
@@ -66,7 +91,7 @@ export default async function Page() {
           <p className={styling.completed}>2. Choose account type ✅</p>
           <p className={styling.active}>3. Verification submitted</p>
         </div>
-        <p>You are set up for now. Wait for our team to verify you.</p>
+        <p className="mt-4">You are set up for now. Wait for our team to verify you.</p>
       </section>
     );
   }
@@ -82,7 +107,25 @@ export default async function Page() {
     <p className={styling.completed}>2. Choose account type ✅</p>
     <p className={styling.active}>3. Join class</p>
   </div>
-  <p>You are set up for now.</p>
+  <p className="mt-4 text-center">You are set up for now. <br /> Start by joining a class.</p>
+  <Button asChild variant={"outline"}><Link href={"/class/join"}>Join class</Link></Button>
 </section>
 );}
+if (dbUser.role === "teacher" && dbUser.teacherVerified) {
+  return(
+  <section className={styling.section}>
+  <h1 className={styling.h1}>
+    Get started with{" "}
+    <span className={`${caveat.className}`}>WordShare</span>
+  </h1>
+  <div className="flex flex-col items-center gap-2">
+    <p className={styling.completed}>1. Authenticate with Google ✅ </p>
+    <p className={styling.completed}>2. Choose account type ✅</p>
+    <p className={styling.completed}>3. Verified ✅</p>
+  </div>
+  <p className="mt-4 text-center">You are all set up. <br /> Start by creating a class</p>
+    <Button variant={"outline"} asChild><Link href={"/class/create"}> Create class</Link></Button>
+  </section>
+  );
+}
 }
