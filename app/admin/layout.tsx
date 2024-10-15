@@ -24,7 +24,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
             {title: "Teachers", path: "/admin/teacher"},
             {title: "Class", path: "/admin/class"},
         ]} />
-        <div className="ml-24 flex flex-col">
+        <div className="md:pl-24 pl-2 flex flex-col">
             <Suspense>
             {children}
             </Suspense>
