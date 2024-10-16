@@ -91,23 +91,24 @@ model Comment {
 }
 
 model Class {
-  id        String  @id @default(cuid())
-  name      String
-  teacherId String
-  teacher   Teacher @relation(fields: [teacherId], references: [id])
-  students  User[]
-  Words     Words[]
-  Tasks     Task[]
+  id            String  @id @default(cuid())
+  name          String
+  description   String?
+  language      String
+  teacherId     String
+  teacher       Teacher @relation(fields: [teacherId], references: [id])
+  teacherUserId String
+  students      User[]
+  Words         Words[]
+  Tasks         Task[]
 }
 
 model Teacher {
-  id       String   @id @default(cuid())
-  userId   String   @unique
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id       String  @id @default(cuid())
+  userId   String  @unique
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   classes  Class[]
-  verified Boolean  @default(false)
-  subjects String[]
-  nickname String?
+  verified Boolean @default(false)
 }
 
 model Words {

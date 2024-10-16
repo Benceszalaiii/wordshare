@@ -1,121 +1,53 @@
-"use client"
+import { getServerSession } from "next-auth";
+import CreateForm from "@/components/class/createform";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { SignInButton } from "@/components/shared/buttons";
+import { getTeacher, getUserById } from "@/lib/db";
+import Link from "next/link";
 
-import Link from "next/link"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-const FormSchema = z.object({
-    language: z
-        .string({
-            required_error: "Please select an email to display.",
-        }),
-    classname: z.string({
-        required_error: "Please enter a class name.",
-    })
-})
-interface Language {
-    name: string,
-    code: string
-}
-
-const languages: Language[] = [
-    {
-        name: "English",
-        code: "en"
-    },
-    {
-        name: "Magyar",
-        code: "hu"
-    },
-    {
-        name: "Deutsch",
-        code: "de"
-    }
-]
-
-export default function Page() {
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
-    })
-
-    function onSubmit(data: z.infer<typeof FormSchema>) {
-        toast(
-            (<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-            </pre>)
-        )
-    }
-
+export default async function Page() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
     return (
-        <section className="flex flex-col gap-4 justify-center items-center">
-            <h1 className="text-2xl font-semibold">Create class</h1>
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-            <FormField
-                    control={form.control}
-                    name="classname"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Class name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="11C English" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          This will be the public name of the class.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="language"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Language</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select language" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {languages.map((language) => (
-                                        <SelectItem key={language.code} value={language.code}>{language.name}</SelectItem>
-                                    ))}
-
-                                </SelectContent>
-                            </Select>
-                            <FormDescription>
-                                You can manage your classes in your{" "}
-                                <Link href="/class/manage" className="underline underline-offset-1">created classes</Link>.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit">Create class</Button>
-            </form>
-        </Form>
-        </section>
+        <div className="flex flex-col items-center justify-center gap-4">
+        <h1>You need to be signed in to access this page.</h1>
+        <SignInButton session={session} />
+      </div>
+    );
+  }
+  const dbUser = await getUserById(session.user.id);
+  if (!dbUser) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4">
+        <h1>You need to be signed in to access this page.</h1>
+        <SignInButton session={session} />
+      </div>
+    );
+  }
+  if ((dbUser.role !== "teacher" && dbUser.role !== "admin") || !dbUser.role) {
+    return (
+      <>
+        <h1>You need to be a teacher to access this page.</h1>
+        <p>To join a class, navigate to <Link href={"/class/join"}>Join Class</Link></p>
+      </>
+    );
+  }
+  const teacher = await getTeacher(dbUser.id);
+  if (!teacher && dbUser.role !== "admin") {
+    return (
+        <>
+        <h1>You are not a verified teacher.</h1>
+        <p>Once you are verified, you can create a class.</p>
+        <p>If you think it&apos;s an issue on our side, contact us.</p>
+        </>
     )
+  }
+  return (
+    <>
+      <section className="flex flex-col items-center justify-center gap-4">
+        <h1 className="text-2xl font-semibold">Create class</h1>
+        <CreateForm />
+      </section>
+    </>
+  );
 }

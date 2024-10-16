@@ -106,12 +106,25 @@ export async function getUserById(id: string): Promise<User | null> {
   return user;
 }
 
+export async function isAdmin(id: string){
+  const user = await prisma.user.findUnique({ where: { id: id } });
+  if (!user){
+      return false;
+  }
+  if (user.role === "admin"){
+      return true;
+  }
+  return false;
+}
+
+
 export async function isTeacher(id: string) {
   const isTeacher = await prisma.teacher.findUnique({ where: { userId: id } });
-  if (!isTeacher) {
-    return false;
+  const admin = await isAdmin(id);
+  if (isTeacher || admin) {
+    return true;
   }
-  return true;
+  return false;
 }
 
 export async function deleteEssayByEssayId(essayId: string){
@@ -269,16 +282,6 @@ export async function MarkRoadmapUndone(id: number){
     return new Response(null, { status: 200, statusText: "Roadmap updated." });
 }
 
-export async function isAdmin(id: string){
-    const user = await prisma.user.findUnique({ where: { id: id } });
-    if (!user){
-        return false;
-    }
-    if (user.role === "admin"){
-        return true;
-    }
-    return false;
-}
 
 export async function getAllUsers(){
     const users = await prisma.user.findMany();
@@ -297,4 +300,78 @@ export async function addTeacher(userId: string){
         return new Response(null, { status: 500, statusText: "Error adding teacher." });
     }
     return new Response(null, { status: 200, statusText: "Teacher added." });
+}
+
+
+export async function deleteTeacher(userId: string){
+    const deleted = await prisma.teacher.delete({ where: { userId: userId } });
+    if (!deleted){
+        return new Response(null, { status: 500, statusText: "Error deleting teacher." });
+    }
+    return new Response(null, { status: 200, statusText: "Teacher deleted." });
+}
+
+
+export async function getTeacher(userId: string){
+  const teacher = await prisma.teacher.findUnique({ where: { userId: userId } });
+  return teacher;
+}
+
+
+interface ClassObject{
+  classname: string;
+  description: string;
+  language: string;
+}
+
+export async function createClass(datajson: ClassObject){
+  const session = await getServerSession(authOptions);
+  if (!session){
+    return new Response("Please sign in", { status: 401, statusText: "Please sign in." });
+  }
+  const user = session.user;
+  if (!user){
+    return new Response("No user found.", { status: 401, statusText: "No user found." });
+  }
+  const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+  if (!dbUser){
+    return new Response("No user found", { status: 401, statusText: "No user found." });
+  }
+  let teacher = await getTeacher(dbUser.id);
+  const admin = await isAdmin(dbUser.id);
+  if (!(teacher || admin)){
+    return new Response("You are not a teacher.", { status: 401, statusText: "You are not a teacher." });
+  }
+  if (admin && !teacher){
+      await addTeacher(dbUser.id);
+      teacher = await getTeacher(dbUser.id);
+  }
+  if (!datajson.classname || !datajson.language){
+    return new Response(null, { status: 400, statusText: "No name, language or teacherId found." });
+  }
+  if (!teacher){
+    return new Response(null, { status: 401, statusText: "You are not a verified teacher." });
+  }
+  const newclass = await prisma.class.create({data: {name: datajson.classname, description: datajson.description, language: datajson.language, teacherId: teacher.id, teacherUserId: dbUser.id}});
+
+  if (!newclass){
+    return new Response(null, { status: 500, statusText: "Error creating class." });
+  }
+  return new Response(null, { status: 200, statusText: "Class created." });
+}
+
+
+export async function getClassByStudentUser(user: User){
+  const classes = await prisma.class.findMany({ where: { students: { some: { email: user.email } } }});
+  return classes;
+}
+
+export async function getClassesByTeacherUser(user: User){
+  const classes = await prisma.class.findMany({ where: { teacherUserId: user.id } });
+  return classes;
+}
+
+export async function getClassById(id: string){
+  const c = await prisma.class.findUnique({ where: { id: id } });
+  return c;
 }
