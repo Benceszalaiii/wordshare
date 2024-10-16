@@ -100,7 +100,7 @@ export default function Page() {
                                 </FormControl>
                                 <SelectContent>
                                     {languages.map((language) => (
-                                        <SelectItem value={language.code}>{language.name}</SelectItem>
+                                        <SelectItem key={language.code} value={language.code}>{language.name}</SelectItem>
                                     ))}
 
                                 </SelectContent>
