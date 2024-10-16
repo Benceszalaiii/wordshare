@@ -57,6 +57,7 @@ export const commands: Command[] = [
   }
 ]
 export function CommandProvider() {
+  const {setTheme} = useTheme();
   const router = useRouter();
   const redirect = useCallback((path: string) => {
     router.push(path);
@@ -107,11 +108,19 @@ export function CommandProvider() {
             })}
           </CommandGroup>
           <CommandGroup heading="Theme">
-            <CommandItem>
+            <CommandItem onSelect={()=> {
+              setOpen(false);
+              setTheme("light");
+              toast("Switching to Light theme", {duration: 2000, richColors: true, position: "bottom-center"});
+            }}>
               <SunIcon className="mr-2 h-4 w-4" />
               <span>Switch to Light theme</span>
             </CommandItem>
-            <CommandItem>
+            <CommandItem onSelect={()=> {
+              setOpen(false);
+              setTheme("dark");
+              toast("Switching to Dark theme", {duration: 2000, richColors: true, position: "bottom-center"});
+            }}>
               <MoonIcon className="mr-2 h-4 w-4" />
               <span>Switch to Dark theme</span>
             </CommandItem>

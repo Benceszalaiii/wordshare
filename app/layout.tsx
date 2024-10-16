@@ -7,15 +7,15 @@ import { Suspense } from "react";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CommandProvider } from "@/components/layout/commandprovider";
 export const metadata = {
-  metadataBase: new URL('http://localhost:3000'),
+  metadataBase: new URL("http://localhost:3000"),
   title: {
     default: "WordShare",
     template: "%s | WordShare",
   },
-  description: "Learn English with daily cards! 📚🔥"
+  description: "Learn English with daily cards! 📚🔥",
 };
 
 export default async function RootLayout({
@@ -50,15 +50,15 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={cx(sfPro.variable, inter.variable)}>
-        <CommandProvider />
         <ThemeProvider attribute="class" defaultTheme="light">
+          <CommandProvider />
           <main className="z-10 flex min-h-screen w-full flex-col pt-24">
             <Nav />
             {children}
           </main>
           <Footer />
           <Toaster richColors={true} theme="dark" visibleToasts={2} />
-          <VercelAnalytics debug={false} mode="auto"  />
+          <VercelAnalytics debug={false} mode="auto" />
           <SpeedInsights debug={false} />
         </ThemeProvider>
       </body>
