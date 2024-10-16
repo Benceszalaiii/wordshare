@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/command";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
+import { useTheme } from "next-themes";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 export interface Command{
   key: string;
   path: string;
@@ -97,19 +98,23 @@ export function CommandProvider() {
           <CommandGroup heading="Pages">
             {commands.map((command)=> {
               return (
-                <CommandItem className="hover:cursor-pointer" asChild key={command.key}>
-                  <div
-                    onClick={() => {
-                      redirect(command.path);
-                    }}
-                  >
+                <CommandItem onSelect={()=> {redirect(command.path)}} className="hover:cursor-pointer" key={command.key}>
                     {command.icon}
                     <span>{command.title}</span>
                     <CommandShortcut>⌘{command.key.toUpperCase()}</CommandShortcut>
-                  </div>
                 </CommandItem>
               )
             })}
+          </CommandGroup>
+          <CommandGroup heading="Theme">
+            <CommandItem>
+              <SunIcon className="mr-2 h-4 w-4" />
+              <span>Switch to Light theme</span>
+            </CommandItem>
+            <CommandItem>
+              <MoonIcon className="mr-2 h-4 w-4" />
+              <span>Switch to Dark theme</span>
+            </CommandItem>
           </CommandGroup>
         </CommandList>
       </CommandDialog>
