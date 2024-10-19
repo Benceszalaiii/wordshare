@@ -4,6 +4,8 @@ import { authOptions } from "../api/auth/[...nextauth]/options";
 import React from "react";
 import { SignInButton } from "../../components/shared/buttons";
 import { SideBar } from "@/components/layout/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 export const metadata = {
   title: "Overview",
@@ -25,9 +27,14 @@ export default async function Layout({
     );
   }
   return (
-    <>
-      <SideBar />
-      <section className=" z-10">{children}</section>
-    </>
+      <SidebarProvider>
+      <AppSidebar />
+      <main className="w-full mx-4">
+        <SidebarTrigger className="" />
+        <section className="mt-16 ">
+        {children}
+        </section>
+      </main>
+    </SidebarProvider>
   );
 }

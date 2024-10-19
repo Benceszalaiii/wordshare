@@ -82,4 +82,15 @@ export interface Essay {
   userId: string;
   createdAt: Date;
 }
-
+export function removeClassFromName(name: string){
+  const pattern = new RegExp("^\\d{1,2}(\\/\\d{1,2})?[A-Z]?_");
+  return name.replace(pattern, "").replaceAll("_", " ").trim();
+}
+export function getInitials(name: string | undefined | null) {
+  if (!name) return "";
+  const compressed = removeClassFromName(name);
+  return compressed
+    .split(" ")
+    .map((n) => n[0]).slice(0, 2)
+    .join("");
+}

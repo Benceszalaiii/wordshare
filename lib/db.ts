@@ -361,17 +361,43 @@ export async function createClass(datajson: ClassObject){
 }
 
 
-export async function getClassByStudentUser(user: User){
-  const classes = await prisma.class.findMany({ where: { students: { some: { email: user.email } } }});
+export async function getClassByStudentSession(session: Session | null){
+  if (!session){
+    return null;
+  }
+  const user = session.user;
+  const classes = await prisma.class.findMany({ where: { students: { some: { id: user.id } } }});
   return classes;
 }
 
-export async function getClassesByTeacherUser(user: User){
-  const classes = await prisma.class.findMany({ where: { teacherUserId: user.id } });
+export async function getClassesByTeacherUser(userId: string| undefined){
+  if (!userId){
+    return null;
+  }
+  const classes = await prisma.class.findMany({ where: { teacherUserId: userId } });
   return classes;
 }
 
-export async function getClassById(id: string){
+export async function getClassById(id: string | null){
+  if (!id){
+    return null;
+  }
   const c = await prisma.class.findUnique({ where: { id: id } });
   return c;
+}
+
+
+export async function isTeacherBySession(session: Session | null){
+  if (!session || (session?.user)){
+    return false;
+  }
+  const user = await prisma.user.findUnique({ where: { id: session.user.id } });
+  if (!user){
+    return false;
+  }
+  const teacher = await prisma.teacher.findUnique({ where: { userId: user.id } });
+  if (!teacher){
+    return false;
+  }
+  return true;
 }

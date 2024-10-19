@@ -78,7 +78,8 @@ module.exports = {
   		},
   		fontFamily: {
   			display: ["var(--font-sf)", "system-ui", "sans-serif"],
-  			default: ["var(--font-inter)", "system-ui", "sans-serif"]
+  			default: ["var(--font-inter)", "system-ui", "sans-serif"],
+			caveat: ["var(--font-caveat)","system-ui", "cursive"],
   		},
   		animation: {
   			'fade-up': 'fade-up 0.5s',

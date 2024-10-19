@@ -53,9 +53,8 @@ model User {
   teacherVerified Boolean   @default(false)
   Essay           Essay[]
   Comment         Comment[]
-  classId         String?
-  Class           Class?    @relation(fields: [classId], references: [id])
   Teacher         Teacher?
+  Classes         Class[]
 }
 
 model VerificationToken {
@@ -91,16 +90,17 @@ model Comment {
 }
 
 model Class {
-  id            String  @id @default(cuid())
+  id            String   @id @default(cuid())
   name          String
   description   String?
   language      String
   teacherId     String
-  teacher       Teacher @relation(fields: [teacherId], references: [id])
+  teacher       Teacher  @relation(fields: [teacherId], references: [id])
   teacherUserId String
   students      User[]
   Words         Words[]
   Tasks         Task[]
+  Invite        Invite[]
 }
 
 model Teacher {
@@ -136,4 +136,12 @@ model Task {
   Class       Class?    @relation(fields: [classId], references: [id])
   classId     String?
   Essay       Essay[]
+}
+
+model Invite {
+  id        String   @id @default(cuid())
+  userId    String
+  classId   String
+  Class     Class    @relation(fields: [classId], references: [id])
+  createdAt DateTime @default(now())
 }

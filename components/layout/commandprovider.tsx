@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import * as React from "react";
 
-import { LayoutDashboard, EditIcon, List, HouseIcon, SquareSlashIcon, BlendIcon } from "lucide-react";
+import { LayoutDashboard, EditIcon, List, HouseIcon, SquareSlashIcon, BlendIcon, Shapes } from "lucide-react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -27,19 +27,19 @@ const iconstyles = "mr-2 h-4 w-4";
 export const commands: Command[] = [
   {
     key: "o",
-    path: "/overview",
+    path: "overview",
     icon: <LayoutDashboard className={iconstyles} />,
     title: "Overview",
   },
   {
     key: "e",
-    path: "/essay",
+    path: "essay",
     icon: <EditIcon className={iconstyles} />,
     title: "Essays",
   },
   {
     key: "p",
-    path: "/wordplay",
+    path: "wordplay",
     icon: <BlendIcon className={iconstyles} />,
     title: "WordPlay",
   },
@@ -50,17 +50,23 @@ export const commands: Command[] = [
     title: "Shortcuts",
   },
   {
-    key: "m",
-    path: "/",
+    key: "h",
+    path: "",
     icon: <HouseIcon className={iconstyles} />,
-    title: "Landing page",
+    title: "Home page",
+  },
+  {
+    key: "k",
+    path: "class",
+    icon: <Shapes className={iconstyles} />,
+    title: "Classes",
   }
 ]
 export function CommandProvider() {
   const {setTheme} = useTheme();
   const router = useRouter();
   const redirect = useCallback((path: string) => {
-    router.push(path);
+    router.push("/" + path)
     setOpen(false);
   }, [router])
   const [open, setOpen] = useState(false);

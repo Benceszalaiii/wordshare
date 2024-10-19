@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { signOut } from "next-auth/react";
-import { LayoutDashboard, LogOut, EditIcon, List, BlendIcon } from "lucide-react";
+import { LayoutDashboard, LogOut, EditIcon, BlendIcon } from "lucide-react";
 import Popover from "@/components/shared/popover";
 import Image from "next/image";
 import { Session } from "next-auth";
-import { capitalize } from '../../lib/utils';
+import { capitalize } from "../../lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function UserDropdown({
   session,
@@ -17,6 +18,7 @@ export default function UserDropdown({
 }) {
   const { email, image, id } = session?.user || {};
   const [openPopover, setOpenPopover] = useState(false);
+  const router = useRouter();
   if (!email) return null;
   return (
     <div className="relative flex items-center">
@@ -39,7 +41,7 @@ export default function UserDropdown({
             <button
               className="relative flex w-full cursor-pointer items-center justify-start space-x-2 rounded-md p-2 text-left text-sm text-dark transition-all duration-75 hover:bg-gray-300 dark:text-light dark:hover:bg-neutral-800 "
               onClick={() => {
-                window.location.href = "/overview";
+                router.push("/overview");
               }}
             >
               <LayoutDashboard className="h-4 w-4" />

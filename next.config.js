@@ -2,16 +2,20 @@
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
+  output: "standalone",
   images: {
     remotePatterns: [
       {
-        hostname: 'lh3.googleusercontent.com',
+        hostname: "lh3.googleusercontent.com",
       },
       {
-        hostname: 'vercel.com',
+        hostname: "vercel.com",
       },
       {
-        hostname: 'i.scdn.co',
+        hostname: "i.scdn.co",
+      },
+      {
+        hostname: "xhzwexjdzphrgjiilpid.supabase.co" 
       },
     ],
   },

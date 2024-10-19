@@ -1,5 +1,5 @@
 import { SignInButton } from "@/components/shared/buttons";
-import { getClassByStudentUser, getClassesByTeacherUser, getUserById } from "@/lib/db";
+import { getClassByStudentSession, getClassesByTeacherUser, getUserById } from "@/lib/db";
 import { User } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
@@ -24,23 +24,21 @@ export default async function Page(){
         return <h1>User not found in database. <br /> This might be a problem from our side.</h1>;
     }
     if (dbUser.role === "student"){
-    const studentClass = await getClassByStudentUser(dbUser);
+    const studentClasses = await getClassByStudentSession(auth);
     return (
             <section className="flex flex-col gap-4">
-        <h1 className="text-2xl font-bold">Classes</h1>
-                <StudentClassList />
+        <h1 className="text-2xl font-bold ml-4 md:ml-24">Classes</h1>
+                <StudentClassList classes={studentClasses} />
             </section>
         )
 }
     if (dbUser.role === "teacher" || dbUser.role === "admin" ){
-        const classes = await getClassesByTeacherUser(dbUser);
+        const classes = await getClassesByTeacherUser(dbUser.id);
         return(
             <section className="flex flex-col gap-4">
-        <h1 className="text-2xl font-bold">Classes</h1>
+        <h1 className="text-2xl font-bold ml-4 md:ml-24">Classes</h1>
                 <TeacherClassList classes={classes} />
             </section>
         )
     }
-
-    
 }

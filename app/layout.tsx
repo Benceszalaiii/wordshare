@@ -6,7 +6,7 @@ import Footer from "@/components/layout/footer";
 import { Suspense } from "react";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "next-themes";
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/toaster";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CommandProvider } from "@/components/layout/commandprovider";
 export const metadata = {
@@ -19,7 +19,7 @@ export const metadata = {
 };
 
 export default async function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {
@@ -52,12 +52,12 @@ export default async function RootLayout({
       <body className={cx(sfPro.variable, inter.variable)}>
         <ThemeProvider attribute="class" defaultTheme="light">
           <CommandProvider />
-          <main className="z-10 flex min-h-screen w-full flex-col pt-24">
+          <main className="z-10 flex min-h-screen w-full flex-col">
             <Nav />
             {children}
           </main>
           <Footer />
-          <Toaster richColors={true} theme="dark" visibleToasts={2} />
+          <Toaster visibleToasts={2} />
           <VercelAnalytics debug={false} mode="auto" />
           <SpeedInsights debug={false} />
         </ThemeProvider>

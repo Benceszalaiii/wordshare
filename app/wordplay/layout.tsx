@@ -4,7 +4,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 
 export const metadata = {
-  title: "Essay"
+  title: "WordPlay"
 }
 export default async function Layout({
   children

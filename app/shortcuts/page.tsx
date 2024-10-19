@@ -1,5 +1,5 @@
 "use client";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { commands, Command } from "@/components/layout/commandprovider";
 import { DeleteIcon, SpaceIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -18,6 +18,10 @@ export default function Page() {
         <Alert className="flex flex-row gap-4 items-center">
              <div className="text-gray-800 dark:text-gray-400 flex flex-row items-center gap-1">⌘<DeleteIcon className="w-4 h-4 border" /></div>
             <AlertTitle>Navigate to previous page</AlertTitle>
+        </Alert>
+        <Alert className="flex flex-row gap-4 items-center">
+             <div className="text-gray-800 dark:text-gray-400 flex flex-row items-center gap-1">⌘B</div>
+            <AlertTitle>Toggle Sidebar (if sidebar is present on page)</AlertTitle>
         </Alert>
         <Separator />
         <Label>Quickly navigate to pages</Label>

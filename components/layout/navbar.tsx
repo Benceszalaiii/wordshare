@@ -16,27 +16,26 @@ export default function NavBar({ session, role }: { session: Session | null, rol
   const pathname = usePathname();
   const isIndexPage = pathname === "/";
   const needsExpand = (scrolled && isIndexPage) || !isIndexPage;
+  const isSideBar = pathname.startsWith("/class") || pathname.startsWith("/overview") || pathname.startsWith("/essay") || pathname.startsWith("/wordplay");
   if (role === "admin"){
     return (
-      <>
+      <div className="mb-24">
         <SignInModal />
         <div
-          className={`fixed top-0 flex w-full justify-center items-center ${
+          className={`fixed top-0 px-4 flex w-full justify-center items-center ${
             needsExpand
               ? " justify-center bg-white/50 backdrop-blur-xl dark:bg-black/70"
               : "bg-white/0 dark:bg-black/0 "
-          } z-30 transition-all duration-300`}
+          } ${isSideBar ? "bg-gray-200 dark:bg-neutral-900 dark:border-b-neutral-700 border-b-gray-300 border-b" : ""} z-30 transition-all duration-300`}
         >
           <div
             className={`mx-2 flex h-16 w-full items-center justify-between transition-all duration-500 ease-in-out ${
-              needsExpand ? `max-w-screen-2xl` : `max-w-screen-md`
+              needsExpand ? `max-w-full` : `max-w-screen-md`
             }`}
           >
             <Link href="/" className="flex font-display text-2xl">
               <p
-                className={`tracking-wider text-indigo-800 shadow-indigo-700 dark:text-indigo-600 dark:hover:text-indigo-500 ${
-                  pathname.startsWith("/overview") ? "hidden" : ""
-                } ${caveat.className} `}
+                className={`tracking-wider text-indigo-800 shadow-indigo-700 dark:text-indigo-600 dark:hover:text-indigo-500 ${caveat.className} `}
               >
                 WordShare
               </p>
@@ -61,22 +60,22 @@ export default function NavBar({ session, role }: { session: Session | null, rol
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   }
   return (
-    <>
+    <div className="mb-24">
       <SignInModal />
       <div
-        className={`fixed top-0 flex w-full justify-center ${
+        className={`fixed top-0 px-4 flex w-full justify-center ${
           needsExpand
             ? " justify-center bg-white/50 backdrop-blur-xl dark:bg-black/70"
             : "bg-white/0 dark:bg-black/0 "
-        } z-30 transition-all duration-300`}
+        }  ${isSideBar ? "bg-gray-200 dark:bg-neutral-900 dark:border-b-neutral-700 border-b-gray-300 border-b" : ""} z-30 transition-all duration-300`}
       >
         <div
           className={`mx-2 flex h-16 w-full items-center justify-between transition-all duration-500 ease-in-out ${
-            needsExpand ? `max-w-screen-2xl` : `max-w-screen-md`
+            needsExpand ? `max-w-full` : `max-w-screen-md`
           }`}
         >
           <Link href="/" className="flex font-display text-2xl">
@@ -103,6 +102,6 @@ export default function NavBar({ session, role }: { session: Session | null, rol
         </div>
         <ThemeSwitch className="" />
       </div>
-    </>
+    </div>
   );
 }

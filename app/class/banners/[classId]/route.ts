@@ -1,16 +1,15 @@
 import { supabase } from "@/lib/supabase";
 import { NextRequest } from "next/server";
-export const cache = "reload";
 export async function GET(req: NextRequest, { params }: { params: { classId: string } }){
     const classId = params.classId;
     if (!classId){
-        const placeholder = await fetch("https://www.beautylabinternational.com/wp-content/uploads/2020/03/Hero-Banner-Placeholder-Light-1024x480-1.png");
+        const placeholder = await fetch(supabase.storage.from("class").getPublicUrl("banner_placeholder.webp").data.publicUrl);
         return new Response(await placeholder.blob(), {status: 404})
     }
     const res = supabase.storage.from("class").getPublicUrl(`${classId}/banner`);
     const imageFetch = await fetch(res.data.publicUrl);
     if (!imageFetch.ok){
-        const placeholder = await fetch("https://www.beautylabinternational.com/wp-content/uploads/2020/03/Hero-Banner-Placeholder-Light-1024x480-1.png");
+        const placeholder = await fetch(supabase.storage.from("class").getPublicUrl("banner_placeholder.webp").data.publicUrl);
         return new Response(await placeholder.blob(), {status: 404});
     }
     const image = await imageFetch.blob();
