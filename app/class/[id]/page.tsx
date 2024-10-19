@@ -3,7 +3,6 @@ import { BackArrow } from "@/components/shared/icons";
 import { getClassById } from "@/lib/db";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { title } from "process";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const currentClass = await getClassById(params.id);

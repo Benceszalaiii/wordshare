@@ -22,10 +22,10 @@ export default function ClassLegend({
                 </Link>
             ) : null}
         <div className="relative flex h-32 w-full max-w-2xl flex-shrink-0 flex-col gap-2 rounded-xl px-4 md:h-48 md:px-0 ">
-          <div className="relative aspect-[18/9] w-full rounded-xl flex flex-row items-center justify-center">
+          <div className="relative aspect-[21/9] w-full rounded-xl flex flex-row items-center justify-center">
             <Image
               about="Banner"
-              className="w-full rounded-xl object-cover object-center opacity-75"
+              className="w-full rounded-xl object-cover object-center opacity-100"
               src={`/class/banners/${currentClass.id}`}
               alt=""
               fill

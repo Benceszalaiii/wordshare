@@ -26,5 +26,5 @@ export async function POST(req: NextRequest, {params}: {params: {classId: string
         return new Response("No classId provided", {status: 418})
     }
     const res = await supabase.storage.from("class").upload(`${classId}/banner`, banner, {upsert: true});
-    return new Response(`${JSON.stringify(res.data)}`, {status: 200})
+    return new Response(`Successfully uploaded banner`, {status: 200})
 }
