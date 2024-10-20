@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { acceptInvite, declineInvite, getClassById, getUserById, inviteUser, isOwnClass } from "@/lib/db";
+import { acceptInvite, deleteInvite, getClassById, getUserById, inviteUser, isOwnClass } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 
@@ -37,7 +37,7 @@ export async function DELETE(req: NextRequest, {params}: {params: {classId: stri
     if (!inviteId){
         return new Response("No inviteId present in request.", {status: 400});
     }
-    const res = await declineInvite(inviteId)
+    const res = await deleteInvite(inviteId)
     if (!res.ok){
         return new Response("Failed to decline invite. It is possible that the mistake is on our side.", {status: 500});
     }
@@ -47,6 +47,10 @@ export async function DELETE(req: NextRequest, {params}: {params: {classId: stri
 
 export async function PUT(req: NextRequest, {params}: {params: {classId: string, userId: string}}) {
     const session = await getServerSession(authOptions);
+    const inviteId = req.headers.get("inviteId");
+    if (!inviteId){
+        return new Response("No inviteId present in request.", {status: 400});
+    }
     if (!session) {
         return new Response("You need to be signed in to access this endpoint.", {status: 401});
     }
@@ -67,5 +71,6 @@ export async function PUT(req: NextRequest, {params}: {params: {classId: string,
     if (!invite.ok){
         return new Response("Failed to accept invite. It is possible that the mistake is on our side.", {status: 500});
     }
+    const deleted = await deleteInvite(inviteId);
     return new Response("Invite accepted", {status: 200});
 }

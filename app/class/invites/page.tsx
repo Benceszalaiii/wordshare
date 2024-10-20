@@ -7,7 +7,7 @@ import { getInvites } from "@/lib/db";
 import { getServerSession } from "next-auth";
 
 const metadata = {
-  title: "Invitations",
+  title: "Invites",
   description: "View and manage your invitations",
   lastModified: new Date(),
 };
@@ -23,12 +23,15 @@ export default async function Page() {
     );
   }
   const invites = await getInvites(session.user.id);
-  if (!invites) {
+  if (!invites || invites.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1>No invites found.</h1>
-        <p>Check back later.</p>
-      </div>
+        <section className="flex h-full w-full flex-col">
+        <h1 className="m-4 mb-8 text-2xl font-semibold">Invites</h1>
+        <div className="flex flex-col pl-12 justify-center w-full gap-2">
+        <p>No invites found</p>
+        <p>Check back later!</p>
+        </div>
+      </section>
     );
   }
   return (

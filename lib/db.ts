@@ -3,7 +3,7 @@ import "server-only";
 import { getServerSession, Session } from "next-auth";
 import prisma from "./prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { Comment, User, Class } from '@prisma/client';
+import { Comment, User, Class } from "@prisma/client";
 interface Essay {
   title: string;
   content: string;
@@ -518,41 +518,101 @@ export async function isOwnClass(userId: string, classId: string) {
 }
 
 //! Should be validated by API endpoint or other means.
-export async function inviteUser(classId: string, userId: string, inviterId: string){
-  const exists = await prisma.invite.findFirst({where: {userId: userId, classId: classId}});
-  if (exists){
-    return new Response(null, {status: 208, statusText: "User already invited."});
+export async function inviteUser(
+  classId: string,
+  userId: string,
+  inviterId: string,
+) {
+  const exists = await prisma.invite.findFirst({
+    where: { userId: userId, classId: classId },
+  });
+  if (exists) {
+    return new Response(null, {
+      status: 208,
+      statusText: "User already invited.",
+    });
   }
-  const inclass = await prisma.class.findFirst({where: {id: classId, students: {some: {id: userId}}}});
-  if (inclass){
-    return new Response(null, {status: 409, statusText: "User already in class."});
+  const inclass = await prisma.class.findFirst({
+    where: { id: classId, students: { some: { id: userId } } },
+  });
+  if (inclass) {
+    return new Response(null, {
+      status: 409,
+      statusText: "User already in class.",
+    });
   }
-  const invite = await prisma.invite.create({data: {userId: userId, classId: classId, inviterId: inviterId}});
-  if (!invite){
-    return new Response(null, {status: 500, statusText: "Error inviting user."});
-  }
-  else{
-    return new Response(null, {status: 200, statusText: "Invite successful."});
+  const invite = await prisma.invite.create({
+    data: { userId: userId, classId: classId, inviterId: inviterId },
+  });
+  if (!invite) {
+    return new Response(null, {
+      status: 500,
+      statusText: "Error inviting user.",
+    });
+  } else {
+    return new Response(null, {
+      status: 200,
+      statusText: "Invite successful.",
+    });
   }
 }
 
-export async function acceptInvite(classId: string, user: User){
-  const updated = await prisma.class.update({where: {id: classId}, data: {students: {connect: {id: user.id}}}});
-  if (!updated){
-    return new Response(null, {status: 500, statusText: "Error accepting invite."});
+export async function acceptInvite(classId: string, user: User) {
+  const updated = await prisma.class.update({
+    where: { id: classId },
+    data: { students: { connect: { id: user.id } } },
+  });
+  if (!updated) {
+    return new Response(null, {
+      status: 500,
+      statusText: "Error accepting invite.",
+    });
   }
-  return new Response(null, {status: 200, statusText: "Invite accepted."});
+  return new Response(null, { status: 200, statusText: "Invite accepted." });
 }
 
-export async function declineInvite(inviteId: string){
-  const deleted = await prisma.invite.delete({where: {id: inviteId}});
-  if (!deleted){
-    return new Response(null, {status: 500, statusText: "Error declining invite."});
+export async function deleteInvite(inviteId: string) {
+  const deleted = await prisma.invite.delete({ where: { id: inviteId } });
+  if (!deleted) {
+    return new Response(null, {
+      status: 500,
+      statusText: "Error declining invite.",
+    });
   }
-  return new Response(null, {status: 200, statusText: "Invite declined."});
+  return new Response(null, { status: 200, statusText: "Invite declined." });
 }
 
-export async function getClassStudentsByClassId(classId: string){
-  const students = await prisma.class.findUnique({where: {id: classId}, include: {students: true}});
+export async function getClassStudentsByClassId(classId: string) {
+  const students = await prisma.class.findUnique({
+    where: { id: classId },
+    include: { students: true },
+  });
   return students;
+}
+
+export async function leaveClass(classId: string, userId: string) {
+  const updated = await prisma.class.update({
+    where: { id: classId },
+    data: { students: { disconnect: { id: userId } } },
+  });
+  if (!updated) {
+    return new Response(null, {
+      status: 500,
+      statusText: "Error leaving class.",
+    });
+  }
+  return new Response(null, { status: 200, statusText: "Left class." });
+}
+
+export async function isStudentofClass(classId: string, userId: string) {
+  const currentClass = await prisma.class.findUnique({
+    where: { id: classId },
+    include: { students: true },
+  });
+  if (!currentClass) {
+    return false;
+  }
+  currentClass.students.filter((student)=> student.id === userId);
+
+  return currentClass.students.length > 0;
 }

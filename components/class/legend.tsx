@@ -1,9 +1,13 @@
+"use client";
 import { Class } from "@prisma/client";
 import Image from "next/image";
 import { Separator } from "../ui/separator";
 import { Icon } from "./images";
 import { Edit2Icon } from "lucide-react";
 import Link from "next/link";
+import { Button } from "../ui/button";
+import { toast } from "sonner";
+import LeaveClassButton from "./leavebutton";
 
 export default function ClassLegend({
   currentClass,
@@ -17,15 +21,21 @@ export default function ClassLegend({
     <>
       <div className="flex w-full max-w-2xl flex-col gap-2 rounded-xl px-4 md:px-0">
         {editable ? (
-          <aside className="text-gray-800 dark:text-gray-200 flex gap-6 flex-row w-full justify-end items-end">
-            <Link href={`/class/${currentClass.id}/invite`}>Invite students</Link>
-                <Link className="" href={`/class/${currentClass.id}/edit`}>
-                  Edit
-                </Link>
+          <aside className="flex w-full flex-row items-end justify-end gap-6 text-gray-800 dark:text-gray-200">
+            <Link href={`/class/${currentClass.id}/invite`}>
+              Invite students
+            </Link>
+            <Link className="" href={`/class/${currentClass.id}/edit`}>
+              Edit
+            </Link>
           </aside>
-            ) : null}
+        ) : (
+          <aside className="flex w-full flex-row items-end justify-end gap-6">
+              <LeaveClassButton classId={currentClass.id} />
+          </aside>
+        )}
         <div className="relative flex h-32 w-full max-w-2xl flex-shrink-0 flex-col gap-2 rounded-xl px-4 md:h-48 md:px-0 ">
-          <div className="relative aspect-[21/9] w-full rounded-xl flex flex-row items-center justify-center">
+          <div className="relative flex aspect-[21/9] w-full flex-row items-center justify-center rounded-xl">
             <Image
               about="Banner"
               className="w-full rounded-xl object-cover object-center opacity-100"
