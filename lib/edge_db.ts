@@ -1,4 +1,4 @@
-import { prisma } from "@lib/prisma"
+import prisma from "./prisma"
 export const runtime = "edge";
 export async function getAllClasses(){
     const classes = await prisma.class.findMany();
