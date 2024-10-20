@@ -1,6 +1,4 @@
 import { ImageResponse } from 'next/og'
-import * as ImageComponent from "next/image";
-// Image metadata
 export const runtime = "edge";
 
 export const alt = 'WordShare'
@@ -15,8 +13,8 @@ export const contentType = 'image/png'
 // Image generation
 export default async function Image() {
   // Font
-  const fontFetch = await fetch(new URL("./Caveat.ttf", import.meta.url));
-  const fontData = await fontFetch.arrayBuffer();
+  const fontFetch = fetch(new URL("./fonts/Caveat.ttf", import.meta.url)).then((res)=> res.arrayBuffer());
+  const fontData = await fontFetch;
   return new ImageResponse(
     (
       // ImageResponse JSX element
@@ -39,12 +37,12 @@ export default async function Image() {
     // ImageResponse options
     {
       ...size,
-      emoji: "fluentFlat",
       fonts: [
         {
-          data: fontData,
           name: "Caveat",
-          weight: 700
+          data: fontData,
+          weight: 700,
+          style: "normal"
         }
       ]
     }
