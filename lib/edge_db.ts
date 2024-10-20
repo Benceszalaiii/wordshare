@@ -11,3 +11,10 @@ export async function getUserById(id: string): Promise<User | null> {
   }
   return user;
 }
+export async function getClassById(id: string | null){
+  if (!id){
+    return null;
+  }
+  const c = await prisma.class.findUnique({ where: { id: id } });
+  return c;
+}
