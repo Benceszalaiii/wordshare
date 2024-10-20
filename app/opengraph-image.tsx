@@ -13,7 +13,7 @@ export const contentType = 'image/png'
 // Image generation
 export default async function Image() {
   // Font
-  const fontFetch = fetch(new URL("./fonts/Caveat.ttf", import.meta.url)).then((res)=> res.arrayBuffer());
+  const fontFetch = fetch(new URL("../fonts/Caveat.ttf", import.meta.url)).then((res)=> res.arrayBuffer());
   const fontData = await fontFetch;
   return new ImageResponse(
     (
