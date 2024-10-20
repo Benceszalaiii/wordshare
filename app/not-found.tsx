@@ -15,7 +15,7 @@ export default function NotFound() {
 <p className='dark:text-red-200 font-semibold text-2xl text-red-500'>Page not found</p>
 <p>The page you requested does not exist.</p>
 <div className='flex flex-row gap-5'>
-  <Link href="/">
+  <Link href="/" passHref>
 <Button variant={"destructive"}>
   Home page
 </Button>

@@ -95,6 +95,7 @@ model Class {
   description   String?
   language      String
   teacherId     String
+  createdAt     DateTime @default(now())
   teacher       Teacher  @relation(fields: [teacherId], references: [id])
   teacherUserId String
   students      User[]

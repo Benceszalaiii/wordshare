@@ -9,17 +9,48 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/toaster";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CommandProvider } from "@/components/layout/commandprovider";
-export const metadata = {
+import { Metadata } from "next";
+export const metadata: Metadata = {
   metadataBase: new URL("http://localhost:3000"),
   title: {
     default: "WordShare",
     template: "%s | WordShare",
   },
   description: "Learn English with daily cards! 📚🔥",
+  category: "Education",
+  keywords: [
+    "english",
+    "learn",
+    "cards",
+    "vocabulary",
+    "education",
+    "study",
+    "jedlik",
+    "essay",
+    "wordshare",
+    "language"
+  ],
+  openGraph: {
+    type: "website",
+    locale: "hu_HU",
+    title: "WordShare",
+    description: "Learn English with daily cards! 📚🔥",
+    url: "http://www.wordshare.tech",
+    siteName: "WordShare",
+    alternateLocale: ["en_US", "de_DE", "en_GB"],
+    // images: [
+    //   {
+    //     url: "http://localhost:3000/opengraph",
+    //     width: 1200,
+    //     height: 630,
+    //     alt: "WordShare",
+    //   },
+    // ],
+  }
 };
 
 export default async function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {

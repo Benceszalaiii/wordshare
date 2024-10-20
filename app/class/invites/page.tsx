@@ -1,4 +1,8 @@
-"use client"
+export const metadata = {
+    title: "Invitations",
+    description: "View and manage your invitations",
+    lastModified: new Date()
+}
 
 export default function Page(){
     return(

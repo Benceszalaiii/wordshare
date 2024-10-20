@@ -6,6 +6,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { getClassById, isTeacherBySession, getClassesByTeacherUser, getUserById, getClassByStudentSession } from '@/lib/db';
 import { SignInButton } from "@/components/shared/buttons";
+import { notAuthorized } from "@/components/auth";
 export default async function Layout({
     children,
     params
@@ -15,12 +16,7 @@ export default async function Layout({
   }){
     const session = await getServerSession(authOptions);
     if (!session){
-      return (
-        <section className="flex flex-col gap-4 items-center justify-center">
-        <h1>To access classes, you must be authenticated</h1>
-        <SignInButton session={session}></SignInButton>
-        </section>
-      )
+      return notAuthorized("Classes");
     }
     const teacher = await isTeacherBySession(session);
     const dbUser = await getUserById(session.user.id);

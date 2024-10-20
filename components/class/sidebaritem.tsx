@@ -8,11 +8,11 @@ export function ClassItem({ item }: { item: Class }) {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton className="h-fit flex flex-row hover:bg-gray-300 hover:dark:bg-neutral-800" asChild>
-        <Link href={`/class/${item.id}`} className="flex flex-row gap-1">
+        <Link href={`/class/${item.id}`} className="flex flex-row gap-1" passHref>
         <Avatar>
           <AvatarImage
             className="aspect-square object-cover object-center"
-            src={`/class/icons/${item.id}`}
+            src={`https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/${item.id}/icon`}
           />
           <AvatarFallback>{item.name.slice(0, 3)}</AvatarFallback>
         </Avatar>

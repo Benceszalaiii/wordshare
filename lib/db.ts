@@ -401,3 +401,8 @@ export async function isTeacherBySession(session: Session | null){
   }
   return true;
 }
+
+export async function getAllClasses(){
+  const classes = await prisma.class.findMany();
+  return classes;
+}

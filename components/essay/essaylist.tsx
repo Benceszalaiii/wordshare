@@ -32,14 +32,14 @@ export async function EssayList() {
                 </CardDescription>
               </CardContent>
               <CardFooter>
-                <Link href={`/essay/view/${essay.id}`} className="">
+                <Link href={`/essay/view/${essay.id}`} className="" passHref>
                   <Button className="border border-white">View</Button>
                 </Link>
               </CardFooter>
             </Card>
           );
         })}
-        <Link className="group transition duration-300" href={"/essay/write"}>
+        <Link className="group transition duration-300" href={"/essay/write"} passHref>
           <Button
           variant={"outline"}
             title="Create New"

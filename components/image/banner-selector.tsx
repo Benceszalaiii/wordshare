@@ -22,7 +22,7 @@ export function BannerCropperComponent({ classId }: { classId: string }) {
       const res = await fetch(`/class/banners/${classId}`);
       setSelectedFile((await res.blob()) as FileWithPreview);
     };
-  }, []);
+  }, [classId]);
   const [isDialogOpen, setDialogOpen] = React.useState(false);
 
   const onDrop = React.useCallback(

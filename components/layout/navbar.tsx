@@ -54,7 +54,7 @@ export default function NavBar({ session, role }: { session: Session | null, rol
                 )}
               </div>
                         <ThemeSwitch className="" />
-                        <Link href={"/admin"} className="flex items-center">
+                        <Link href={"/admin"} className="flex items-center" passHref>
                 <DashboardIcon className="w-6 h-6 text-black dark:text-white" />
                         </Link>
             </div>

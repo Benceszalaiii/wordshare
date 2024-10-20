@@ -5,13 +5,20 @@ import { BannerCropperComponent } from "../../../../components/image/banner-sele
 import { notFound } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
+import { getServerSession } from 'next-auth';
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const currentClass = await getClassById(params.id);
   if (!currentClass) {
     return notFound();
   }
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+  const isOwneer = user?.id === currentClass?.teacherUserId;
+  if (!session){
 
+  }
   return (
     <section className="flex flex-col items-start justify-start gap-4">
       <h1 className="ml-4 text-2xl font-bold">Edit {currentClass?.name}</h1>

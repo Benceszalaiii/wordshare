@@ -11,7 +11,7 @@ export const inter = localFont({
 });
 
 export const caveat = localFont({
-  src: "./Caveat.ttf",
+  src: "../Caveat.ttf",
   variable: "--font-caveat",
   weight: "700"
 });
