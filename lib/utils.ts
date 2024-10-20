@@ -94,3 +94,35 @@ export function getInitials(name: string | undefined | null) {
     .map((n) => n[0]).slice(0, 2)
     .join("");
 }
+  /**
+   * Returns the elevation of the user based on the role
+   * @param role: string | null | undefined   Role of user
+   * @returns number       Elevation level of user
+   * Admin = 3
+   * Teacher = 2
+   * Student = 1
+   * No role/unknown role = 0
+  */
+export function getUserElevation(role: string|null|undefined): number{
+
+  switch(role){
+    case "admin":
+      return 3
+    case "teacher":
+      return 2
+    case "student":
+      return 1
+    default:
+      return 0
+  }
+}
+
+export function langParse(str: string){
+  const codetolanguage = [
+    { code: "en", language: "English" },
+    { code: "hu", language: "Hungarian" },
+    { code: "de", language: "German" },
+  ];
+  const lang = codetolanguage.find((x) => x.code === str);
+  return lang?.language || str;
+}

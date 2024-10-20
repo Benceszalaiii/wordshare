@@ -11,6 +11,8 @@ import StudentClassList from "@/components/class/student";
 import TeacherClassList from "@/components/class/teacher";
 import { Header } from "@/components/blank";
 import Link from "next/link";
+import { getUserElevation } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
     title: "Classes"
@@ -29,6 +31,7 @@ export default async function Page() {
     );
   }
   const dbUser = await getUserById(user.id);
+  const elevation = getUserElevation(dbUser?.role);
   if (!dbUser) {
     console.log("User not found");
     return (
@@ -38,7 +41,16 @@ export default async function Page() {
       </h1>
     );
   }
-  if (dbUser.role === "student") {
+  if (elevation === 0){
+    return (
+      <section className="flex flex-col gap-4 justify-center items-center">
+          <h1 className="text-lg">Your account is not set up.</h1>
+          <p className="text-sm">Please set your role</p>
+          <Button asChild variant={"outline"}><Link href={'/quickstart'}>Set up account</Link></Button>
+      </section>
+    )
+  }
+  if (elevation === 1) {
     const studentClasses = await getClassByStudentSession(auth);
     return (
       <section className="flex flex-col gap-4">
@@ -49,7 +61,7 @@ export default async function Page() {
       </section>
     );
   }
-  if (dbUser.role === "teacher" || dbUser.role === "admin") {
+  if (elevation >= 2) {
     const classes = await getClassesByTeacherUser(dbUser.id);
     return (
       <section className="flex flex-col gap-4">

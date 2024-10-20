@@ -55,6 +55,7 @@ model User {
   Comment         Comment[]
   Teacher         Teacher?
   Classes         Class[]
+  grade           Int?
 }
 
 model VerificationToken {
@@ -145,4 +146,5 @@ model Invite {
   classId   String
   Class     Class    @relation(fields: [classId], references: [id])
   createdAt DateTime @default(now())
+  inviterId String
 }

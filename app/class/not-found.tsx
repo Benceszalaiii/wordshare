@@ -1,6 +1,8 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import { Session } from 'next-auth';
 export default function NotFound(){
+
     return(
       <SidebarProvider>
       <AppSidebar />
