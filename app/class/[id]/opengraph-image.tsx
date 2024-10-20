@@ -2,6 +2,7 @@ import { getClassById, getUserById } from "@/lib/db";
 import { ImageResponse } from "next/og";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 export const dynamic = "force-dynamic";
+export const runtime = "edge";
 export const alt = "WordShare";
 
 export const size = {
