@@ -38,14 +38,14 @@ export const metadata: Metadata = {
     url: "http://www.wordshare.tech",
     siteName: "WordShare",
     alternateLocale: ["en_US", "de_DE", "en_GB"],
-    // images: [
-    //   {
-    //     url: "http://localhost:3000/opengraph",
-    //     width: 1200,
-    //     height: 630,
-    //     alt: "WordShare",
-    //   },
-    // ],
+    images: [
+      {
+        url: "https://www.wordshare.tech/og_image.png",
+        width: 1200,
+        height: 630,
+        alt: "WordShare",
+      },
+    ],
   }
 };
 
