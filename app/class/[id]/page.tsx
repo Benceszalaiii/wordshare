@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
         `Join ${currentClass?.name} to learn more about ${currentClass?.language}`,
       url: `https://www.wordshare.tech/class/${params.id}`,
       images:
-        `https://www.wordshare.tech/class/banners/${currentClass.id}`
+        `https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/${currentClass.id}/banner`
     },
   };
 }
