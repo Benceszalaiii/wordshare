@@ -13,7 +13,7 @@ export const size = {
 export const contentType = 'image/png'
 
 // Image generation
-export default async function Image({params}: {params: {classId: string}}) {
+export default async function Image() {
   // Font
   const fontFetch = await fetch(new URL("./Caveat.ttf", import.meta.url));
   const fontData = await fontFetch.arrayBuffer();
@@ -24,7 +24,7 @@ export default async function Image({params}: {params: {classId: string}}) {
         style={{
           fontSize: 128,
           background: 'black',
-          color: 'purple',
+          color: 'rgb(79 70 229)',
           width: '100%',
           height: '100%',
           display: 'flex',
