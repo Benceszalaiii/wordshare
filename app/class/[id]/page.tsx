@@ -58,8 +58,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
         `Join ${currentClass?.name} to learn more about ${currentClass?.language}`,
       url: `https://www.wordshare.tech/class/${params.id}`,
       images:
-        `https://www.wordshare.tech/class/banners/${currentClass.id}` ||
-        "https://www.wordshare.tech/opengraph?title=Join%20a%20class%20on%20WordShare!&description=Learn%20more%20about%20languages%20and%20prepare%20for%20your%20exam%20with%20WordShare",
+        `https://www.wordshare.tech/class/banners/${currentClass.id}`
     },
   };
 }
