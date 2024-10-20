@@ -1,4 +1,4 @@
-import { getClassById, getUserById } from "@/lib/db";
+import { getClassById, getUserById } from "@/lib/edge_db";
 import { ImageResponse } from "next/og";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 export const dynamic = "force-dynamic";
