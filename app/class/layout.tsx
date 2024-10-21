@@ -41,7 +41,7 @@ export default async function Layout({
       const classes = await getClassByStudentSession(session)
       return(
         <SidebarProvider>
-        <AppSidebar classes={classes}  />
+        <AppSidebar />
         <main className="w-full">
           <SidebarTrigger />
           <section className="mt-8 mx-4">
@@ -54,7 +54,7 @@ export default async function Layout({
     const classes = await getClassesByTeacherUser(session?.user.id);
     return(
       <SidebarProvider>
-      <AppSidebar classes={classes}  />
+      <AppSidebar  />
       <main className="w-full">
         <SidebarTrigger className="" />
         <section className="mt-8 ">
