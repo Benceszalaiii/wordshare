@@ -19,40 +19,39 @@ export default function ClassLegend({
   const editable = canEdit ?? false;
   return (
     <>
-      <div className="flex w-full max-w-2xl flex-col gap-2 rounded-xl px-4 md:px-0">
+      <section>
         {editable ? (
           <aside className="flex w-full flex-row items-end justify-end gap-6 text-gray-800 dark:text-gray-200">
             <Link href={`/class/${currentClass.id}/invite`}>
               Invite students
             </Link>
-            <Link className="" href={`/class/${currentClass.id}/edit`}>
+            <Link className="pr-2" href={`/class/${currentClass.id}/edit`}>
               Edit
             </Link>
           </aside>
         ) : (
           <aside className="flex w-full flex-row items-end justify-end gap-6">
-              <LeaveClassButton classId={currentClass.id} />
+            <LeaveClassButton classId={currentClass.id} />
           </aside>
         )}
-        <div className="relative flex h-32 w-full max-w-2xl flex-shrink-0 flex-col gap-2 rounded-xl px-4 md:h-48 md:px-0 ">
-          <div className="relative flex aspect-[21/9] w-full flex-row items-center justify-center rounded-xl">
+        <div about="Image content wrapper" className="flex w-full max-w-full flex-shrink-0 flex-col justify-end gap-2 rounded-xl px-4">
+          <div about="Image wrapper" className="relative flex aspect-[21/9] flex-row mb-4 items-center max-h-48 md:max-h-72 justify-center rounded-xl">
             <Image
               about="Banner"
-              className="w-full rounded-xl object-cover object-center opacity-100"
+              className="w-full rounded-xl object-cover opacity-100"
               src={`/class/banners/${currentClass.id}`}
               alt=""
               fill
             />
           </div>
-          <div className="absolute flex h-full w-full items-center justify-end p-4"></div>
         </div>
-        <div className="flex w-full flex-col justify-start gap-2">
+        <div className="flex w-full px-4 flex-col justify-start gap-2">
           <h1 className=" text-3xl font-bold">{currentClass.name}</h1>
           <p className="ml-2 text-gray-800 dark:text-gray-400">
             {currentClass.description}
           </p>
         </div>
-      </div>
+      </section>
     </>
   );
 }
