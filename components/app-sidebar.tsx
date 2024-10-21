@@ -35,7 +35,7 @@ import {
   CollapsibleTrigger,
 } from "@radix-ui/react-collapsible";
 import { getServerSession, Session } from "next-auth";
-import { getInvites } from "@/lib/db";
+import { getClassByStudentSession, getClassesByTeacherUser, getInvites, getUserById } from "@/lib/db";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 // Menu items.
@@ -49,11 +49,7 @@ interface SideBarItem {
   >;
 }
 
-export async function AppSidebar({
-  classes,
-}: {
-  classes?: Class[] | null;
-}) {
+export async function AppSidebar() {
     const session = await getServerSession(authOptions);
   const navigation: SideBarItem[] = [
     {
@@ -90,6 +86,19 @@ export async function AppSidebar({
   ];
   const user = session?.user;
   const invites = await getInvites(user?.id);
+  const dbUser = await getUserById(user?.id);
+  const classes = [];
+  if (dbUser?.role === "teacher" || dbUser?.role === "admin"){
+    const teacherClasses = await getClassesByTeacherUser(dbUser.id);
+    if (teacherClasses){
+      classes.push(...teacherClasses);
+    }
+  }else if (dbUser?.role === "student"){
+    const studentClasses = await getClassByStudentSession(session);
+    if (studentClasses){
+      classes.push(...studentClasses);
+    }
+  }
   if (invites){
     navigation.find((x) => x.title === "Invites")!.banner = invites.length;
   }

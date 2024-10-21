@@ -98,7 +98,10 @@ export async function getEssayById(id: string) {
   });
 }
 
-export async function getUserById(id: string): Promise<User | null> {
+export async function getUserById(id: string | null | undefined): Promise<User | null> {
+  if (!id){
+    return null;
+  }
   const user = await prisma.user.findUnique({ where: { id: id } });
   if (!user) {
     return null;

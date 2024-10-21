@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 export default async function Page(){
     if (process.env.NODE_ENV !== 'development') return notFound();
     const currentClass: Class = {
-        id: "6969",
+        id: "123",
         name: "11C",
         language: "en",
         description: "11C RATATATATATA DESCRPIOTION DESCRIPTION",
