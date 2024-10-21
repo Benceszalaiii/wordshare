@@ -1,7 +1,8 @@
 import ClassLegend from '@/components/class/legend';
 import { Class } from '@prisma/client';
+import { notFound } from 'next/navigation';
 export default async function Page(){
-
+    if (process.env.NODE_ENV !== 'development') return notFound();
     const currentClass: Class = {
         id: "6969",
         name: "11C",
@@ -13,7 +14,7 @@ export default async function Page(){
     }
     return (
         <section className='flex flex-col items-center justify-center gap-4 w-full'>
-            <ClassLegend canEdit currentClass={currentClass}></ClassLegend>
+            <ClassLegend currentClass={currentClass}></ClassLegend>
         </section>
     )
 }

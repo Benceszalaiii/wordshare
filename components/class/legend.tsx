@@ -34,8 +34,8 @@ export default function ClassLegend({
             <LeaveClassButton classId={currentClass.id} />
           </aside>
         )}
-        <div about="Image content wrapper" className="flex w-full max-w-full flex-shrink-0 flex-col justify-end gap-2 rounded-xl px-4">
-          <div about="Image wrapper" className="relative flex aspect-[21/9] flex-row mb-4 items-center max-h-48 md:max-h-72 justify-center rounded-xl">
+        <div about="Image content wrapper" className="flex w-full max-w-full flex-shrink-0 flex-col justify-end gap-2 rounded-xl px-4 pt-4">
+          <div about="Image wrapper" className="relative flex aspect-[21/9] flex-row mb-4 items-center max-h-48 md:min-h-72 justify-center rounded-xl">
             <Image
               about="Banner"
               className="w-full rounded-xl object-cover opacity-100"
