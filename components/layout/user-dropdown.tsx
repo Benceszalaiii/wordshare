@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signOut } from "next-auth/react";
-import { LayoutDashboard, LogOut, EditIcon, BlendIcon } from "lucide-react";
+import { LayoutDashboard, LogOut, EditIcon, BlendIcon, Shapes } from "lucide-react";
 import Popover from "@/components/shared/popover";
 import Image from "next/image";
 import { Session } from "next-auth";
@@ -46,6 +46,15 @@ export default function UserDropdown({
             >
               <LayoutDashboard className="h-4 w-4" />
               <p className="text-sm">Overview</p>
+            </button>
+            <button
+              className="relative flex w-full cursor-pointer items-center justify-start space-x-2 rounded-md p-2 text-left text-sm text-dark transition-all duration-75 hover:bg-gray-300 dark:text-light dark:hover:bg-neutral-800 "
+              onClick={() => {
+                window.location.href = "/class";
+              }}
+            >
+              <Shapes  className="h-4 w-4" />
+              <p className="text-sm">Classes</p>
             </button>
             <button
               className="relative flex w-full cursor-pointer items-center justify-start space-x-2 rounded-md p-2 text-left text-sm text-dark transition-all duration-75 hover:bg-gray-300 dark:text-light dark:hover:bg-neutral-800 "
