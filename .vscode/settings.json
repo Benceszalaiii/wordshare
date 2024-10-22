@@ -1,0 +1,7 @@
+{
+    "WillLuke.nextjs.hasPrompted": true,
+    "npm.packageManager": "bun",
+    "editor.formatOnSave": true,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000
+}

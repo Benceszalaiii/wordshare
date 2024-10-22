@@ -126,3 +126,12 @@ export function langParse(str: string){
   const lang = codetolanguage.find((x) => x.code === str);
   return lang?.language || str;
 }
+
+export function decodeSectionTitle(section: string){
+  if (section === "rc"){
+    return "Revise & Check";
+  }
+  let sectionWithoutNumber = section.slice(0, 2);
+  const cases = [{case: "ce", decoded: "Colloquial English"}, {case: "pe", decoded: "Practical English"}];
+  return `${cases.find(x => x.case === sectionWithoutNumber)?.decoded} ${section.at(2)}` || `File ${section}`;
+}

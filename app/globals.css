@@ -20,6 +20,9 @@ body {
       -ms-overflow-style: none;  /* IE and Edge */
       scrollbar-width: none;  /* Firefox */
 }
+.center {
+  @apply flex flex-col items-center justify-center
+}
 }
 
 

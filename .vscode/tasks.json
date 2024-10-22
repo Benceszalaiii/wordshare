@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Pull from remote",
+      "command": "git pull; echo 'Pulled from remote'",
+      "type": "shell",
+      "args": [],
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "build",
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+    {
+      "label": "Run local server with bun",
+      "type": "shell",
+      "command": "prisma validate; bun dev",
+      "problemMatcher": [],
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": false,
+        "clear": false
+      }
+    },
+    {
+      "label": "Validate prisma and format",
+      "type": "shell",
+      "command": "prisma validate; prisma format; bun format",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint workspace",
+      "type": "shell",
+      "command": "bun lint",
+      "problemMatcher": []
+    }
+  ]
+}
