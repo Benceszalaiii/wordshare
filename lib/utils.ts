@@ -143,7 +143,10 @@ export const shareToInstagram = async () => {
       const fetched = await fetch('/opengraph-image.png');
       const imageBlob = await fetched.blob();
       await navigator.share({
-        files: [new File([imageBlob], 'opengraph-image.png', { type: 'image/png' })],
+        title: "Check out WordShare!",
+        text: "I just shared this from WordShare!",
+        url: 'https://wordshare.tech',
+        files: [new File([imageBlob], 'story.png', { type: 'image/png' })],
       });
       console.log('Content shared successfully!');
     } catch (error) {
