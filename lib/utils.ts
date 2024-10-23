@@ -140,10 +140,10 @@ export function decodeSectionTitle(section: string){
 export const shareToInstagram = async () => {
   if (navigator.share) {
     try {
+      const fetched = await fetch('/opengraph-image.png');
+      const imageBlob = await fetched.blob();
       await navigator.share({
-        title: 'Join WordShare!',
-        text: 'Learn english daily.',
-        url: 'https://wordshare.tech/opengraph-image.png',
+        files: [new File([imageBlob], 'opengraph-image.png', { type: 'image/png' })],
       });
       console.log('Content shared successfully!');
     } catch (error) {
