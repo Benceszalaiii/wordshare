@@ -56,6 +56,7 @@ model User {
   Teacher         Teacher?
   Classes         Class[]
   grade           Int?
+  points          Int       @default(0)
 }
 
 model VerificationToken {

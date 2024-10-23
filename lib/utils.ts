@@ -135,3 +135,21 @@ export function decodeSectionTitle(section: string){
   const cases = [{case: "ce", decoded: "Colloquial English"}, {case: "pe", decoded: "Practical English"}];
   return `${cases.find(x => x.case === sectionWithoutNumber)?.decoded} ${section.at(2)}` || `File ${section}`;
 }
+
+
+export const shareToInstagram = async () => {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: 'Join WordShare!',
+        text: 'Learn english daily.',
+        url: 'https://wordshare.tech/opengraph-image.png',
+      });
+      console.log('Content shared successfully!');
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  } else {
+    console.log('Web Share API is not supported in this browser.');
+  }
+};
