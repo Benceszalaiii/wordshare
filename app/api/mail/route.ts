@@ -14,12 +14,23 @@ export async function GET(req: NextRequest) {
         return new Response("Unauthorized", { status: 401 });
     }
     const mailTemplate = req.headers.get("mailTemplate")
-    if (!mailTemplate){
+    if (!mailTemplate) {
         return new Response("No mail template provided", { status: 400 });
     }
-    switch(mailTemplate){
+    switch (mailTemplate) {
         case "taskSubmit": {
             // SEND EMAIL TO TEACHER ABOUT SUBMISSION
+            const res = await sendEmail({
+                Source: '"WordShare"<no-reply@wordshare.tech>', Destination: { ToAddresses: ["szalai.bence.bendeguz@students.jedlik.eu"]}, Message: {
+                    Subject: {
+                        Data: "Bombom wordshare"
+                    },
+                    Body: {
+                        Text: { Data: "bom" }
+                    }
+                }
+            })
+            return new Response(JSON.stringify(res), { status: 200 })
         }
         case "taskCreate": {
             // SEND EMAIL TO STUDENTS OF TASK ABOUT NEW TASK
