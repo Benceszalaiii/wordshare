@@ -41,6 +41,6 @@ export async function POST(req: NextRequest) {
         }),
     });
     return new Response("Sent data to server", {
-        status: res.$metadata.httpStatusCode,
+        status: res.$metadata.httpStatusCode || 500,
     });
 }

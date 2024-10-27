@@ -12,9 +12,10 @@ export default function Page() {
             <div className="flex w-80 flex-col justify-center gap-4">
                 <Input
                     type="text"
-                    name="To"
+                    name="email"
                     id="to"
                     placeholder="Destination address"
+                    value={toAddress}
                     onChange={(e) => setToAddress(e.target.value)}
                 />
                 <Button
@@ -31,9 +32,6 @@ export default function Page() {
                         };
                         const res = await fetch("/api/mail/invite", {
                             method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
                             body: JSON.stringify(params),
                         });
                         toast.info(await res.text());
