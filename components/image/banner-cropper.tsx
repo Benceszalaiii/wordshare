@@ -23,6 +23,7 @@ import "react-image-crop/dist/ReactCrop.css";
 import { FileWithPreview } from "@/components/image/image-selector";
 import { CropIcon, Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface ImageCropperProps {
   dialogOpen: boolean;
@@ -43,7 +44,7 @@ export function ImageCropper({
   aspectRatio,
   type,
 }: ImageCropperProps) {
-  const aspect = 21/9;
+  const aspect = 41/16;
 
   const imgRef = React.useRef<HTMLImageElement | null>(null);
 
@@ -127,10 +128,12 @@ export function ImageCropper({
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger>
-        <img
-          className="aspect-[21/9] w-full max-w-lg cursor-pointer rounded-md border border-border"
-          src={croppedImage ? croppedImage : selectedFile?.preview}
-          alt=""
+        <Image
+        width={410}
+        height={160}
+          className="aspect-[41/16] w-full max-w-lg cursor-pointer rounded-md border border-border"
+          src={croppedImage ? croppedImage : selectedFile?.preview || ""}
+          alt="Banner"
         />
       </DialogTrigger>
       <DialogContent className="gap-0 p-0">
@@ -142,11 +145,13 @@ export function ImageCropper({
             aspect={aspect}
             className="w-full"
           >
-            <img
+            <Image
               ref={imgRef}
               className="size-full rounded-none "
               alt="Image Cropper Shell"
-              src={selectedFile?.preview}
+              src={selectedFile?.preview || ""}
+              width={410}
+              height={160}
               onLoad={onImageLoad}
             />
           </ReactCrop>

@@ -12,7 +12,7 @@ const metadata = {
   lastModified: new Date(),
 };
 
-export default async function Page() {
+export default async function Page({params}: {params: {classId: string | null}}) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return (
@@ -35,13 +35,23 @@ export default async function Page() {
     );
   }
   return (
-    <section className="flex h-full w-full flex-col">
-      <h1 className="m-4 mb-8 text-2xl font-semibold">Invites</h1>
-      <InviteSection invites={invites} />
+    <section className="flex h-full w-full flex-col pl-4 md:pl-32">
+      <h1 className="m-4 ml-0 mb-8 text-2xl font-semibold">Invites</h1>
+      <InviteSection active={params?.classId ? params.classId[0] : null} invites={invites} />
     </section>
   );
 }
 
 export async function generateMetadata() {
-  return metadata;
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return metadata};
+  const invites = await getInvites(session.user.id);
+  if (!invites || invites.length === 0) {
+    return metadata;
+  }
+  return {
+    ...metadata,
+    title: `Invites (${invites.length})`,
+  };
 }

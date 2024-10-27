@@ -40,12 +40,6 @@ export default function Page() {
                 >
                     Test button
                 </Button>
-                <Button
-                onClick={async()=> {
-                    const res = await fetch("/api/mail/test", {method: "POST"})
-                }}>
-                    Test button 2
-                </Button>
             </div>
         </section>
     );

@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         >
           <Suspense
             fallback={
-              <Skeleton className="aspect-[21/9] w-full max-w-lg rounded-md" />
+              <Skeleton className="aspect-[41/16] w-full max-w-lg rounded-md" />
             }
           >
             <BannerCropperComponent

@@ -6,7 +6,6 @@ import {
     SES,
     SESClientConfig,
 } from "@aws-sdk/client-ses";
-import {S3, HeadObjectCommand} from "@aws-sdk/client-s3";
 
 export interface TemplateMailProps {
     to: string[];
@@ -15,14 +14,6 @@ export interface TemplateMailProps {
     action_url: string;
     receiver_name: string;
 }
-
-const bucketClient = new S3({
-    region: "eu-central-1",
-    credentials: {
-        accessKeyId: process.env.AWS_KEY || "",
-        secretAccessKey: process.env.AWS_SECRET || "",
-    },
-});
 
 const ses = new SES({
     region: "eu-central-1",

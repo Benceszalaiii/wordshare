@@ -19,7 +19,7 @@ export default function ClassLegend({
   const editable = canEdit ?? false;
   return (
     <>
-      <section>
+      <section className="px-4">
         {editable ? (
           <aside className="flex w-full flex-row items-end justify-end gap-6 text-gray-800 dark:text-gray-200">
             <Link href={`/class/${currentClass.id}/invite`}>
@@ -34,17 +34,14 @@ export default function ClassLegend({
             <LeaveClassButton classId={currentClass.id} />
           </aside>
         )}
-        <div about="Image content wrapper" className="flex w-full max-w-full flex-shrink-0 flex-col justify-end gap-2 rounded-xl px-4 pt-4">
-          <div about="Image wrapper" className="relative flex aspect-[21/9] flex-row mb-4 items-center max-h-48 md:min-h-72 justify-center rounded-xl">
             <Image
               about="Banner"
-              className="w-full rounded-xl object-cover opacity-100"
+              className="w-full rounded-xl object-cover my-4"
               src={`/class/banners/${currentClass.id}`}
-              alt=""
-              fill
+              alt="Class banner"
+              width={410}
+              height={160}
             />
-          </div>
-        </div>
         <div className="flex w-full px-4 flex-col justify-start gap-2">
           <h1 className=" text-3xl font-bold">{currentClass.name}</h1>
           <p className="ml-2 text-gray-800 dark:text-gray-400">

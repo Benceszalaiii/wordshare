@@ -4,16 +4,14 @@ import { Invite } from "@prisma/client";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ActionButtons } from "./actions";
 
-export async function InviteCard({ invite }: { invite: Invite }) {
+export async function InviteCard({ invite, isActive}: { invite: Invite, isActive?: boolean }) {
   const { classId, inviterId } = invite;
   const inviter = await getUserById(inviterId);
   const currentClass = await getClassById(classId);
@@ -35,7 +33,7 @@ export async function InviteCard({ invite }: { invite: Invite }) {
         <p className="line-clamp-2 text-wrap whitespace-pre-wrap">{currentClass.description}</p>
       </CardContent>
       <CardFooter className="flex flex-col space-y-2">
-        <ActionButtons invite={invite} />
+        <ActionButtons invite={invite} currentClass={currentClass} isActive={isActive || false} />
         <p className="text-right text-neutral-400 dark:text-neural-600 pt-2">Invited by: {inviter.name}</p>
         <p className="text-right w-full text-neutral-500 dark:text-neutral-600">{invite.createdAt.toLocaleString("HU")}</p>
       </CardFooter>

@@ -69,7 +69,7 @@ export async function AppSidebar() {
     },
     {
       title: "Invites",
-      url: "/class/invites",
+      url: "/invites",
       icon: Inbox,
       banner: 0,
     },
