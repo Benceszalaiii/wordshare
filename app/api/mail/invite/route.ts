@@ -1,9 +1,13 @@
-import { deleteTemplate, sendEmail, sendTemplate, uploadTemplate } from "@/lib/email";
+import {
+    deleteTemplate,
+    sendEmail,
+    sendTemplate,
+    uploadTemplate,
+} from "@/lib/aws";
 import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import { getUserById } from "@/lib/db";
-
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
@@ -20,7 +24,8 @@ export async function POST(req: NextRequest) {
             { status: 403 },
         );
     }
-    const { to, sender, class_name, action_url, receiver_name } = await req.json();
+    const { to, sender, class_name, action_url, receiver_name } =
+        await req.json();
     if (!to || !sender || !action_url || !receiver_name) {
         return new Response("Missing required fields", { status: 400 });
     }

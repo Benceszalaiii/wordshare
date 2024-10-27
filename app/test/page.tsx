@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "sonner";
-import { TemplateMailProps } from "../../lib/email";
+import { TemplateMailProps } from "../../lib/aws";
 
 export default function Page() {
     const [toAddress, setToAddress] = useState("");
@@ -39,6 +39,12 @@ export default function Page() {
                     variant={"outline"}
                 >
                     Test button
+                </Button>
+                <Button
+                onClick={async()=> {
+                    const res = await fetch("/api/mail/test", {method: "POST"})
+                }}>
+                    Test button 2
                 </Button>
             </div>
         </section>

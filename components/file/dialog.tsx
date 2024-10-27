@@ -39,7 +39,7 @@ export default function AudioDialog({
                                 className="h-16 w-full"
                                 controls
                                 volume={0.5}
-                                src={`/englishfile/${currentBook.bookId}/${section}/${audioFile}.mp3`}
+                                src={`https://wordshareaudio.s3.eu-central-1.amazonaws.com/englishfile/${currentBook.bookId}/${section}/${audioFile}.mp3`}
                             ></ReactAudioPlayer>
                         </DialogDescription>
                     </DialogHeader>
