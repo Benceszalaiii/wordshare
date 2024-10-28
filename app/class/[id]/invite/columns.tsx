@@ -18,6 +18,10 @@ import { toast } from "sonner";
 
 export const columns: ColumnDef<UserWithClassId>[] = [
   {
+accessorKey: "grade",
+header: "Grade"
+  },
+  {
     accessorKey: "Avatar",
     header: "Avatar",
     cell: ({ row }) => {

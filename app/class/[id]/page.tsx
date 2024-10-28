@@ -8,47 +8,36 @@ import { notFound } from "next/navigation";
 import { SignInButton } from '../../../components/shared/buttons';
 import { langParse } from "@/lib/utils";
 import { ScanEye, ShieldAlert } from "lucide-react";
+import NoAuthClassPage from "@/components/class/no-auth";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
-  if (!session){
-    return (
-      <section className="flex flex-col justify-center items-center gap-4 w-full">
-        <h1>Try logging in first.</h1>
-        <SignInButton session={session}/>
-      </section>
-    )
-  }
+
   const currentClass = await getClassById(params.id);
   if (!currentClass) {
     return notFound();
   }
-  const dbUser = await getUserById(session.user.id);
+  const dbUser = await getUserById(session?.user.id);
   if (!dbUser){
     return (
-      <section className="flex flex-col justify-center items-center gap-4 w-full">
-        <h1>Try logging in first.</h1>
-        <SignInButton session={session}/>
+      <section className="flex flex-col items-center justify-center gap-4">
+        <NoAuthClassPage currentClass={currentClass} />
       </section>
-    )
+    );
   }
-  const hasViewRights = await isStudentofClass(currentClass.id, session.user.id);
-  const canEdit = await isOwnClass(session.user.id, currentClass.id) || dbUser.role === "admin";
-  if (!hasViewRights && !canEdit){
+  const canEdit = await isOwnClass(dbUser.id, currentClass.id) || dbUser.role === "admin";
+  const isStudent = await isStudentofClass(currentClass.id, dbUser.id);
+  if (!isStudent && !canEdit) {
     return (
       <section className="flex flex-col items-center justify-center gap-4">
-        <ShieldAlert strokeWidth={1} size={72}></ShieldAlert>
-        <h1>You are not a part of this class</h1>
-        <p>To continue, you need to be a student of {currentClass.name}.</p>
+        <NoAuthClassPage currentClass={currentClass} />
       </section>
     )
   }
   return (
-    <>
-      <section className="flex flex-col items-center justify-center gap-4">
+    <section className="flex flex-col items-center">
         <ClassLegend canEdit={canEdit} currentClass={currentClass} />
-      </section>
-    </>
+    </section>
   );
 }
 

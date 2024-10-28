@@ -13,6 +13,7 @@ import { Header } from "@/components/blank";
 import Link from "next/link";
 import { getUserElevation } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { notAuthorized } from "@/components/auth";
 
 export const metadata = {
     title: "Classes"
@@ -22,13 +23,7 @@ export default async function Page() {
   const auth = await getServerSession(authOptions);
   const user = auth?.user;
   if (!user?.id) {
-    console.log(auth);
-    return (
-      <>
-        <h1>Not authenticated</h1>
-        <SignInButton session={auth}></SignInButton>
-      </>
-    );
+    return notAuthorized("Classes");
   }
   const dbUser = await getUserById(user.id);
   const elevation = getUserElevation(dbUser?.role);

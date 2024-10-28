@@ -1,3 +1,4 @@
+import { Class } from "@prisma/client";
 import templates from "./schemas.json";
 import {
     SendEmailCommandInput,
@@ -5,6 +6,7 @@ import {
     SES,
     SESClientConfig,
 } from "@aws-sdk/client-ses";
+import { getUserById } from "./db";
 
 const ses = new SES({
     region: "eu-central-1",
@@ -69,17 +71,43 @@ export async function uploadTemplate() {
     // helper function to upload template to SES
     const res = await ses.createTemplate({
         Template: {
-            TemplateName: "class-invite",
+            TemplateName: "class-request",
             SubjectPart:
-                "{{invite_sender_name}} invited you to {{class_name}}!",
-            HtmlPart: templates.invite,
+                "{{requester_name}} requested to join {{class_name}}!",
+            HtmlPart: templates.request,
             TextPart:
-                "You have been invited to join {{class_name}} by {{invite_sender_name}}. Click the link below to join the class: {{action_url}}",
+                "You have a new request to invite {{class_name}} to {{requester_name}}, please review the request. You can accept or reject the request by clicking the link below. {{action_url}}",
         },
     });
     return res;
 }
 
 export async function deleteTemplate() {
-    return await ses.deleteTemplate({ TemplateName: "class-invite" });
+    return await ses.deleteTemplate({ TemplateName: "class-request" });
+}
+
+export interface RequestMailDataProps{
+    to: string[];
+    requester_name: string;
+    requester_mail: string;
+    class_name: string;
+    action_url: string;
+    name: string;
+}
+export async function sendRequest(mailData: RequestMailDataProps){
+    return await ses.sendTemplatedEmail({
+        Template: "class-request",
+        Source: `${mailData.requester_name} at WordShare<invites@wordshare.tech>`,
+        Destination: {
+            ToAddresses: mailData.to,
+        },
+        TemplateData: JSON.stringify({
+            requester_name: mailData.requester_name,
+            requester_mail: mailData.requester_mail,
+            class_name: mailData.class_name,
+            action_url: mailData.action_url,
+            name: mailData.name,
+            support_email: "contact@wordshare.tech"
+        })
+    });
 }

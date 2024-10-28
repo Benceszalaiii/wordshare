@@ -419,12 +419,9 @@
                                             <div class="f-fallback">
                                                 <h1>Hi, {{name}}!</h1>
                                                 <p>
-                                                    You have just been invited
-                                                    by {{invite_sender_name}} to
-                                                    join Class {{class_name}} on
-                                                    WordShare. To get started,
-                                                    click the button below to
-                                                    join {{class_name}}.
+                                                    {{requester_name}} has
+                                                    requested you to invite them
+                                                    to {{class_name}}.
                                                 </p>
                                                 <!-- Action -->
                                                 <table
@@ -453,8 +450,8 @@
                                                                             href="{{action_url}}"
                                                                             class="f-fallback button"
                                                                             target="_blank"
-                                                                            >Manage
-                                                                            invites</a
+                                                                            >Send
+                                                                            invite</a
                                                                         >
                                                                     </td>
                                                                 </tr>
@@ -464,10 +461,10 @@
                                                 </table>
                                                 <p>
                                                     If you have any questions
-                                                    for {{invite_sender_name}},
+                                                    for {{requester_name}},
                                                     you can
                                                     <a
-                                                        href="mailto:{{invite_sender_email}}"
+                                                        href="mailto:{{requester_mail}}"
                                                         >contact this email.</a
                                                     >. Alternatively, feel free
                                                     to
@@ -476,7 +473,7 @@
                                                         >contact our customer
                                                         success team</a
                                                     >
-                                                    anytime.
+                                                    .
                                                 </p>
                                                 <p>
                                                     Learning can be fun, and we

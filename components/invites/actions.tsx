@@ -60,7 +60,7 @@ export function ActionButtons({
                                 );
                                 if (res.ok) toast.success(await res.text());
                                 else toast.error(await res.text());
-                                router.refresh();
+                                router.replace(`/class/${invite.classId}`);
                             }}
                         >
                             Accept
@@ -80,7 +80,8 @@ export function ActionButtons({
                                 );
                                 if (res.ok) toast.success(await res.text());
                                 else toast.error(await res.text());
-                                router.refresh();
+                                router.replace(`/invites`)
+
                             }}
                         >
                             Decline

@@ -88,6 +88,7 @@ export async function AppSidebar() {
   const invites = await getInvites(user?.id);
   const dbUser = await getUserById(user?.id);
   const classes = [];
+  // TODO SHOW ALL PINNED CLASSES
   if (dbUser?.role === "teacher" || dbUser?.role === "admin"){
     const teacherClasses = await getClassesByTeacherUser(dbUser.id);
     if (teacherClasses){

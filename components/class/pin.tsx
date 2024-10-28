@@ -1,42 +1,57 @@
 "use client";
 import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import LoadingCircle from "../shared/icons/loading-circle";
+
+const addPin = (router: any, setter: any, classId: string) => {
+    fetch(`/api/class/pin/${classId}`, { method: "PUT" }).then((res) => {
+        toast.info(`Pinned class to Sidebar`);
+        setter(true);
+        router.refresh();
+    });
+};
+const removePin = (router: any, setter: any, classId: string) => {
+    fetch(`/api/class/pin/${classId}`, { method: "DELETE" }).then((res) => {
+        toast.info(`Unpinned class from Sidebar`);
+        setter(false);
+        router.refresh();
+    });
+};
 
 export function DropdownPinCheck({ classId }: { classId: string }) {
-    const [checked, setChecked] = useState(false);
     const [loading, setLoading] = useState(true);
     const [remoteValue, setRemoteValue] = useState(false);
     const router = useRouter();
-    useEffect(() => {
-        fetch(`/api/class/pin/${classId}`, { method: "GET", cache: "reload" }).then((res) => {
+    const baseValue = useMemo(() => {
+        fetch(`/api/class/pin/${classId}`, { method: "GET" }).then((res) => {
             setLoading(false);
-            setChecked(res.statusText === "Pinned");
             setRemoteValue(res.statusText === "Pinned");
         });
-    }, [classId]);
-    useEffect(() => {
-        if (loading) return;
-        if (checked === remoteValue) return;
-        if (!loading && checked) {
-            fetch(`/api/class/pin/${classId}`, { method: "PUT" }).then((res)=> {
-                toast.info(`Pinned class to Sidebar`);
-                setRemoteValue(true);
-                router.refresh();
-            });
-        } else if (!loading && !checked) {
-            fetch(`/api/class/pin/${classId}`, { method: "DELETE" }).then((res) => {
-                toast.info(`Unpinned class from Sidebar`);
-                setRemoteValue(false);
-                router.refresh();
-            });
-        }
-    }, [classId, loading, checked, router, remoteValue]);
+        return remoteValue;
+    }, [remoteValue, classId]);
+    if (loading) {
+        return (
+            <DropdownMenuCheckboxItem
+                disabled
+                className="flex items-center justify-between gap-2 px-2"
+            >
+                <LoadingCircle />
+                Pin to Sidebar
+            </DropdownMenuCheckboxItem>
+        );
+    }
     return (
         <DropdownMenuCheckboxItem
-            checked={checked}
-            onCheckedChange={setChecked}
+            checked={baseValue}
+            onCheckedChange={(e) => {
+                if (e) {
+                    addPin(router, setRemoteValue, classId);
+                } else {
+                    removePin(router, setRemoteValue, classId);
+                }
+            }}
             disabled={loading}
         >
             Pin Class to Sidebar

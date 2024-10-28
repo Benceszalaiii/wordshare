@@ -1,6 +1,7 @@
 "use server";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { notAuthorized } from "@/components/auth";
 import InviteSection from "@/components/invites/section";
 import { SignInButton } from "@/components/shared/buttons";
 import { getInvites } from "@/lib/db";
@@ -15,12 +16,7 @@ const metadata = {
 export default async function Page({params}: {params: {classId: string | null}}) {
   const session = await getServerSession(authOptions);
   if (!session) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1>You must be signed in to receive invites.</h1>
-        <SignInButton session={session} />
-      </div>
-    );
+    return notAuthorized("invites");
   }
   const invites = await getInvites(session.user.id);
   return (

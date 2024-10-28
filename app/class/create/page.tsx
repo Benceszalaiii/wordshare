@@ -5,26 +5,17 @@ import { SignInButton } from "@/components/shared/buttons";
 import { getTeacher, getUserById } from "@/lib/db";
 import Link from "next/link";
 import { getUserElevation } from "@/lib/utils";
+import { notAuthorized } from "@/components/auth";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
   if (!session) {
-    return (
-        <div className="flex flex-col items-center justify-center gap-4">
-        <h1>You need to be signed in to access this page.</h1>
-        <SignInButton session={session} />
-      </div>
-    );
+    return notAuthorized("the class creation page");
   }
   const dbUser = await getUserById(session.user.id);
   const elevation = getUserElevation(dbUser?.role);
   if (!dbUser) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1>You need to be signed in to access this page.</h1>
-        <SignInButton session={session} />
-      </div>
-    );
+    return notAuthorized("the class creation page");
   }
   if ((elevation < 2)) {
     return (

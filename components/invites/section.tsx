@@ -15,7 +15,6 @@ export default async function InviteSection({
         if (active !== "") {
             return (
                 <section className="flex h-full w-full flex-col">
-                    <h1 className="m-4 mb-8 text-2xl font-semibold">Invites</h1>
                     <div className="flex w-full flex-col justify-center gap-2 pl-12">
                         <p>No invites found</p>
                         <p>Check back later!</p>
@@ -26,10 +25,10 @@ export default async function InviteSection({
         }
         return (
             <section className="flex h-full w-full flex-col">
-                <h1 className="m-4 mb-8 text-2xl font-semibold">Invites</h1>
                 <div className="flex w-full flex-col justify-center gap-2 pl-12">
                     <p>No invites found</p>
                     <p>Check back later!</p>
+
                 </div>
             </section>
         );

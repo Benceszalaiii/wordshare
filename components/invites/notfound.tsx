@@ -1,3 +1,4 @@
+"use client";
 import {
     Dialog,
     DialogClose,
@@ -9,10 +10,16 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function InviteDoesntExist() {
+    const router = useRouter();
+    const path = usePathname();
+    if (path === "/invites") return null;
     return (
-        <Dialog defaultOpen>
+        <Dialog defaultOpen onOpenChange={()=> {
+            router.replace("/invites");
+        }}>
             <DialogTrigger></DialogTrigger>
             <DialogContent>
                 <DialogHeader>

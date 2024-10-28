@@ -16,10 +16,7 @@ export async function PUT(req: NextRequest, {params}: {params: {classId: string}
         return new Response("Unauthorized", {status: 401});
     }
     // Check if user is a student or teacher of the class or admin
-    const hasAccess = await isPartofClass(dbUser.id, params.classId) || dbUser.role === "admin";
-    if (!hasAccess){
-        return new Response("You are not part of the class.", {status: 401});
-    }
+
     const res = await pinClassToSidebar(params.classId, dbUser.id);
     return new Response(res.statusText, {status: res.status});
 }
@@ -37,10 +34,6 @@ export async function DELETE(req: NextRequest, {params}: {params: {classId: stri
         return new Response("Unauthorized", {status: 401});
     }
     // Check if user is a student or teacher of the class or admin
-    const hasAccess = await isPartofClass(dbUser.id, params.classId) || dbUser.role === "admin";
-    if (!hasAccess){
-        return new Response("You are not part of the class.", {status: 401});
-    }
     const res = await unpinClassFromSidebar(params.classId, dbUser.id );
     return new Response(null, {status: res.status, statusText: res.statusText});
 }
@@ -51,17 +44,8 @@ export async function DELETE(req: NextRequest, {params}: {params: {classId: stri
 export async function GET(req: NextRequest, {params}: {params: {classId: string}}){
     const session = await getServerSession(authOptions);
     if (!session){
-        return new Response("Unauthorized", {status: 401});
+        return new Response("Please log in first.", {status: 401});
     }
-    const dbUser = await getUserById(session.user.id);
-    if (!dbUser){
-        return new Response("Unauthorized", {status: 401});
-    }
-    // Check if user is a student or teacher of the class or admin
-    const hasAccess = await isPartofClass(dbUser.id, params.classId) || dbUser.role === "admin";
-    if (!hasAccess){
-        return new Response("You are not part of the class.", {status: 401});
-    }
-    const res = await isPinned(params.classId, dbUser.id);
+    const res = await isPinned(params.classId, session.user.id);
     return new Response(null, {status: 200, statusText: res ? "Pinned" : "Not Pinned"});
 }

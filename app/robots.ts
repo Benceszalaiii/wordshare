@@ -4,9 +4,8 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
-      allow: '/',
-      disallow: ['/api', '/essay/write', '/roadmap', '/quickstart', '/admin'],
+      disallow: ['/api', '/essay/write', '/quickstart', '/admin'],
     },
-    sitemap: 'https://www.wordshare.tech/sitemap.xml',
+    sitemap: 'https://www.wordshare.tech/sitemap',
   }
 }

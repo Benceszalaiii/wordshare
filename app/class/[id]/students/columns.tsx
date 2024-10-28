@@ -47,6 +47,7 @@ export const columns: ColumnDef<UserWithClassId>[] = [
         </Button>
       );
     },
+    enableGlobalFilter: true
   },
   {
     id: "actions",

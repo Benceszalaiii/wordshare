@@ -4,7 +4,7 @@ import { useSignInModal } from "../layout/sign-in-modal";
 import UserDropdown from "../layout/user-dropdown";
 import { signOut } from "next-auth/react";
 import { Button } from "../ui/button";
-export function SignInButton({ session, signInText, signOutText }: { session: Session | null, signInText?: string, signOutText?: string }) {
+export function SignInButton({ session, signInText, signOutText, className }: { session: Session | null, signInText?: string, signOutText?: string, className?: string }) {
   const { SignInModal, setShowSignInModal } = useSignInModal();
   return (
     <>
@@ -15,7 +15,7 @@ export function SignInButton({ session, signInText, signOutText }: { session: Se
       ) : (
         <Button
         variant={"outline"}
-          className=""
+          className={className}
           onClick={() => setShowSignInModal(true)}
         >
           {signInText ? signInText :"Sign In"}

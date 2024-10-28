@@ -641,9 +641,7 @@ export async function isStudentofClass(classId: string, userId: string) {
   if (!currentClass) {
     return false;
   }
-  currentClass.students.filter((student)=> student.id === userId);
-
-  return currentClass.students.length > 0;
+  return currentClass.students.filter((student)=> student.id === userId).length > 0;
 }
 
 

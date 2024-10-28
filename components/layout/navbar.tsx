@@ -16,7 +16,7 @@ export default function NavBar({ session, role }: { session: Session | null, rol
   const pathname = usePathname();
   const isIndexPage = pathname === "/";
   const needsExpand = (scrolled && isIndexPage) || !isIndexPage;
-  const isSideBar = pathname.startsWith("/class") || pathname.startsWith("/overview") || pathname.startsWith("/essay") || pathname.startsWith("/wordplay");
+  const isSideBar = ["/class", "/essay", "/wordplay", "/invites"].some((path)=> pathname.startsWith(path));
   if (role === "admin"){
     return (
       <div className="mb-24">
