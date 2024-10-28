@@ -4,6 +4,7 @@ import { getServerSession, Session } from "next-auth";
 import prisma from "./prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { Comment, User, Class } from "@prisma/client";
+import { sendEmail, sendInviteMail } from "./aws";
 interface Essay {
   title: string;
   content: string;
@@ -547,6 +548,31 @@ export async function inviteUser(
   const invite = await prisma.invite.create({
     data: { userId: userId, classId: classId, inviterId: inviterId },
   });
+  const inviter = await prisma.user.findUnique({ where: { id: inviterId } });
+  const dbUser = await prisma.user.findUnique({ where: { id: userId } });
+  const currentClass = await prisma.class.findUnique({ where: { id: classId } });
+  if (!inviter || !dbUser || !currentClass) {
+    return new Response(null, {
+      status: 500,
+      statusText: "Error inviting user.",
+    });
+  };
+  if (!dbUser.email){
+    return new Response ("User has no email connected.", {status: 400});
+  }
+  if (!inviter.email){
+    return new Response ("Inviter has no email connected.", {status: 400});
+  }
+  if (!inviter.name){
+    return new Response ("Inviter has no name.", {status: 400});
+  }
+  if (!dbUser.name){
+    return new Response ("User has no name.", {status: 400});
+  }
+  if (!currentClass.name){
+    return new Response ("Class has no name.", {status: 400});
+  }
+  const res = await sendInviteMail({to: [dbUser.email], sender: {email: inviter.email, name: inviter.name}, class_name: currentClass.name, action_url: `https://wordshare.tech/invites/${classId}`, receiver_name: dbUser.name});
   if (!invite) {
     return new Response(null, {
       status: 500,
@@ -618,4 +644,50 @@ export async function isStudentofClass(classId: string, userId: string) {
   currentClass.students.filter((student)=> student.id === userId);
 
   return currentClass.students.length > 0;
+}
+
+
+
+// CLASS PIN FUNCTIONS
+
+export async function pinClassToSidebar(classId: string, userId: string){
+  const pinned = await prisma.user.update({where: {id: userId}, data: {pinnedClassIds: {push: classId}}});
+  if (!pinned){
+    return new Response(null, {status: 500, statusText: "Error pinning class."});
+  }
+  return new Response(null, {status: 200, statusText: "Class pinned."});
+}
+
+export async function unpinClassFromSidebar(classId: string, userId: string){
+  const pins = await prisma.user.findUnique({where: {id: userId}, select: {pinnedClassIds: true}});
+  if (!pins){
+    return new Response(null, {status: 500, statusText: "Error finding pinned classes."});
+  }
+  if (!pins.pinnedClassIds.includes(classId)){
+    return new Response(null, {status: 200, statusText: "Class not pinned."});
+  }
+  const unpinned = await prisma.user.update({where: {id: userId}, data: {pinnedClassIds: pins.pinnedClassIds.filter((id: string) => id !== classId)}});
+  if (!unpinned){
+    return new Response(null, {status: 500, statusText: "Error unpinning class."});
+  }
+  return new Response(null, {status: 200, statusText: "Class unpinned."});
+}
+
+export async function isPinned(classId: string, userId: string){
+  const pins = await prisma.user.findUnique({where: {id: userId}, select: {pinnedClassIds: true}});
+  if (!pins){
+    return false;
+  }
+  return pins.pinnedClassIds.includes(classId);
+}
+
+
+export async function isPartofClass(userId: string, classId: string){
+  const currentClass = await prisma.class.findUnique({where: {id: classId}, include: {students: true}});
+  if (!currentClass){
+    return false;
+  }
+  const isStudent = currentClass.students.some((student)=> student.id === userId);
+  const isTeacher = currentClass.teacherUserId === userId;
+  return isStudent || isTeacher;
 }

@@ -2,13 +2,50 @@
 
 import { Invite } from "@prisma/client";
 import { InviteCard } from "./card";
+import InviteDoesntExist from "./notfound";
 
-export default async function InviteSection({invites, active}: {invites: Invite[], active: string | null}){
+export default async function InviteSection({
+    invites,
+    active,
+}: {
+    invites: Invite[] | null;
+    active: string | null;
+}) {
+    if (!invites || invites.length === 0) {
+        if (active !== "") {
+            return (
+                <section className="flex h-full w-full flex-col">
+                    <h1 className="m-4 mb-8 text-2xl font-semibold">Invites</h1>
+                    <div className="flex w-full flex-col justify-center gap-2 pl-12">
+                        <p>No invites found</p>
+                        <p>Check back later!</p>
+                    </div>
+                    <InviteDoesntExist />
+                </section>
+            );
+        }
+        return (
+            <section className="flex h-full w-full flex-col">
+                <h1 className="m-4 mb-8 text-2xl font-semibold">Invites</h1>
+                <div className="flex w-full flex-col justify-center gap-2 pl-12">
+                    <p>No invites found</p>
+                    <p>Check back later!</p>
+                </div>
+            </section>
+        );
+    }
+    const hasActive =
+        invites.filter((invite) => invite.classId === active).length > 0;
     return (
-        <section className="flex flex-row justify-center md:justify-start flex-wrap w-full h-full gap-4 mb-8">
-        {invites.map(invite => (
-            <InviteCard invite={invite} key={invite.id} isActive={invite.classId === active} />
-        ))}
+        <section className="mb-8 flex h-full w-full flex-row flex-wrap justify-center gap-4 md:justify-start">
+            {invites.map((invite) => (
+                <InviteCard
+                    invite={invite}
+                    key={invite.id}
+                    isActive={invite.classId === active}
+                />
+            ))}
+            {(!hasActive && active)? <InviteDoesntExist /> : null}
         </section>
-    )
+    );
 }

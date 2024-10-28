@@ -1,4 +1,3 @@
-import AWS from "aws-sdk";
 import templates from "./schemas.json";
 import {
     SendEmailCommandInput,
@@ -7,14 +6,6 @@ import {
     SESClientConfig,
 } from "@aws-sdk/client-ses";
 
-export interface TemplateMailProps {
-    to: string[];
-    sender: { email: string; name: string };
-    class_name: string;
-    action_url: string;
-    receiver_name: string;
-}
-
 const ses = new SES({
     region: "eu-central-1",
     credentials: {
@@ -22,6 +13,14 @@ const ses = new SES({
         secretAccessKey: process.env.AWS_SECRET || "",
     },
 });
+export interface InviteMailDataProps {
+    to: string[];
+    sender: { email: string; name: string };
+    class_name: string;
+    action_url: string;
+    receiver_name: string;
+}
+
 
 export interface EmailProps {
     from: string;
@@ -29,7 +28,6 @@ export interface EmailProps {
     subject: string;
     body: string;
 }
-
 
 export async function sendEmail(mailSettings: SendEmailCommandInput) {
     const res = await ses.sendEmail(mailSettings);
@@ -46,6 +44,25 @@ export async function sendTemplate(
         TemplateData: mailSettings.TemplateData,
     });
     return res;
+}
+
+export async function sendInviteMail(params: InviteMailDataProps) {
+    const mailSettings: SendTemplatedEmailCommandInput = {
+        Source: `${params.sender.name} at WordShare<invites@wordshare.tech>`,
+        Destination: {
+            ToAddresses: params.to,
+        },
+        Template: "class-invite",
+        TemplateData: JSON.stringify({
+            name: params.receiver_name,
+            invite_sender_name: params.sender.name,
+            class_name: params.class_name,
+            action_url: params.action_url,
+            support_email: "contact@wordshare.tech",
+            invite_sender_email: params.sender.email,
+        }),
+    };
+    return await sendTemplate(mailSettings);
 }
 
 export async function uploadTemplate() {

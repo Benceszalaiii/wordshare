@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "sonner";
-import { TemplateMailProps } from "../../lib/aws";
-import ToastButton from '../../components/testers/toastbutton';
+import { InviteMailDataProps } from "../../lib/aws";
+import ToastButton from "../../components/testers/toastbutton";
 
 export default function Page() {
     const [toAddress, setToAddress] = useState("");
@@ -21,7 +21,7 @@ export default function Page() {
                 />
                 <Button
                     onClick={async () => {
-                        const params: TemplateMailProps = {
+                        const params: InviteMailDataProps = {
                             to: [toAddress],
                             class_name: "11C Kraken",
                             action_url: `https://wordshare.tech/invites`,

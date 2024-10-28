@@ -23,17 +23,6 @@ export default async function Page({params}: {params: {classId: string | null}})
     );
   }
   const invites = await getInvites(session.user.id);
-  if (!invites || invites.length === 0) {
-    return (
-        <section className="flex h-full w-full flex-col">
-        <h1 className="m-4 mb-8 text-2xl font-semibold">Invites</h1>
-        <div className="flex flex-col pl-12 justify-center w-full gap-2">
-        <p>No invites found</p>
-        <p>Check back later!</p>
-        </div>
-      </section>
-    );
-  }
   return (
     <section className="flex h-full w-full flex-col pl-4 md:pl-32">
       <h1 className="m-4 ml-0 mb-8 text-2xl font-semibold">Invites</h1>

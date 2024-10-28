@@ -57,6 +57,7 @@ model User {
   Classes         Class[]
   grade           Int?
   points          Int       @default(0)
+  pinnedClassIds  String[]
 }
 
 model VerificationToken {

@@ -91,12 +91,12 @@ export async function AppSidebar() {
   if (dbUser?.role === "teacher" || dbUser?.role === "admin"){
     const teacherClasses = await getClassesByTeacherUser(dbUser.id);
     if (teacherClasses){
-      classes.push(...teacherClasses);
+      classes.push(...teacherClasses.filter((x) => dbUser.pinnedClassIds.includes(x.id)));
     }
   }else if (dbUser?.role === "student"){
     const studentClasses = await getClassByStudentSession(session);
     if (studentClasses){
-      classes.push(...studentClasses);
+      classes.push(...studentClasses.filter((x) => dbUser.pinnedClassIds.includes(x.id)));
     }
   }
   if (invites){
@@ -133,7 +133,7 @@ export async function AppSidebar() {
                 <CollapsibleTrigger asChild>
                   <SidebarMenu>
                     <SidebarMenuItem>
-                      <SidebarMenuButton>Classes</SidebarMenuButton>
+                      <SidebarMenuButton>Pinned Classes</SidebarMenuButton>
                       <SidebarMenuBadge>{classes.length}</SidebarMenuBadge>
                     </SidebarMenuItem>
                   </SidebarMenu>
