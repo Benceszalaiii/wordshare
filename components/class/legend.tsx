@@ -164,7 +164,7 @@ export default function ClassLegend({
                 <Image
                     about="Banner"
                     className="my-4 w-full rounded-xl"
-                    src={`/class/banners/${currentClass.id}`}
+                    src={`https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/${currentClass.id}/banner`}
                     alt="Class banner"
                     width={820}
                     height={320}
