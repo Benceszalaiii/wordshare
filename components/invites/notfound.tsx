@@ -19,7 +19,7 @@ export default function InviteDoesntExist() {
                     <DialogTitle>Invite not found</DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
-                    The invite you are looking for doesn't exist, or you have
+                    The invite you are looking for doesn&apos;t exist, or you have
                     already accepted/declined it.
                 </DialogDescription>
             </DialogContent>

@@ -32,7 +32,7 @@ export function DropdownPinCheck({ classId }: { classId: string }) {
                 router.refresh();
             });
         }
-    }, [classId, loading, checked]);
+    }, [classId, loading, checked, router, remoteValue]);
     return (
         <DropdownMenuCheckboxItem
             checked={checked}

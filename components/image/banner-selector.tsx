@@ -3,8 +3,7 @@
 import React, { useEffect } from "react";
 import { ImageCropper } from "@/components/image/banner-cropper";
 import { FileWithPath, useDropzone } from "react-dropzone";
-import { Suspense } from 'react';
-import { Skeleton } from "../ui/skeleton";
+import Image from "next/image";
 
 export type FileWithPreview = FileWithPath & {
   preview: string;
@@ -63,10 +62,12 @@ export function BannerCropperComponent({ classId }: { classId: string }) {
       ) : (
         <div {...getRootProps()} className="flex ">
           <input {...getInputProps()} />
-          <img
-            className="aspect-[21/9] w-full max-w-lg rounded-md border border-border object-cover object-center"
+          <Image
+            className="aspect-[41/16] w-full max-w-lg rounded-md border border-border object-cover object-center"
             src={`/class/banners/${classId}`}
             alt="Class banner"
+            width={410}
+            height={160}
           />
         </div>
       )}
