@@ -21,7 +21,17 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
-
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+  } from "@/components/ui/pagination"
+import { ChevronLeft, ChevronRight } from "lucide-react";
+  
 export function TimelineFilter({
     tasks,
     announcements,
@@ -30,7 +40,7 @@ export function TimelineFilter({
     announcements: Announcement[];
 }) {
     const [viewMode, setViewMode] = useState("both");
-    const [offset, setOffset] = useState(0);
+    const [page, setPage] = useState(1);
     const [filteredTimeline, setFilteredTimeline] = useState(
         [...announcements, ...tasks].sort((a, b) => {
             return (
@@ -52,6 +62,7 @@ export function TimelineFilter({
         } else if (viewMode === "taskonly") {
             setFilteredTimeline(tasks);
         }
+        setPage(1)
     }, [viewMode]);
     return (
         <section className="flex w-full max-w-screen-md flex-col gap-4 py-8">
@@ -80,7 +91,7 @@ export function TimelineFilter({
             <Separator />
             <div className="flex flex-col gap-4 px-4">
                 {filteredTimeline
-                    .slice(offset, offset + 20)
+                    .slice(20 * (page - 1), 20 * page)
                     .map((item, index) => (
                         <Card key={index} className="w-full">
                             <CardHeader className="flex flex-row items-center justify-between">
@@ -105,6 +116,39 @@ export function TimelineFilter({
                             </CardFooter>
                         </Card>
                     ))}
+                <Pagination>
+                    <PaginationContent>
+                        <PaginationItem className={`${page <= 1? "hidden" : ""}`} >
+                        <Button onClick={()=> {
+                            if (page > 1) setPage(page-1)
+                        }} variant={"ghost"}>
+                            <ChevronLeft className="h-4 w-4" />
+                            <span>Previous</span>
+                        </Button>
+                        </PaginationItem>
+                        <PaginationItem className={`${page <= 1? "hidden" : ""}`}>
+                        <Button onClick={()=> {
+                            if (page > 1) setPage(page-1)
+                        }} variant={"ghost"}>{page-1}</Button>
+                        </PaginationItem>
+                        <PaginationItem>
+                        <Button variant={"outline"}>{page}</Button>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <Button onClick={()=> {
+                            setPage(page+1)
+                        }}  variant={"ghost"}>{page+1}</Button>
+                        </PaginationItem>
+                        <PaginationItem>
+                        <Button onClick={()=> {
+                            setPage(page+1)
+                        }}  variant={"ghost"}>
+                            <span>Next</span>
+                            <ChevronRight className="h-4 w-4" />
+                        </Button>
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
             </div>
         </section>
     );
