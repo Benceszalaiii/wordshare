@@ -9,6 +9,9 @@ import { SignInButton } from '../../../components/shared/buttons';
 import { langParse } from "@/lib/utils";
 import { ScanEye, ShieldAlert } from "lucide-react";
 import NoAuthClassPage from "@/components/class/no-auth";
+import { QuickCards } from "@/components/class/quickcards";
+import { Separator } from "@/components/ui/separator";
+import { ClassTimeline } from "@/components/class/timeline";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
@@ -37,6 +40,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <section className="flex flex-col items-center">
         <ClassLegend canEdit={canEdit} currentClass={currentClass} />
+        <QuickCards currentClassName={currentClass.name} classId={currentClass.id} auth={canEdit ? "teacher" : "student"} />
+        <ClassTimeline currentClass={currentClass} />
     </section>
   );
 }

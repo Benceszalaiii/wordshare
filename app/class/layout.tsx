@@ -35,12 +35,10 @@ export default async function Layout({
     return(
       <SidebarProvider>
       <AppSidebar  />
-      <main className="w-full">
+      <article className="w-full">
         <SidebarTrigger className="" />
-        <section className="mt-8 ">
         {children}
-        </section>
-      </main>
+      </article>
     </SidebarProvider>
     )
 }

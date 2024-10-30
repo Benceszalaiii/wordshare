@@ -18,7 +18,9 @@ const nextConfig = {
         hostname: "xhzwexjdzphrgjiilpid.supabase.co" 
       },
     ],
+
   },
+  
   async redirects() {
     return [
       {

@@ -2,26 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Pull from remote",
-      "command": "git pull; echo 'Pulled from remote'",
-      "type": "shell",
-      "args": [],
-      "problemMatcher": [
-        "$tsc"
-      ],
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
-      },
-      "group": "build",
-      "runOptions": {
-        "runOn": "folderOpen"
-      }
-    },
-    {
       "label": "Run local server with bun",
       "type": "shell",
-      "command": "prisma validate; bun dev",
+      "command": "git pull;prisma validate; bun dev",
       "problemMatcher": [],
       "runOptions": {
         "runOn": "folderOpen"

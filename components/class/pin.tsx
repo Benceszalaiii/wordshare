@@ -1,7 +1,7 @@
 "use client";
 import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import LoadingCircle from "../shared/icons/loading-circle";
 
@@ -24,13 +24,12 @@ export function DropdownPinCheck({ classId }: { classId: string }) {
     const [loading, setLoading] = useState(true);
     const [remoteValue, setRemoteValue] = useState(false);
     const router = useRouter();
-    const baseValue = useMemo(() => {
+    useEffect(() => {
         fetch(`/api/class/pin/${classId}`, { method: "GET" }).then((res) => {
             setLoading(false);
             setRemoteValue(res.statusText === "Pinned");
         });
-        return remoteValue;
-    }, [remoteValue, classId]);
+    }, [classId]);
     if (loading) {
         return (
             <DropdownMenuCheckboxItem
@@ -44,7 +43,7 @@ export function DropdownPinCheck({ classId }: { classId: string }) {
     }
     return (
         <DropdownMenuCheckboxItem
-            checked={baseValue}
+            checked={remoteValue}
             onCheckedChange={(e) => {
                 if (e) {
                     addPin(router, setRemoteValue, classId);

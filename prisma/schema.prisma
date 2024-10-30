@@ -93,18 +93,28 @@ model Comment {
 }
 
 model Class {
-  id            String   @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String
   description   String?
   language      String
   teacherId     String
-  createdAt     DateTime @default(now())
-  teacher       Teacher  @relation(fields: [teacherId], references: [id])
+  createdAt     DateTime       @default(now())
+  teacher       Teacher        @relation(fields: [teacherId], references: [id])
   teacherUserId String
   students      User[]
   Words         Words[]
   Tasks         Task[]
   Invite        Invite[]
+  announcements Announcement[]
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  Class     Class?   @relation(fields: [classId], references: [id])
+  classId   String?
 }
 
 model Teacher {
@@ -133,13 +143,14 @@ model RoadMap {
 }
 
 model Task {
-  id          Int       @id @default(autoincrement())
-  title       String
-  description String
-  date        DateTime?
-  Class       Class?    @relation(fields: [classId], references: [id])
-  classId     String?
-  Essay       Essay[]
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  dueDate   DateTime
+  createdAt DateTime @default(now())
+  Class     Class?   @relation(fields: [classId], references: [id])
+  classId   String?
+  Essay     Essay[]
 }
 
 model Invite {
