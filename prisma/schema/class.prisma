@@ -1,0 +1,65 @@
+model Class {
+  id            String         @id @default(cuid())
+  name          String
+  description   String?
+  language      String
+  teacherId     String
+  createdAt     DateTime       @default(now())
+  teacher       Teacher        @relation(fields: [teacherId], references: [id])
+  teacherUserId String
+  students      User[]
+  Words         Words[]
+  Tasks         Task[]
+  Invite        Invite[]
+  announcements Announcement[]
+  Points        Points[]
+  Milestone     Milestone[]
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  Class     Class?   @relation(fields: [classId], references: [id])
+  classId   String?
+}
+
+model Teacher {
+  id            String          @id @default(cuid())
+  userId        String          @unique
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  classes       Class[]
+  verified      Boolean         @default(false)
+  ReviewRequest ReviewRequest[]
+  Score         Score[]
+}
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  dueDate   DateTime
+  createdAt DateTime @default(now())
+  Class     Class?   @relation(fields: [classId], references: [id])
+  classId   String?
+  Essay     Essay[]
+}
+
+model Invite {
+  id        String   @id @default(cuid())
+  userId    String
+  classId   String
+  Class     Class    @relation(fields: [classId], references: [id])
+  createdAt DateTime @default(now())
+  inviterId String
+}
+
+model Milestone {
+  id          String @id @default(cuid())
+  title       String
+  description String
+  classId     String
+  points      Int
+  Class       Class  @relation(fields: [classId], references: [id])
+}

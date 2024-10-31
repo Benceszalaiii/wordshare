@@ -90,7 +90,7 @@ header: "Grade"
         <Button
           variant="default"
           onClick={async() => {
-            const res = await fetch(`/api/class/invite/${user.classId}/${user.id}`, { method: "POST" });
+            const res = await fetch(`/api/class/invite/${user.classId}/${user.id}`, { method: "POST"});
             if (res.status === 208){
                 toast.info("User is already invited")
             }

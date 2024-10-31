@@ -28,7 +28,6 @@ export default async function Page() {
   const dbUser = await getUserById(user.id);
   const elevation = getUserElevation(dbUser?.role);
   if (!dbUser) {
-    console.log("User not found");
     return (
       <h1>
         User not found in database. <br /> This might be a problem from our

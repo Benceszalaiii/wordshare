@@ -12,7 +12,7 @@ export default async function InviteSection({
     active: string | null;
 }) {
     if (!invites || invites.length === 0) {
-        if (active !== "") {
+        if (active) {
             return (
                 <section className="flex h-full w-full flex-col">
                     <div className="flex w-full flex-col justify-center gap-2 pl-12">
@@ -34,14 +34,14 @@ export default async function InviteSection({
         );
     }
     const hasActive =
-        invites.filter((invite) => invite.classId === active).length > 0;
+        invites.filter((invite) => invite.id === active).length > 0;
     return (
         <section className="mb-8 flex h-full w-full flex-row flex-wrap justify-center gap-4 md:justify-start">
             {invites.map((invite) => (
                 <InviteCard
                     invite={invite}
                     key={invite.id}
-                    isActive={invite.classId === active}
+                    isActive={invite.id === active}
                 />
             ))}
             {(!hasActive && active)? <InviteDoesntExist /> : null}

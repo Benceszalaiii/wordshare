@@ -1,5 +1,14 @@
 "use client";
-import { Announcement, Task } from "@prisma/client";
+
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+} from "@/components/ui/pagination";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import {
     Card,
     CardContent,
@@ -8,36 +17,29 @@ import {
     CardHeader,
     CardTitle,
 } from "../ui/card";
-import { AnnouncementViewModal, TaskViewModal } from "./viewmodals";
-import { Separator } from "../ui/separator";
 import {
     Select,
-    SelectTrigger,
     SelectContent,
-    SelectItem,
-    SelectValue,
-    SelectLabel,
     SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
 } from "../ui/select";
-import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-  } from "@/components/ui/pagination"
-import { ChevronLeft, ChevronRight } from "lucide-react";
-  
+import { Separator } from "../ui/separator";
+import { AnnouncementProp, TaskProp } from "./timeline";
+import { AnnouncementViewModal, TaskViewModal } from "./viewmodals";
+
+import { DateTooltip } from "../shared/date-tooltip";
+
+type MixProps = TaskProp | AnnouncementProp;
+
 export function TimelineFilter({
     tasks,
     announcements,
 }: {
-    tasks: Task[];
-    announcements: Announcement[];
+    tasks: TaskProp[];
+    announcements: AnnouncementProp[];
 }) {
     const [viewMode, setViewMode] = useState("both");
     const [page, setPage] = useState(1);
@@ -62,7 +64,8 @@ export function TimelineFilter({
         } else if (viewMode === "taskonly") {
             setFilteredTimeline(tasks);
         }
-        setPage(1)
+        setPage(1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [viewMode]);
     return (
         <section className="flex w-full max-w-screen-md flex-col gap-4 py-8">
@@ -70,82 +73,166 @@ export function TimelineFilter({
                 <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-400">
                     Timeline
                 </h2>
-                <Select onValueChange={setViewMode}>
-                    <SelectTrigger className="w-48">
-                        <SelectValue placeholder="Select view mode" />
+                <Separator className="md:hidden" />
+                <Select defaultValue="both" onValueChange={setViewMode}>
+                    <SelectTrigger className="w-48 place-self-end">
+                        <SelectValue placeholder="Filter" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectLabel>View mode</SelectLabel>
-                            <SelectItem defaultChecked value="both">
-                                Tasks & Announcement
+                            <SelectLabel>Filter</SelectLabel>
+                            <SelectItem value="both">
+                                All{" "}
+                                <Badge variant={"secondary"} color="red">
+                                    {timeline.length}
+                                </Badge>
                             </SelectItem>
                             <SelectItem value="announceonly">
-                                Announcements
+                                Announcements{" "}
+                                <Badge variant={"secondary"}>
+                                    {announcements.length}
+                                </Badge>
                             </SelectItem>
-                            <SelectItem value="taskonly">Tasks</SelectItem>
+                            <SelectItem value="taskonly">
+                                Tasks{" "}
+                                <Badge variant={"secondary"}>
+                                    {tasks.length}
+                                </Badge>
+                            </SelectItem>
                         </SelectGroup>
                     </SelectContent>
                 </Select>
             </header>
-            <Separator />
+            <Separator className="hidden md:block" />
             <div className="flex flex-col gap-4 px-4">
+                {filteredTimeline.length === 0 && (
+                    <p className="w-full text-center font-semibold text-gray-600 dark:text-gray-400">
+                        It&apos;s quiet in here.
+                    </p>
+                )}
                 {filteredTimeline
                     .slice(10 * (page - 1), 10 * page)
-                    .map((item, index) => (
-                        <Card key={index} className="w-full">
-                            <CardHeader className="flex flex-row items-center justify-between">
-                                <CardTitle>{item.title}</CardTitle>
-                                <p className="text-gray-600">
-                                    {item.createdAt.toUTCString()}
-                                </p>
-                            </CardHeader>
-                            <CardContent>
-                                <CardDescription>
-                                    {item.content}
-                                </CardDescription>
-                            </CardContent>
-                            <CardFooter className="flex flex-row justify-end">
-                                {item.hasOwnProperty("dueDate") ? (
-                                    <TaskViewModal task={item} />
-                                ) : (
+                    .map((item, index) => {
+                        if (item.type === "task") {
+                            return (
+                                <Card key={index} className="w-full">
+                                    <CardHeader className="flex flex-row items-center justify-between">
+                                        <CardTitle>{item.title}</CardTitle>
+                                        <p className="text-gray-600">
+                                            <DateTooltip
+                                                date={item.createdAt}
+                                                relative
+                                                withTime
+                                            />
+                                        </p>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="">
+                                            Deadline:{" "}
+                                            <DateTooltip
+                                                date={item.dueDate}
+                                                includeDifference
+                                            />
+                                        </p>
+                                        <CardDescription>
+                                            {item.content}
+                                        </CardDescription>
+                                    </CardContent>
+                                    <CardFooter className="flex flex-row justify-end">
+                                        <TaskViewModal task={item} />
+                                    </CardFooter>
+                                </Card>
+                            );
+                        }
+                        return (
+                            <Card key={index} className="w-full">
+                                <CardHeader className="flex flex-row items-center justify-between">
+                                    <CardTitle>{item.title}</CardTitle>
+                                    <p className="text-gray-600">
+                                        <DateTooltip
+                                            date={item.createdAt}
+                                            relative
+                                            withTime
+                                        />
+                                    </p>
+                                </CardHeader>
+                                <CardContent>
+                                    <CardDescription>
+                                        {item.content}
+                                    </CardDescription>
+                                </CardContent>
+                                <CardFooter className="flex flex-row justify-end">
                                     <AnnouncementViewModal
                                         announcement={item}
                                     />
-                                )}
-                            </CardFooter>
-                        </Card>
-                    ))}
+                                </CardFooter>
+                            </Card>
+                        );
+                    })}
                 <Pagination>
                     <PaginationContent>
-                        <PaginationItem className={`${page <= 1? "hidden" : ""}`} >
-                        <Button onClick={()=> {
-                            if (page > 1) setPage(page-1)
-                        }} variant={"ghost"}>
-                            <ChevronLeft className="h-4 w-4" />
-                            <span>Previous</span>
-                        </Button>
+                        <PaginationItem
+                            className={`${page <= 1 ? "hidden" : ""}`}
+                        >
+                            <Button
+                                onClick={() => {
+                                    if (page > 1) setPage(page - 1);
+                                }}
+                                variant={"ghost"}
+                            >
+                                <ChevronLeft className="h-4 w-4" />
+                                <span>Previous</span>
+                            </Button>
                         </PaginationItem>
-                        <PaginationItem className={`${page <= 1? "hidden" : ""}`}>
-                        <Button onClick={()=> {
-                            if (page > 1) setPage(page-1)
-                        }} variant={"ghost"}>{page-1}</Button>
+                        <PaginationItem
+                            className={`${page <= 1 ? "hidden" : ""}`}
+                        >
+                            <Button
+                                onClick={() => {
+                                    if (page > 1) setPage(page - 1);
+                                }}
+                                variant={"ghost"}
+                            >
+                                {page - 1}
+                            </Button>
                         </PaginationItem>
                         <PaginationItem>
-                        <Button variant={"outline"}>{page}</Button>
+                            <Button variant={"outline"}>{page}</Button>
                         </PaginationItem>
-                        <PaginationItem className={`${filteredTimeline.length >= 10*page? "" : "hidden"}`}>
-                            <Button onClick={()=> {
-                            if (filteredTimeline.length >= 10*page) setPage(page+1)
-                        }}  variant={"ghost"}>{page+1}</Button>
+                        <PaginationItem
+                            className={`${
+                                filteredTimeline.length > 10 * page
+                                    ? ""
+                                    : "hidden"
+                            }`}
+                        >
+                            <Button
+                                onClick={() => {
+                                    if (filteredTimeline.length > 10 * page)
+                                        setPage(page + 1);
+                                }}
+                                variant={"ghost"}
+                            >
+                                {page + 1}
+                            </Button>
                         </PaginationItem>
-                        <PaginationItem className={`${filteredTimeline.length >= 10*page? "" : "hidden"}`}>
-                        <Button onClick={()=> {
-                            if (filteredTimeline.length >= 10*page) setPage(page+1)
-                        }}  variant={"ghost"}>
-                            <span>Next</span>
-                            <ChevronRight className="h-4 w-4" />
-                        </Button>
+                        <PaginationItem
+                            className={`${
+                                filteredTimeline.length > 10 * page
+                                    ? ""
+                                    : "hidden"
+                            }`}
+                        >
+                            <Button
+                                onClick={() => {
+                                    if (filteredTimeline.length > 10 * page)
+                                        setPage(page + 1);
+                                }}
+                                variant={"ghost"}
+                            >
+                                <span>Next</span>
+                                <ChevronRight className="h-4 w-4" />
+                            </Button>
                         </PaginationItem>
                     </PaginationContent>
                 </Pagination>

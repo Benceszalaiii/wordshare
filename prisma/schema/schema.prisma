@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  id              String          @id @default(cuid())
+  name            String?
+  email           String?         @unique
+  emailVerified   DateTime?
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
+  role            String?
+  teacherVerified Boolean         @default(false)
+  Essay           Essay[]
+  Comment         Comment[]
+  Teacher         Teacher?
+  Classes         Class[]
+  grade           Int?
+  pinnedClassIds  String[]
+  Points          Points[]
+  ReviewRequest   ReviewRequest[]
+  Score           Score[]
+  genericPoints   Int             @default(0)
+}
+
+model Points {
+  id      String @id @default(cuid())
+  userId  String
+  points  Int    @default(0)
+  classId String
+  class   Class  @relation(fields: [classId], references: [id])
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

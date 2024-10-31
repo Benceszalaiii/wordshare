@@ -54,12 +54,12 @@ const TeacherActions = ({ currentClass }: { currentClass: Class }) => {
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link href={`/class/${currentClass.id}/invite`}>
+                    <Link href={`/class/${currentClass.id}/students`}>
                         Students
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link href={`/class/${currentClass.id}/invite`}>
+                    <Link href={`/class/${currentClass.id}/edit`}>
                         Edit Class
                     </Link>
                 </DropdownMenuItem>

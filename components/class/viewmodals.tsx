@@ -9,8 +9,10 @@ import {
     Dialog,
     DialogDescription,
 } from "../ui/dialog";
+import { TaskProp } from "./timeline";
+import { differenceInDays } from "date-fns";
 
-export function TaskViewModal({ task }: { task: any }) {
+export function TaskViewModal({ task }: { task: TaskProp }) {
     return (
         <Dialog>
             <DialogTrigger asChild className="text-end">
@@ -20,7 +22,7 @@ export function TaskViewModal({ task }: { task: any }) {
                 <DialogHeader>
                     <DialogTitle>{task.title}</DialogTitle>
                     <DialogDescription>
-                        {task.dueDate.toLocaleString()}
+                        In {differenceInDays(task.dueDate, new Date())} days
                     </DialogDescription>
                 </DialogHeader>
                 <DialogDescription>{task.content}</DialogDescription>

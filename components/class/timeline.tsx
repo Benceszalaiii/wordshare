@@ -1,18 +1,22 @@
 "use server";
 import { getAnnouncementsByClassId, getTasksByClassId } from "@/lib/db";
-import { Class } from "@prisma/client";
-import { Card, CardDescription, CardFooter, CardTitle, CardContent } from "../ui/card";
-import { CardHeader } from "@/components/ui/card";
-import { Button } from "../ui/button";
-import { Separator } from '@/components/ui/separator';
-import Link from "next/link";
-import { AnnouncementViewModal, TaskViewModal } from "./viewmodals";
+import { Announcement, Class, Task } from "@prisma/client";
 import { TimelineFilter } from "./timelinefilter";
+export type TaskProp = Task & {
+    type: "task"
+}
 
-export async function ClassTimeline({ currentClass }: { currentClass: Class }) {
-    const announcements = (await getAnnouncementsByClassId(currentClass.id)) || [];
-    const tasks = (await getTasksByClassId(currentClass.id))|| [];
-    return (
-            <TimelineFilter tasks={tasks} announcements={announcements} />
-    );
+export type AnnouncementProp = Announcement &{
+    type: "announcement"
+}
+export default async function ClassTimeline({ currentClass, canEdit }: { currentClass: Class, canEdit?: boolean }) {
+    const announcements: AnnouncementProp[] = 
+    ((await getAnnouncementsByClassId(currentClass.id)) || []).map(
+        (announcement) => ({
+            ...announcement,
+            type: "announcement",
+        })
+    ) || [];
+    const tasks: TaskProp[] = (await getTasksByClassId(currentClass.id)).map((taskWithoutProp)=> ({...taskWithoutProp, type: "task"})) || [];
+    return <TimelineFilter tasks={tasks} announcements={announcements} />;
 }

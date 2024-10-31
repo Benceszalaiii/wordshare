@@ -22,7 +22,6 @@ export default async function CommentWrapper({ essayId }: { essayId: string }) {
       {session ? (
         <form
           className="flex flex-col items-center gap-4 md:flex-row"
-          method="POST"
           action={async (e) => {
             "use server";
             const content = e.get("content")?.toString();

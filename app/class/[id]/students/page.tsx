@@ -1,4 +1,5 @@
 import {
+    checkForPoints,
     getAllStudents,
     getClassById,
     getClassStudentsByClassId,
@@ -6,35 +7,30 @@ import {
     isOwnClass,
 } from "@/lib/db";
 import { DataTable } from "./data-table";
-import { User } from "@prisma/client";
+import { Points, User } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { SignInButton } from "@/components/shared/buttons";
 import { columns } from "./columns";
 import { Metadata } from "next";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export interface UserWithClassId extends User {
     classId: string;
+    points: number;
 }
-
-async function getData(classId: string): Promise<UserWithClassId[]> {
-    //   const currentStudents = await getClassStudentsByClassId(classId);
-    const students: UserWithClassId[] = await getAllStudents().then(
-        (students) => {
-            return students.map((student) => {
-                return {
-                    ...student,
-                    classId: classId,
-                };
-            });
-        },
-    );
-    //   if (currentStudents) {
-    //   students.filter((student)=> {currentStudents.students.includes(student)});
-    //   }
+async function getData(classId: string, classStudents: User[], classPoints: Points[]){
+    const students: UserWithClassId[] = classStudents.map((student) => {
+        return {
+            ...student,
+            classId: classId,
+            points: classPoints.find((point) => point.userId === student.id)?.points || 0,
+        };
+    });
+    await checkForPoints(classStudents, classId);
     return students;
 }
-
 export default async function Page({ params }: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -56,7 +52,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     }
     const hasAccess =
         (await isOwnClass(dbUser.id, params.id)) || dbUser.role === "admin";
-    const currentClass = await getClassById(params.id);
+    const currentClass = await getClassStudentsByClassId(params.id);
     if (!currentClass) {
         return (
             <div className="flex flex-col items-center justify-center gap-4">
@@ -71,11 +67,19 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
         );
     }
-    const data = await getData(params.id);
+    const data: UserWithClassId[] = await getData(params.id, currentClass.students, currentClass.Points);
+    if (data.length === 0){
+        return (
+            <div className="flex flex-col items-center justify-center gap-4">
+                <h1>There are no students in this class.</h1>
+                <Button><Link href={`/class/${currentClass.id}/invite`}>Invite Students</Link></Button>
+            </div>
+        );
+    }
     return (
-        <section className="flex h-full w-full flex-col items-center justify-center">
+        <section className="flex py-8 w-full flex-col items-center justify-center">
             <h1 className="text-xl font-semibold">
-                Invite students to {currentClass.name}
+                Students of {currentClass.name}
             </h1>
             <DataTable
                 className="w-full px-8 md:px-24"
@@ -110,6 +114,5 @@ export async function generateMetadata({
         title: `Students of ${currentClass.name}`,
         description: `Edit who can access ${currentClass.name}`,
         category: "education",
-        creator: teacher.name,
     };
 }

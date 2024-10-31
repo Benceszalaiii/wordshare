@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const formSchema = z.object({
     announcementtitle: z.string({message: "Announcement must have a title of atleast 2 characters."}).min(2).max(200),
@@ -37,10 +39,13 @@ export function AnnouncementModal({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
+    const [submitted, setSubmitted] = useState(false);
+    const router = useRouter();
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        setSubmitted(true);
         const res = await fetch(`/api/class/announce/${classId}`, {method: "POST", body: JSON.stringify({title: values.announcementtitle, content: values.announcementdescription})});
-        if (res.ok) toast.success("Announcement sent!");
-        else toast.error("Failed to send announcement.");
+        if (res.ok) {toast.success("Announcement sent!"); router.refresh();}
+        else{ toast.error("Failed to send announcement. Try again later."); setSubmitted(false);};
     }
     return (
         <>
@@ -87,7 +92,7 @@ export function AnnouncementModal({
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Send announcement</Button>
+                        <Button disabled={submitted} type="submit">Send announcement</Button>
                     </form>
                 </Form>
             </DialogContent>

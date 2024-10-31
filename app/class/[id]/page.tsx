@@ -1,17 +1,15 @@
 "use server"
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import ClassLegend from "@/components/class/legend";
-import { getClassById, getUserById, isOwnClass, isStudentofClass } from "@/lib/db";
-import { getServerSession } from "next-auth";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { SignInButton } from '../../../components/shared/buttons';
-import { langParse } from "@/lib/utils";
-import { ScanEye, ShieldAlert } from "lucide-react";
+import { TimelineSkeleton } from "@/components/class/loading-components";
 import NoAuthClassPage from "@/components/class/no-auth";
 import { QuickCards } from "@/components/class/quickcards";
-import { Separator } from "@/components/ui/separator";
-import { ClassTimeline } from "@/components/class/timeline";
+import ClassTimeline from "@/components/class/timeline";
+import { getClassById, getUserById, isOwnClass, isStudentofClass } from "@/lib/db";
+import { langParse } from "@/lib/utils";
+import { getServerSession } from "next-auth";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
@@ -37,11 +35,13 @@ export default async function Page({ params }: { params: { id: string } }) {
       </section>
     )
   }
-  return (
+return (
     <section className="flex flex-col items-center">
         <ClassLegend canEdit={canEdit} currentClass={currentClass} />
         <QuickCards currentClassName={currentClass.name} classId={currentClass.id} auth={canEdit ? "teacher" : "student"} />
-        <ClassTimeline currentClass={currentClass} />
+        <Suspense fallback={<TimelineSkeleton />}>
+          <ClassTimeline currentClass={currentClass} />
+        </Suspense>
     </section>
   );
 }

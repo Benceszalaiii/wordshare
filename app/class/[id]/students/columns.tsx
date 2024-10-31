@@ -2,103 +2,130 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { UserWithClassId } from "./page";
-import { MoreHorizontal } from "lucide-react";
+import { CoinsIcon, MoreHorizontal } from "lucide-react";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import { toast } from "sonner";
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getInitials } from "@/lib/utils";
+import { WordPoints } from "@/components/shared/points";
 export const columns: ColumnDef<UserWithClassId>[] = [
-  {
-    accessorKey: "Avatar",
-    header: "Avatar",
-    cell: ({ row }) => {
-      const user = row.original;
-      return (
-        <Image
-          src={user.image ? user.image : "https://via.placeholder.com/150"}
-          alt={"-"}
-          className="h-8 w-8 rounded-full"
-          width={96}
-          height={96}
-          loading="lazy"
-        />
-      );
+    {
+        accessorKey: "Avatar",
+        header: "Avatar",
+        cell: ({ row }) => {
+            const user = row.original;
+            return (
+                <Image
+                    src={
+                        user.image
+                            ? user.image
+                            : "https://via.placeholder.com/150"
+                    }
+                    alt={"-"}
+                    className="h-8 w-8 rounded-full"
+                    width={96}
+                    height={96}
+                    loading="lazy"
+                />
+            );
+        },
     },
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+    {
+        accessorKey: "name",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === "asc")
+                    }
+                >
+                    Name
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        enableGlobalFilter: true,
     },
-    enableGlobalFilter: true
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => {
-      const user = row.original;
+    {
+        accessorKey: "points",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === "asc")
+                    }
+                >
+                    Points
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        enableGlobalFilter: true,
+        cell: ({ row }) => {
+            const user = row.original;
+            return <WordPoints points={user.points} />;
+        },
+    },
+    {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => {
+            const user = row.original;
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.name || "")}
-            >
-              Copy Name
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem disabled>View user</DropdownMenuItem>
-            <DropdownMenuItem disabled>View details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                navigator.clipboard.writeText(user.name || "")
+                            }
+                        >
+                            Copy Name
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem disabled>View user</DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => {
+                                toast.promise(
+                                    async () => {
+                                        return fetch(
+                                            `/api/class/leave/${row.original.classId}`,
+                                            { method: "DELETE", headers: { userId: row.original.id } },
+                                        );
+                                    },
+                                    {
+                                        loading: "Kicking...",
+                                        success: "Kicked!",
+                                        error: "Failed to kick!",
+                                    },
+                                );
+                            }}
+                            className="text-red-500"
+                        >
+                            Kick
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            );
+        },
     },
-  },
-  {
-    id: "invite",
-    header: "Invite",
-    cell: ({ row }) => {
-      const user = row.original;
-      return (
-        <Button
-          variant="default"
-          onClick={async() => {
-            const res = await fetch(`/api/class/invite/${user.classId}/${user.id}`, { method: "POST" });
-            if (res.status === 208){
-                toast.info("User is already invited")
-            }
-            else if (res.status === 409) toast.info("User is already in the class")
-            else if (res.ok) toast.success(await res.text())
-            else toast.error(await res.text())
-          }}
-        >
-          Invite
-        </Button>
-      );
-    },
-  },
 ];

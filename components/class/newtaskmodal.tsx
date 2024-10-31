@@ -1,4 +1,4 @@
-// TODO MAKE QUICKCARDS ANNOUNCEMENT AND NEW CARD MODALS
+"use client"
 import {
     Dialog,
     DialogContent,
@@ -38,6 +38,9 @@ import {
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { LoadingCircle } from "../shared/icons";
 const formSchema = z.object({
     taskname: z
         .string({ message: "Title must be atleast 2 characters." })
@@ -58,11 +61,13 @@ export function NewTaskModal({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
-
+    const [submitted, setSubmitted] = useState(false);
+    const router = useRouter();
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        const res = await fetch(`/api/class/task/${classId}`, {method: "POST", body: JSON.stringify({title: data.taskname, dueDate: data.taskduedate, content: data.taskdescription})});
-        if (res.ok) toast.success("Task uploaded!");
-        else toast.error("Failed to upload task.");
+        setSubmitted(true);
+        const res = await fetch(`/api/class/task/${classId}`, {method: "POST", body: JSON.stringify({title: data.taskname, dueDate: addDays(data.taskduedate, 1), content: data.taskdescription})});
+        if (res.ok){ toast.success("Task uploaded!"); router.refresh()}
+        else {toast.error("Failed to upload task."); setSubmitted(false);};
     }
     return (
         <>
@@ -196,7 +201,7 @@ export function NewTaskModal({
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Submit</Button>
+                        <Button disabled={submitted} type="submit">{submitted && <LoadingCircle className="mr-2"/>} Submit</Button>
                     </form>
                 </Form>
             </DialogContent>

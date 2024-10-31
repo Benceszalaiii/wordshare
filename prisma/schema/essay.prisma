@@ -1,0 +1,48 @@
+model Essay {
+  id            String          @id @default(cuid())
+  title         String
+  content       String
+  userId        String
+  createdAt     DateTime        @default(now())
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments      Comment[]
+  task          Task?           @relation(fields: [taskId], references: [id])
+  taskId        Int?
+  ReviewRequest ReviewRequest[]
+  Score         Score[]
+}
+
+model Score {
+  id        String   @id @default(cuid())
+  userId    String
+  essayId   String
+  teacherId String
+  score     Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  essay     Essay    @relation(fields: [essayId], references: [id], onDelete: Cascade)
+  teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  userId    String
+  essayId   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  essay     Essay    @relation(fields: [essayId], references: [id], onDelete: Cascade)
+  replyTo   String?
+}
+
+//TODO ON ESSAY LET USER REQUEST REVIEW FROM TEACHER, SEND TEACHER EMAIL TO REVIEW ESSAY, TEACHER HAS ACCESS TO ESSAY NOW AND CAN GRADE IT, IF MULTIPLE TEACHERS REVIEW, THEN AVERAGE SCORE IS TAKEN
+model ReviewRequest {
+  id        String   @id @default(cuid())
+  userId    String
+  essayId   String
+  teacherId String
+  createdAt DateTime @default(now())
+  Essay     Essay    @relation(fields: [essayId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  teacher   Teacher  @relation(fields: [teacherId], references: [id])
+}

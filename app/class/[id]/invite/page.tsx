@@ -72,7 +72,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
   const data = await getData(params.id);
   return (
-    <section className="flex h-full w-full flex-col items-center justify-center">
+    <section className="flex py-8 w-full flex-col items-center justify-center">
       <h1 className="text-xl font-semibold">
         Invite students to {currentClass.name}
       </h1>

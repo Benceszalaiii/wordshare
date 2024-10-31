@@ -3,8 +3,8 @@ import "server-only";
 import { getServerSession, Session } from "next-auth";
 import prisma from "./prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { Comment, User, Class } from "@prisma/client";
-import { sendEmail, sendInviteMail } from "./aws";
+import { Comment, User } from "@prisma/client";
+import { sendInviteMail } from "./aws";
 interface Essay {
     title: string;
     content: string;
@@ -15,21 +15,18 @@ export async function uploadEssay(essay: Essay) {
     const a = await auth;
     const user = a?.user;
     if (!user) {
-        console.log("User is null");
         return new Response(null, {
             status: 401,
             statusText: "No user found.",
         });
     }
     if (!essay.title || !essay.content) {
-        console.log("Essay title or content is null");
         return new Response(null, {
             status: 400,
             statusText: "Elemental data missing. Try adding a title/content.",
         });
     }
     if (user.email === null) {
-        console.log("User email is null");
         return new Response(null, {
             status: 401,
             statusText: "User has no email connected.",
@@ -40,31 +37,22 @@ export async function uploadEssay(essay: Essay) {
         where: { email: user.email },
     });
     if (!dbUser?.id) {
-        console.log("User not found in database");
         return new Response(null, {
             status: 401,
             statusText: "No user found in database.",
         });
     }
-    console.log(
-        "Uploading essay to prisma, userid: ",
-        dbUser.id,
-        " name of user: ",
-        dbUser.name,
-    );
 
     const created = await prisma.essay.create({
         data: { title: essay.title, userId: dbUser.id, content: essay.content },
     });
     if (!created) {
-        console.log("Error creating essay in database");
         return new Response(null, {
             status: 500,
             statusText:
                 "For some reason, the database couldn't handle your request. Try again later.",
         });
     }
-    console.log("Essay created successfully: ", created.content);
 }
 
 export async function getEssays() {
@@ -105,16 +93,9 @@ export async function getEssays() {
 export async function getEssayById(id: string) {
     const essay = await prisma.essay.findUnique({ where: { id: id } });
     if (!essay) {
-        return new Response(null, {
-            status: 404,
-            statusText: "Essay not found.",
-        });
+        return null;
     }
-    return new Response(JSON.stringify(essay), {
-        status: 200,
-        statusText: "Essay found",
-        headers: { "Content-Type": "application/json" },
-    });
+    return essay
 }
 
 export async function getUserById(
@@ -588,20 +569,20 @@ export async function inviteUser(
             statusText: "User already in class.",
         });
     }
-    const invite = await prisma.invite.create({
-        data: { userId: userId, classId: classId, inviterId: inviterId },
-    });
-    const inviter = await prisma.user.findUnique({ where: { id: inviterId } });
     const dbUser = await prisma.user.findUnique({ where: { id: userId } });
     const currentClass = await prisma.class.findUnique({
         where: { id: classId },
     });
+    const inviter = await prisma.user.findUnique({ where: { id: inviterId } });
     if (!inviter || !dbUser || !currentClass) {
         return new Response(null, {
             status: 500,
             statusText: "Error inviting user.",
         });
     }
+    const invite = await prisma.invite.create({
+        data: { userId: userId, classId: classId, inviterId: inviterId },
+    });
     if (!dbUser.email) {
         return new Response("User has no email connected.", { status: 400 });
     }
@@ -621,7 +602,7 @@ export async function inviteUser(
         to: [dbUser.email],
         sender: { email: inviter.email, name: inviter.name },
         class_name: currentClass.name,
-        action_url: `https://wordshare.tech/invites/${classId}`,
+        action_url: `https://wordshare.tech/invites/${invite.id}`,
         receiver_name: dbUser.name,
     });
     if (!invite) {
@@ -665,7 +646,7 @@ export async function deleteInvite(inviteId: string) {
 export async function getClassStudentsByClassId(classId: string) {
     const students = await prisma.class.findUnique({
         where: { id: classId },
-        include: { students: true },
+        include: { students: true, Points: true },
     });
     return students;
 }
@@ -819,7 +800,7 @@ export async function getTasksByClassId(classId: string) {
         where: { id: classId },
         include: { Tasks: true },
     });
-    return currentClass?.Tasks;
+    return currentClass?.Tasks || [];
 }
 
 export async function uploadTask(data: {
@@ -852,4 +833,143 @@ export async function uploadTask(data: {
         });
     }
     return new Response(null, { status: 200, statusText: "Task created." });
+}
+
+export async function getClassesByIds(classIds: string[]) {
+    if (!classIds) {
+        return [];
+    }
+    const classes = await prisma.class.findMany({
+        where: { id: { in: classIds } },
+    });
+    return classes;
+}
+
+export async function getClassesByUser(userId: string | null) {
+    if (!userId) {
+        return [];
+    }
+    const dbUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (!dbUser) {
+        return [];
+    }
+    if (dbUser.role === "teacher") {
+        const classes = await prisma.class.findMany({
+            where: { teacherUserId: userId },
+        });
+        return classes;
+    }
+    const classes = await prisma.class.findMany({
+        where: { students: { some: { id: userId } } },
+    });
+    return classes;
+}
+
+export async function initializePoints(userId: string, classId: string) {
+    const points = await prisma.points.create({
+        data: {
+            userId: userId,
+            classId: classId,
+        },
+    });
+    if (!points) {
+        return new Response(null, {
+            status: 500,
+            statusText: "Error initializing points.",
+        });
+    }
+    return new Response(null, {
+        status: 200,
+        statusText: "Points initialized.",
+    });
+}
+
+export async function checkForPoints(classStudents: User[], classId: string) {
+    for (const student of classStudents) {
+        const points = await prisma.points.findFirst({
+            where: { userId: student.id, classId: classId },
+        });
+        if (!points) {
+            await initializePoints(student.id, classId);
+        }
+    }
+}
+
+export async function getAllPointsUser(userId: string) {
+    const dbUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (!dbUser) {
+        return 0;
+    }
+    const points = await prisma.points.findMany({ where: { userId: userId } });
+    return (
+        points.map((point) => point.points).reduce((a, b) => a + b, 0) +
+        dbUser.genericPoints
+    );
+}
+
+export async function getAllPointsClass(classId: string) {
+    const points = await prisma.points.findMany({
+        where: { classId: classId },
+    });
+    return points.map((point) => point.points).reduce((a, b) => a + b, 0);
+}
+
+export async function inviteExists(inviteId: string | null) {
+    if (!inviteId) return false;
+    const invite = await prisma.invite.findUnique({ where: { id: inviteId } });
+    return invite ? true : false;
+}
+
+export async function addPoints(
+    classId: string,
+    userId: string,
+    points: number,
+) {
+    const current = await prisma.points.findFirst({
+        where: { userId: userId, classId: classId },
+    });
+    if (!current) {
+        return new Response(null, {
+            status: 404,
+            statusText: "No points found.",
+        });
+    }
+    const updated = await prisma.points.update({
+        where: { id: current.id },
+        data: { points: points + current.points },
+    });
+    if (!updated) {
+        return new Response(null, {
+            status: 500,
+            statusText: "Error updating points.",
+        });
+    }
+    return new Response(null, {
+        status: 200,
+        statusText: "Points added. New points: " + updated.points,
+    });
+}
+
+export async function addGenericPoints(userId: string, points: number) {
+    const dbUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (!dbUser) {
+        return new Response(null, {
+            status: 404,
+            statusText: "No user found.",
+        });
+    }
+    const res = await prisma.user.update({
+        where: { id: userId },
+        data: { genericPoints: dbUser.genericPoints + points },
+    });
+    if (!res) {
+        return new Response(null, {
+            status: 500,
+            statusText: "Error updating points.",
+        });
+    }
+    return new Response(null, {
+        status: 200,
+        statusText: "Points added. New points: " + res.genericPoints,
+    });
 }

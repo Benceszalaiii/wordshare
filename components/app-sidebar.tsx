@@ -35,8 +35,9 @@ import {
   CollapsibleTrigger,
 } from "@radix-ui/react-collapsible";
 import { getServerSession, Session } from "next-auth";
-import { getClassByStudentSession, getClassesByTeacherUser, getInvites, getUserById } from "@/lib/db";
+import { getClassByStudentSession, getClassesByIds, getClassesByTeacherUser, getInvites, getUserById } from "@/lib/db";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { ClassContextWrapper } from "./class/class-context";
 
 // Menu items.
 
@@ -87,19 +88,8 @@ export async function AppSidebar() {
   const user = session?.user;
   const invites = await getInvites(user?.id);
   const dbUser = await getUserById(user?.id);
-  const classes = [];
-  // TODO SHOW ALL PINNED CLASSES
-  if (dbUser?.role === "teacher" || dbUser?.role === "admin"){
-    const teacherClasses = await getClassesByTeacherUser(dbUser.id);
-    if (teacherClasses){
-      classes.push(...teacherClasses.filter((x) => dbUser.pinnedClassIds.includes(x.id)));
-    }
-  }else if (dbUser?.role === "student"){
-    const studentClasses = await getClassByStudentSession(session);
-    if (studentClasses){
-      classes.push(...studentClasses.filter((x) => dbUser.pinnedClassIds.includes(x.id)));
-    }
-  }
+
+  const classes = await getClassesByIds(dbUser?.pinnedClassIds || []);
   if (invites){
     navigation.find((x) => x.title === "Invites")!.banner = invites.length;
   }
@@ -142,7 +132,9 @@ export async function AppSidebar() {
                 <CollapsibleContent>
                   <SidebarMenu>
                     {classes.map((item) => (
-                      <ClassItem item={item} key={item.id} />
+                      <ClassContextWrapper  canEdit={item.teacherUserId === dbUser?.id || dbUser?.role === "admin"} currentClassName={item.name} key={item.id} classId={item.id}>
+                        <ClassItem item={item} />
+                      </ClassContextWrapper>
                     ))}
                   </SidebarMenu>
                 </CollapsibleContent>

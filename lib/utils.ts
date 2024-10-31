@@ -1,8 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import ms from "ms";
-import { brotliCompressSync, brotliDecompressSync } from "zlib";
-import zlib from "zlib";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -137,22 +135,6 @@ export function decodeSectionTitle(section: string){
 }
 
 
-export const shareToInstagram = async () => {
-  if (navigator.share) {
-    try {
-      const fetched = await fetch('/opengraph-image.png');
-      const imageBlob = await fetched.blob();
-      await navigator.share({
-        title: "Check out WordShare!",
-        text: "I just shared this from WordShare!",
-        url: 'https://wordshare.tech',
-        files: [new File([imageBlob], 'story.png', { type: 'image/png' })],
-      });
-      console.log('Content shared successfully!');
-    } catch (error) {
-      console.error('Error sharing:', error);
-    }
-  } else {
-    console.log('Web Share API is not supported in this browser.');
-  }
-};
+export function dateToLocalTime(date: Date){
+  return new Date(date.getTime() + date.getTimezoneOffset())
+}

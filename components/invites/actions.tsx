@@ -58,9 +58,9 @@ export function ActionButtons({
                                         headers: { inviteId: invite.id },
                                     },
                                 );
-                                if (res.ok) toast.success(await res.text());
-                                else toast.error(await res.text());
-                                router.replace(`/class/${invite.classId}`);
+                                if (res.ok) {toast.success(await res.text()); router.replace(`/class/${invite.classId}`);}
+                                else {toast.error(await res.text());}
+                                
                             }}
                         >
                             Accept
@@ -78,10 +78,8 @@ export function ActionButtons({
                                         headers: { inviteId: invite.id },
                                     },
                                 );
-                                if (res.ok) toast.success(await res.text());
-                                else toast.error(await res.text());
-                                router.replace(`/invites`)
-
+                                if (res.ok){toast.success(await res.text());router.replace(`/invites`)}
+                                else{toast.error(await res.text())};
                             }}
                         >
                             Decline
