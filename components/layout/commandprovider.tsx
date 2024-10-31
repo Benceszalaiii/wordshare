@@ -49,6 +49,9 @@ const commands: Command[] = [
     title: "Classes",
   }
 ]
+export async function getCommands(){
+  return commands;
+}
 export async function CommandProvider() {
   const session = await getServerSession(authOptions);
   const classes = await getClassesByUser(session?.user.id || null);
