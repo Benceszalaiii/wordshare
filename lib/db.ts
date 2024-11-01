@@ -853,7 +853,7 @@ export async function getClassesByUser(userId: string | null) {
     if (!dbUser) {
         return [];
     }
-    if (dbUser.role === "teacher") {
+    if (dbUser.role === "teacher" || dbUser.role === "admin") {
         const classes = await prisma.class.findMany({
             where: { teacherUserId: userId },
         });

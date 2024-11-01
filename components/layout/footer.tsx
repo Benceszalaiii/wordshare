@@ -1,14 +1,13 @@
 "use client";
 
-import { caveat } from "@/app/fonts";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import { caveat } from "@/app/fonts";
 export default function Footer() {
-  const pathname = usePathname();
   return (
-    <div className="w-full bg-beige-400 z-50 bg-opacity-50 backdrop-blur-md dark:bg-black flex flex-col items-center justify-center" aria-hidden="true">
+    <div className="w-full bg-beige-400 z-50 bg-opacity-50 backdrop-blur-md dark:bg-neutral-950 border-t border-border flex flex-col items-center justify-center" aria-hidden="true">
       <div className="flex flex-col items-center justify-center p-4">
+        {/* <p className="text-left font-display font-light py-4">Happy <b className="font-extrabold text-main-600">Halloween</b>!</p> */}
         <h2 className={"text-2xl font-bold " + caveat.className}>WordShare</h2>
         <p className="text-gray-500 text-center">
           Learn English with daily cards! 📚🔥
@@ -29,7 +28,6 @@ export default function Footer() {
           Benceszalaiii
         </a>
       </p>
-
     </div>
   );
 }

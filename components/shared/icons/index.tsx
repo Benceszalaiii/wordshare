@@ -9,3 +9,5 @@ export { default as BuyMeACoffee } from "./buymeacoffee";
 export { default as Spotify } from "./spotify";
 export { default as BackArrow } from "./back";
 export { default as TrashBin } from "./delete";
+export { default as Bat } from "./bat";
+export { default as Tree} from "./tree";

@@ -189,7 +189,7 @@ function CardWithIcon({
     cardClass,
     announcementWithClassName,
     newTaskWithClassName,
-    classId
+    classId,
 }: {
     Icon: LucideIcon;
     iconClass?: string;
@@ -204,7 +204,10 @@ function CardWithIcon({
     if (newTaskWithClassName) {
         return (
             <Dialog>
-                <NewTaskModal classId={classId} currentClassName={newTaskWithClassName}>
+                <NewTaskModal
+                    classId={classId}
+                    currentClassName={newTaskWithClassName}
+                >
                     <TooltipProvider>
                         <Tooltip delayDuration={300}>
                             <TooltipTrigger asChild>

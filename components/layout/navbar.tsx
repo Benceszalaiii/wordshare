@@ -10,15 +10,17 @@ import { usePathname } from "next/navigation";
 import ThemeSwitch from "../theme";
 import { DashboardIcon } from "@radix-ui/react-icons";
 import { AllPoints } from "../shared/points";
-
+import { ReactNode } from "react";
 export default function NavBar({
     session,
     role,
     points,
+    EventIcon,
 }: {
     session: Session | null;
     role: string | null | undefined;
     points: number | null;
+    EventIcon?: React.ReactNode;
 }) {
     const { SignInModal, setShowSignInModal } = useSignInModal();
     const scrolled = useScroll(50);
@@ -39,7 +41,7 @@ export default function NavBar({
                             : "bg-white/0 dark:bg-black/0 "
                     } ${
                         isSideBar
-                            ? "border-b border-b-gray-300 bg-gray-200 dark:border-b-neutral-700 dark:bg-neutral-900"
+                            ? "border-b border-border bg-gray-200 dark:bg-neutral-900"
                             : ""
                     } z-30 transition-all duration-300`}
                 >
@@ -49,11 +51,14 @@ export default function NavBar({
                         }`}
                     >
                         <Link href="/" className="flex font-display text-2xl">
-                            <p
-                                className={`tracking-wider text-indigo-800 shadow-indigo-700 dark:text-indigo-600 dark:hover:text-indigo-500 ${caveat.className} `}
-                            >
-                                WordShare
-                            </p>
+                            <div className="group flex flex-row items-center gap-1">
+                            {EventIcon && EventIcon as ReactNode}
+                                <p
+                                    className={`tracking-wider  text-main-600 shadow-main-700 group-hover:text-main-700 dark:text-main-600 dark:group-hover:text-main-500 ${caveat.className} `}
+                                >
+                                    WordShare
+                                </p>
+                            </div>
                         </Link>
                         <div className="flex flex-row items-center justify-center gap-2">
                             {points && <AllPoints points={points} />}
@@ -90,13 +95,13 @@ export default function NavBar({
         <div className="mb-24">
             <SignInModal />
             <div
-                className={`fixed top-0 flex w-full transition-all justify-center px-4 ${
+                className={`fixed top-0 flex w-full justify-center px-4 transition-all ${
                     needsExpand
                         ? " justify-center bg-white/50 backdrop-blur-xl dark:bg-black/70"
                         : "bg-white/0 dark:bg-black/0 "
                 }  ${
                     isSideBar
-                        ? "border-b border-b-gray-300 bg-gray-200 dark:border-b-neutral-700 dark:bg-neutral-900"
+                        ? "border-b  border-border bg-gray-200 dark:bg-neutral-900"
                         : ""
                 } z-30 transition-all duration-300`}
             >
@@ -106,13 +111,14 @@ export default function NavBar({
                     }`}
                 >
                     <Link href="/" className="flex font-display text-2xl">
-                        <p
-                            className={`tracking-wider text-indigo-800 shadow-indigo-700 dark:text-indigo-600 dark:hover:text-indigo-500 ${
-                                pathname.startsWith("/overview") ? "hidden" : ""
-                            } ${caveat.className} `}
-                        >
-                            WordShare
-                        </p>
+                        <div className="group flex flex-row items-center gap-1">
+                            
+                            <p
+                                className={`tracking-wider text-main-600 shadow-main-700 group-hover:text-main-700 dark:text-main-600 dark:group-hover:text-main-500 ${caveat.className} `}
+                            >
+                                WordShare
+                            </p>
+                        </div>
                     </Link>
                     <div className={`flex flex-row gap-4 pr-4`}>
                         {points && <AllPoints points={points} />}

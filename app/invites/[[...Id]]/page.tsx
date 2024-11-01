@@ -24,9 +24,7 @@ export default async function Page({
         return notAuthorized("invites");
     }
     const invites = await getInvites(session.user.id);
-    console.group("Invites for ", session.user.email);
-    console.table(invites);
-    console.groupEnd();
+
     const inviteId = params?.Id ? params.Id[0] : null;
 
     if (!inviteId) {

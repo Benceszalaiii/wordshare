@@ -167,7 +167,7 @@ export default function ClassLegend({
                             {isAnon ? (
                                 <>
                                     Join{" "}
-                                    <span className="font-bold text-violet-700">
+                                    <span className="font-bold text-main-700">
                                         {currentClass.name}
                                     </span>{" "}
                                     today!
@@ -209,7 +209,7 @@ export default function ClassLegend({
                     width={820}
                     height={320}
                 />
-                <Separator/>
+                <Separator />
             </section>
         </>
     );

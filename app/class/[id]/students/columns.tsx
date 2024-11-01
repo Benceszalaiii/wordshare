@@ -15,8 +15,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import { toast } from "sonner";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getInitials } from "@/lib/utils";
 import { WordPoints } from "@/components/shared/points";
 export const columns: ColumnDef<UserWithClassId>[] = [
     {
