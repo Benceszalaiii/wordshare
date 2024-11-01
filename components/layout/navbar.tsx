@@ -52,7 +52,7 @@ export default function NavBar({
                     >
                         <Link href="/" className="flex font-display text-2xl">
                             <div className="group flex flex-row items-center gap-1">
-                            {EventIcon && EventIcon as ReactNode}
+                                {EventIcon && (EventIcon as ReactNode)}
                                 <p
                                     className={`tracking-wider  text-main-600 shadow-main-700 group-hover:text-main-700 dark:text-main-600 dark:group-hover:text-main-500 ${caveat.className} `}
                                 >
@@ -112,7 +112,7 @@ export default function NavBar({
                 >
                     <Link href="/" className="flex font-display text-2xl">
                         <div className="group flex flex-row items-center gap-1">
-                            
+                            {EventIcon && (EventIcon as ReactNode)}
                             <p
                                 className={`tracking-wider text-main-600 shadow-main-700 group-hover:text-main-700 dark:text-main-600 dark:group-hover:text-main-500 ${caveat.className} `}
                             >
