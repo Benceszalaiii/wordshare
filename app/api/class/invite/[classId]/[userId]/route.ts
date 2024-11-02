@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { acceptInvite, deleteInvite, getClassById, getUserById, inviteUser, isOwnClass } from "@/lib/db";
+import { acceptInvite, deleteInvite, getClassById, getUserById, initializePoints, inviteUser, isOwnClass } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 
@@ -17,6 +17,10 @@ export async function POST(req: NextRequest, {params}: {params: {classId: string
         return new Response("You do not have elevated access to this class.", {status: 401});
     }
     const invite = await inviteUser(params.classId, params.userId, session.user.id);
+    if (!invite.ok){
+        return new Response("Failed to invite user. It is possible that the mistake is on our side.", {status: 500});
+    }
+    const points = await initializePoints(params.userId, params.classId);
     return new Response(invite.statusText, {status: invite.status});
 }
 

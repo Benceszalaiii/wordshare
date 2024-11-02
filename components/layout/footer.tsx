@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 export default function Footer() {
   const [eventText, setEventText] = useState<string[] | null>(null);
   useEffect(()=> {
-    fetch(`/api/event`).then(async (res)=> {switch(await res.text()){
+    fetch(`/api/event`, {cache: "force-cache", keepalive: true}).then(async (res)=> {switch(await res.text()){
       case "HALLOWEEN":
         setEventText(["Happy", "Halloween!"]);
         break;

@@ -21,5 +21,6 @@ export default async function Nav() {
         return null;
     }
   }
+
   return <Navbar session={session} role={dbUser?.role} points={points} EventIcon={getIcon()} />;
 }

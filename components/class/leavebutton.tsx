@@ -7,14 +7,13 @@ export default function LeaveClassButton({ classId }: { classId: string }) {
     return (
         <Button variant={"destructive"} onClick={async()=>{
 
-            // const res = await fetch(`/api/class/leave/${classId}`, {
-            //     method: "POST",
-            // });
-            // if (res.ok) toast.success("Successfully left class");
-            // else toast.error("Failed to leave class");
-            // router.push("/class");
-            toast("This feature is not yet implemented");
+            const res = await fetch(`/api/class/leave/${classId}`, {
+                method: "POST",
+            });
+            if (res.ok) toast.success("Successfully left class");
+            else toast.error("Failed to leave class");
             router.push("/class");
+
         }}>
           Leave class
         </Button>

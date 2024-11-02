@@ -31,6 +31,8 @@ model User {
   ReviewRequest   ReviewRequest[]
   Score           Score[]
   genericPoints   Int             @default(0)
+  School           School?          @relation(fields: [schoolId], references: [id])
+  schoolId         Int?
 }
 
 model Points {

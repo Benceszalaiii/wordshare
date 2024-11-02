@@ -27,7 +27,7 @@ export default function Popover({
         <div className="sm:hidden">{children}</div>
         <Drawer.Overlay className="fixed inset-0 z-40 bg-gray-100 dark:bg-dark/10 bg-opacity-10 backdrop-blur" />
         <Drawer.Portal>
-          <Drawer.Content className="fixed bottom-0 left-0 right-0 z-50 mt-24 rounded-t-[10px] border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-dark">
+          <Drawer.Content className="fixed bottom-0 left-0 right-0 z-50 mt-24 rounded-t-[10px] border-t border-main-200 dark:border-main-800 bg-white dark:bg-dark">
             <div className="sticky top-0 z-20 flex w-full items-center justify-center rounded-t-[10px] bg-inherit">
               <div className="my-3 h-1 w-12 rounded-full bg-gray-300 dark:bg-dark" />
             </div>
@@ -50,7 +50,7 @@ export default function Popover({
         <PopoverPrimitive.Content
           sideOffset={8}
           align={align}
-          className="z-50 hidden animate-slide-up-fade items-center rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-dark drop-shadow-lg sm:block"
+          className="z-50 hidden animate-slide-up-fade items-center rounded-md border border-main-200 dark:border-main-900 bg-white dark:bg-dark drop-shadow-lg sm:block"
         >
           {content}
         </PopoverPrimitive.Content>

@@ -545,6 +545,16 @@ export async function isOwnClass(userId: string, classId: string) {
     return false;
 }
 
+export async function getClassPoints(classId: string, userId: string){
+    const points = await prisma.points.findFirst({where:{ userId: userId, classId: classId}});
+    if (!points){
+        await initializePoints(userId, classId);
+        return 0;
+    }
+    return points.points;
+}
+
+
 //! Should be validated by API endpoint or other means.
 export async function inviteUser(
     classId: string,
@@ -664,6 +674,26 @@ export async function leaveClass(classId: string, userId: string) {
     }
     return new Response(null, { status: 200, statusText: "Left class." });
 }
+
+export async function deletePoints(userId: string, classId: string){
+    const point = await prisma.points.findFirst({where:{userId: userId, classId: classId}});
+    if (!point){
+        return new Response(null, {
+            status: 404,
+            statusText: "Points not found.",
+        });
+    }
+    const deleted = await prisma.points.delete({where:{id: point.id}});
+    if (!deleted){
+        return new Response(null, {
+            status: 500,
+            statusText: "Error deleting points.",
+        });
+    }
+    return new Response(null, { status: 200, statusText: "Points deleted." });
+}
+
+
 
 export async function isStudentofClass(classId: string, userId: string) {
     const currentClass = await prisma.class.findUnique({
@@ -898,14 +928,12 @@ export async function checkForPoints(classStudents: User[], classId: string) {
 export async function getAllPointsUser(userId: string) {
     const dbUser = await prisma.user.findUnique({ where: { id: userId } });
     if (!dbUser) {
-        return 0;
+        return [];
     }
     const points = await prisma.points.findMany({ where: { userId: userId } });
-    return (
-        points.map((point) => point.points).reduce((a, b) => a + b, 0) +
-        dbUser.genericPoints
-    );
+    return points
 }
+
 
 export async function getAllPointsClass(classId: string) {
     const points = await prisma.points.findMany({
@@ -950,26 +978,25 @@ export async function addPoints(
     });
 }
 
-export async function addGenericPoints(userId: string, points: number) {
-    const dbUser = await prisma.user.findUnique({ where: { id: userId } });
-    if (!dbUser) {
-        return new Response(null, {
-            status: 404,
-            statusText: "No user found.",
-        });
+
+
+export async function getSchools(){
+    const schools = await prisma.school.findMany();
+    return schools;
+}
+
+export async function createSchool(name: string){
+    const school = await prisma.school.create({data: {name: name}});
+    return school;
+}
+export async function addUserToSchool(schoolId: number,userId: string, role: string){
+    if (role === "student"){
+        const res = await prisma.school.update({where: {id: schoolId}, data: {students: {connect: {id: userId}}}})
+        return res;
     }
-    const res = await prisma.user.update({
-        where: { id: userId },
-        data: { genericPoints: dbUser.genericPoints + points },
-    });
-    if (!res) {
-        return new Response(null, {
-            status: 500,
-            statusText: "Error updating points.",
-        });
+    if (role === "teacher"){
+        const res = await prisma.school.update({where: {id: schoolId}, data: {teachers: {connect: {id: userId}}}})
+        return res;
     }
-    return new Response(null, {
-        status: 200,
-        statusText: "Points added. New points: " + res.genericPoints,
-    });
+    return null;
 }

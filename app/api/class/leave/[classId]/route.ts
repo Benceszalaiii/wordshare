@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { getUserById, isOwnClass, leaveClass } from "@/lib/db";
+import { deletePoints, getUserById, isOwnClass, leaveClass } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 
@@ -37,6 +37,7 @@ export async function DELETE(req: NextRequest, {params}: {params: {classId: stri
         return new Response("You do not have elevated access to this class.", {status: 401});
     }
     const res = await leaveClass(params.classId, userId);
+    const res2 = await deletePoints(userId, params.classId);
     if (!res.ok){
         return new Response("Failed to kick from class. It is possible that the mistake is on our side.", {status: 500});
     }

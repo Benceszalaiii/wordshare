@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { NextRequest } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/options';
-import { addGenericPoints, getUserById } from '@/lib/db';
+import { getUserById } from '@/lib/db';
 export async function POST(req: NextRequest){
     const session = await getServerSession(authOptions);
     if (!session){
@@ -23,9 +23,5 @@ export async function POST(req: NextRequest){
     if (!hasRights){
         return new Response("Not enough mana", {status: 401});
     }
-    const res = await addGenericPoints(recipientId, points);
-    if (!res.ok){
-        return new Response("Failed to add points", {status: 500});
-    }
-    return new Response(res.statusText, {status: 200});
+    return new Response(null, {status: 200});
 }

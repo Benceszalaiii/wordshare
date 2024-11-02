@@ -24,7 +24,7 @@ export default function UserDropdown({
     <div className="relative flex items-center">
       <Popover
         content={
-          <div className="w-full rounded-md bg-white p-2 dark:border-gray-700 dark:bg-dark sm:w-56">
+          <div className="w-full rounded-md bg-white p-2 dark:border-main-700 dark:bg-dark sm:w-56">
             <div className="p-2">
               {session?.user?.name && (
                 <p className="truncate text-sm font-medium text-gray-900 dark:text-light">

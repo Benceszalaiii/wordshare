@@ -1,0 +1,6 @@
+model School {
+  id       Int       @id @default(autoincrement())
+  name     String
+  students User[]
+  teachers Teacher[]
+}

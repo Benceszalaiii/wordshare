@@ -1,6 +1,6 @@
 import plugin from "tailwindcss/plugin";
 import type { Config } from "tailwindcss";
-// gotta edit this to make it dynamic, ugh \\\\\\\\\\
+// gotta edit this to make it dynamic, ugh \\\\\\\\\\/
 
 interface EventScheme {
     palette: {

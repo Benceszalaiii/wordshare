@@ -33,6 +33,8 @@ model Teacher {
   verified      Boolean         @default(false)
   ReviewRequest ReviewRequest[]
   Score         Score[]
+  School         School?          @relation(fields: [schoolId], references: [id])
+  schoolId       Int?
 }
 
 model Task {

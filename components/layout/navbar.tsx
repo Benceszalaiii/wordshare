@@ -1,5 +1,5 @@
 "use client";
-
+import * as React from "react";
 import Link from "next/link";
 import useScroll from "@/lib/hooks/use-scroll";
 import { useSignInModal } from "./sign-in-modal";
@@ -11,6 +11,7 @@ import ThemeSwitch from "../theme";
 import { DashboardIcon } from "@radix-ui/react-icons";
 import { AllPoints } from "../shared/points";
 import { ReactNode } from "react";
+import { Points } from "@prisma/client";
 export default function NavBar({
     session,
     role,
@@ -19,7 +20,7 @@ export default function NavBar({
 }: {
     session: Session | null;
     role: string | null | undefined;
-    points: number | null;
+    points: Points[] | null;
     EventIcon?: React.ReactNode;
 }) {
     const { SignInModal, setShowSignInModal } = useSignInModal();
@@ -30,6 +31,28 @@ export default function NavBar({
     const isSideBar = ["/class", "/essay", "/wordplay", "/invites"].some(
         (path) => pathname.startsWith(path),
     );
+    const pointSum = () => {
+        let sum = 0;
+        points?.forEach((point) => (sum += point.points));
+        return sum;
+    };
+    const [calculatedPoints, setCalculatedPoints] = React.useState<number>(
+        pointSum(),
+    );
+    const [isClassPoints, setIsClassPoints] = React.useState<boolean>(false);
+    React.useEffect(() => {
+        if (pathname.startsWith("/class")) {
+            const classId = pathname.split("/")[2];
+            console.log(classId);
+            if (classId) {
+                let calcpoints = points?.find(
+                    (point) => point.classId === classId,
+                )?.points;
+                    setCalculatedPoints(calcpoints || 0);
+                    setIsClassPoints(true);
+            }
+        }else{ setIsClassPoints(false)}
+    }, [pathname]);
     if (role === "admin") {
         return (
             <div className="mb-24">
@@ -61,7 +84,7 @@ export default function NavBar({
                             </div>
                         </Link>
                         <div className="flex flex-row items-center justify-center gap-2">
-                            {points && <AllPoints points={points} />}
+                            {points && <AllPoints isClassPoints={isClassPoints} points={calculatedPoints} />}
                             <div className={`pr-0`}>
                                 {session ? (
                                     <UserDropdown
@@ -121,7 +144,7 @@ export default function NavBar({
                         </div>
                     </Link>
                     <div className={`flex flex-row gap-4 pr-4`}>
-                        {points && <AllPoints points={points} />}
+                        {points && <AllPoints isClassPoints={isClassPoints} points={calculatedPoints} />}
                         {session ? (
                             <UserDropdown session={session} role={role} />
                         ) : (

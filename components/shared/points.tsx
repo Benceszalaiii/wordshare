@@ -15,7 +15,7 @@ export function WordPoints({ points }: { points: number }) {
     );
 }
 
-export function AllPoints({ points }: { points: number }) {
+export function AllPoints({ points, isClassPoints }: { points: number, isClassPoints: boolean }) {
     return (
         <TooltipProvider>
             <Tooltip>
@@ -26,7 +26,7 @@ export function AllPoints({ points }: { points: number }) {
                     </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Your WordPoints across all classes</p>
+                    <p>{isClassPoints ? "Your WordPoints in current class" : "Your WordPoints across all classes"}</p>
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>

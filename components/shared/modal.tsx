@@ -22,11 +22,11 @@ export default function Modal({
   if (isMobile) {
     return (
       <Drawer.Root open={showModal} onOpenChange={setShowModal}>
-        <Drawer.Overlay className="fixed inset-0 z-40 bg-beige-400 bg-opacity-10 backdrop-blur dark:bg-black" />
+        <Drawer.Overlay className="fixed inset-0 z-40 bg-white/10 dark:bg-black/50 bg-opacity-80 backdrop-blur-sm" />
         <Drawer.Portal>
           <Drawer.Content
             className={cn(
-              "fixed bottom-0 left-0 right-0 z-50 mt-24 rounded-t-[10px] border-t border-beige-200 bg-beige-50 dark:bg-black dark:border-gray-900",
+              "fixed bottom-0 left-0 mb-36 right-0 z-50 mt-24 rounded-t-[10px] border-t border-beige-200 bg-beige-50 dark:bg-black dark:border-gray-900",
               className,
             )}
           >
@@ -46,13 +46,13 @@ export default function Modal({
         <Dialog.Overlay
           // for detecting when there's an active opened modal
           id="modal-backdrop"
-          className="animate-fade-in fixed inset-0 z-10 bg-beige-400 dark:bg-black/90 bg-opacity-80 backdrop-blur-md"
+          className="animate-fade-in fixed inset-0 z-10 bg-white/10 dark:bg-black/50 bg-opacity-80 backdrop-blur-sm"
         />
         <Dialog.Content
           onOpenAutoFocus={(e) => e.preventDefault()}
           onCloseAutoFocus={(e) => e.preventDefault()}
           className={cn(
-            "animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-md overflow-hidden border border-beige-300 dark:border-gray-900 dark:bg-black bg-beige-50 p-0 shadow-xl md:rounded-2xl",
+            "animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-md overflow-hidden border border-main-300 dark:border-gray-900 dark:bg-dark bg-main-50 p-0 shadow-xl md:rounded-2xl",
             className,
           )}
         >
