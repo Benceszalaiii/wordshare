@@ -41,7 +41,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     const wordcount = countWords(essay.content);
     return (
         <>
-            <div className=" flex w-full flex-col gap-5 px-4 pt-8 dark:text-white md:px-32">
+            <div className=" flex w-full flex-col gap-5 px-4 dark:text-white md:px-32">
                 <div className="space-between flex w-full flex-row gap-12">
                     <div className="flex flex-row items-start justify-start">
                         <Header className="space-y-2 rounded-xl p-3">

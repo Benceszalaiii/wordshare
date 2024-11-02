@@ -1,4 +1,3 @@
-//? MAKE A ACCORDION WITH FILE IDS AND THEN MAYBE LIST OF AUDIOFILES, WHICH ON CLICK OPEN UP IN A MODAL WITH URL THAT POINTS TO /englishfile/${bookLevel}/${chapterId}/${audioFileId}
 import AudioDialog from "@/components/file/dialog";
 import { BookType, BookContent } from "@/components/file/sidebar";
 import {

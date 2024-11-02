@@ -273,9 +273,9 @@ const SidebarTrigger = React.forwardRef<
       <Button
       ref={ref}
       data-sidebar="trigger"
-      variant="ghost"
+      variant="outline"
       size="icon"
-      className={cn("h-7 w-7 ml-4", className)}
+      className={cn("h-10 w-10 ml-8 sticky z-50 rounded-lg top-20", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
@@ -287,7 +287,7 @@ const SidebarTrigger = React.forwardRef<
     </Button>
       </TooltipTrigger>
       <TooltipContent>
-        <p>⌘B</p>
+        <p>Toggle Sidebar <span className="text-gray-500">⌘B</span></p>
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>

@@ -16,8 +16,8 @@ export default async function Layout({
         <SidebarProvider>
         <AppSidebar />
         <main className="w-full">
-          <SidebarTrigger />
-          <section className="mt-8 mx-4">
+          <SidebarTrigger className="" />
+          <section className=" mx-4">
           {children}
           </section>
         </main>

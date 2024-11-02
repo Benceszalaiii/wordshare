@@ -89,6 +89,9 @@ export default {
     theme: {
         extend: {
             colors: {
+                main: {
+                    ...currentScheme().palette,
+                },
                 beige: {
                     50: "#fefefc",
                     100: "#fcfcf7",
@@ -101,9 +104,6 @@ export default {
                     800: "#b69058",
                     900: "#a27b4f",
                     950: "#5d4327",
-                },
-                main: {
-                    ...currentScheme().palette,
                 },
                 dark: "#090909",
                 light: "#e4e8d5",

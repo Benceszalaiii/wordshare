@@ -1000,3 +1000,9 @@ export async function addUserToSchool(schoolId: number,userId: string, role: str
     }
     return null;
 }
+
+
+export async function getBanner(){
+    const banners = await prisma.banner.findMany();
+    return banners.sort((a, b) => b.id - a.id)[0];
+}

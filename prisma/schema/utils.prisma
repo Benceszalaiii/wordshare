@@ -4,3 +4,9 @@ model RoadMap {
   description String
   date        DateTime?
 }
+
+model Banner {
+  id    Int     @id @default(autoincrement())
+  title String
+  show  Boolean
+}

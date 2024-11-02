@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Suspense
         fallback={
           <>
-            <div className=" flex w-full flex-col gap-5 px-4 pt-8 dark:text-white md:px-32">
+            <div className=" flex w-full flex-col gap-5 px-4 dark:text-white md:px-32">
               <div className="space-between flex w-full flex-row gap-12">
                 <div className="flex flex-row items-start justify-start">
                   <Header className="rounded-xl p-3 mb-24">

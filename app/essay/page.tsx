@@ -15,7 +15,7 @@ import Link from "next/link";
 export default function Page() {
   return (
     <div className="p-4 dark:text-white md:px-32">
-      <h1 className="mb-12 mt-8 text-2xl font-bold">All essays</h1>
+      <h1 className="mb-12 text-2xl font-bold">All essays</h1>
       <Suspense
         fallback={
         <div className="flex w-72 flex-col space-y-3 rounded-xl border p-4 dark:border-white">

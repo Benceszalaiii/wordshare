@@ -1,26 +1,33 @@
+"use server"
+
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import Navbar from "./navbar";
 import { getServerSession } from "next-auth/next";
-import { getAllPointsUser, getUserById, isAdmin } from "@/lib/db";
+import { getAllPointsUser, getBanner, getUserById, isAdmin } from "@/lib/db";
 import { Bat, Tree } from "../shared/icons";
+import Banner from "./banner";
+import { cookies } from "next/headers";
 
 export default async function Nav() {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    return <Navbar points={null} session={session} role={null} />;
-  }
-  const dbUser = await getUserById(session.user.id);
-  const points = dbUser?.role === "student" && await getAllPointsUser(session.user.id) || null;
   const getIcon = ()=>{
     switch (process.env.EVENT){
       case "HALLOWEEN":
-        return <Bat className="text-main-700 transition-colors duration-500 group-hover:text-transparent" />;
+        return <Bat className="text-main-700 transition-all duration-500 group-hover:scale-150 group-hover:zoom-in-150 group-hover:text-transparent" />;
       case "XMAS":
         return <Tree className="text-green-700 transition-colors duration-500 group-hover:text-main-700" />;
       default:
         return null;
     }
   }
+  const res = await fetch(process.env.NEXTAUTH_URL + "/api/banner", { method: "GET" });
+  const bannerProps: {title: string, id: number, show: boolean} = await res.json();
 
-  return <Navbar session={session} role={dbUser?.role} points={points} EventIcon={getIcon()} />;
+  if (!session) {
+    return <Navbar bannerProps={bannerProps} EventIcon={getIcon()} points={null} session={session} role={null} />;
+  }
+  const dbUser = await getUserById(session.user.id);
+  const points = dbUser?.role === "student" && await getAllPointsUser(session.user.id) || null;
+
+  return <Navbar bannerProps={bannerProps} session={session} role={dbUser?.role} points={points} EventIcon={getIcon()} />;
 }

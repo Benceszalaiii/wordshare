@@ -4,7 +4,7 @@ import { Session } from 'next-auth';
 export default function NotFound(){
 
     return(
-      <SidebarProvider>
+      <>
       <AppSidebar />
       <main>
         <SidebarTrigger/>
@@ -12,6 +12,6 @@ export default function NotFound(){
         <h1>The class you are looking for does not exist.</h1>
         </section>
       </main>
-    </SidebarProvider>
+    </>
     )
 }

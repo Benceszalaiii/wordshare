@@ -12,23 +12,27 @@ import { DashboardIcon } from "@radix-ui/react-icons";
 import { AllPoints } from "../shared/points";
 import { ReactNode } from "react";
 import { Points } from "@prisma/client";
+import Banner from "./banner";
+import { SidebarTrigger, useSidebar } from "../ui/sidebar";
 export default function NavBar({
     session,
     role,
     points,
     EventIcon,
+    bannerProps,
 }: {
     session: Session | null;
     role: string | null | undefined;
     points: Points[] | null;
     EventIcon?: React.ReactNode;
+    bannerProps: { title: string; show: boolean; id: number };
 }) {
     const { SignInModal, setShowSignInModal } = useSignInModal();
     const scrolled = useScroll(50);
     const pathname = usePathname();
     const isIndexPage = pathname === "/";
     const needsExpand = (scrolled && isIndexPage) || !isIndexPage;
-    const isSideBar = ["/class", "/essay", "/wordplay", "/invites"].some(
+    const isSideBar = ["/class", "/essay", "/wordplay", "/invites", "/overview"].some(
         (path) => pathname.startsWith(path),
     );
     const pointSum = () => {
@@ -48,17 +52,20 @@ export default function NavBar({
                 let calcpoints = points?.find(
                     (point) => point.classId === classId,
                 )?.points;
-                    setCalculatedPoints(calcpoints || 0);
-                    setIsClassPoints(true);
+                setCalculatedPoints(calcpoints || 0);
+                setIsClassPoints(true);
             }
-        }else{ setIsClassPoints(false)}
-    }, [pathname]);
+        } else {
+            setIsClassPoints(false);
+        }
+    }, [pathname, points]);
     if (role === "admin") {
         return (
-            <div className="mb-24">
+            <div className="sticky top-0 z-50 mb-12 flex w-full flex-col items-center justify-center transition-all">
                 <SignInModal />
+                <Banner bannerProps={bannerProps} />
                 <div
-                    className={`fixed top-0 flex w-full items-center justify-center px-4 ${
+                    className={`flex w-full items-center justify-center px-4 ${
                         needsExpand
                             ? " justify-center bg-white/50 backdrop-blur-xl dark:bg-black/70"
                             : "bg-white/0 dark:bg-black/0 "
@@ -84,7 +91,12 @@ export default function NavBar({
                             </div>
                         </Link>
                         <div className="flex flex-row items-center justify-center gap-2">
-                            {points && <AllPoints isClassPoints={isClassPoints} points={calculatedPoints} />}
+                            {points && (
+                                <AllPoints
+                                    isClassPoints={isClassPoints}
+                                    points={calculatedPoints}
+                                />
+                            )}
                             <div className={`pr-0`}>
                                 {session ? (
                                     <UserDropdown
@@ -115,10 +127,11 @@ export default function NavBar({
         );
     }
     return (
-        <div className="mb-24">
+        <div className="sticky top-0 z-50 mb-12 flex w-full flex-col items-center justify-center transition-all">
             <SignInModal />
+            <Banner bannerProps={bannerProps} />
             <div
-                className={`fixed top-0 flex w-full justify-center px-4 transition-all ${
+                className={`flex w-full items-center justify-center px-4 ${
                     needsExpand
                         ? " justify-center bg-white/50 backdrop-blur-xl dark:bg-black/70"
                         : "bg-white/0 dark:bg-black/0 "
@@ -144,7 +157,12 @@ export default function NavBar({
                         </div>
                     </Link>
                     <div className={`flex flex-row gap-4 pr-4`}>
-                        {points && <AllPoints isClassPoints={isClassPoints} points={calculatedPoints} />}
+                        {points && (
+                            <AllPoints
+                                isClassPoints={isClassPoints}
+                                points={calculatedPoints}
+                            />
+                        )}
                         {session ? (
                             <UserDropdown session={session} role={role} />
                         ) : (

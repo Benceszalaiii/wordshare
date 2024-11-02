@@ -33,19 +33,20 @@ model Teacher {
   verified      Boolean         @default(false)
   ReviewRequest ReviewRequest[]
   Score         Score[]
-  School         School?          @relation(fields: [schoolId], references: [id])
-  schoolId       Int?
+  School        School?         @relation(fields: [schoolId], references: [id])
+  schoolId      Int?
 }
 
 model Task {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String
-  dueDate   DateTime
-  createdAt DateTime @default(now())
-  Class     Class?   @relation(fields: [classId], references: [id])
-  classId   String?
-  Essay     Essay[]
+  id         Int          @id @default(autoincrement())
+  title      String
+  content    String
+  dueDate    DateTime
+  createdAt  DateTime     @default(now())
+  Class      Class?       @relation(fields: [classId], references: [id])
+  classId    String?
+  Essay      Essay[]
+  Submission Submission[]
 }
 
 model Invite {
@@ -64,4 +65,15 @@ model Milestone {
   classId     String
   points      Int
   Class       Class  @relation(fields: [classId], references: [id])
+}
+
+model Submission {
+  id         String   @id @default(cuid())
+  userId     String
+  taskId     Int
+  essayId    String
+  additional String
+  createdAt  DateTime @default(now())
+  Task       Task     @relation(fields: [taskId], references: [id])
+  essay      Essay    @relation(fields: [essayId], references: [id])
 }
