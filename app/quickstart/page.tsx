@@ -135,7 +135,8 @@ export default async function Page() {
                     <p className={styling.completed}>
                         2. Choose account type ✅
                     </p>
-                    <p className={styling.active}>3. Verification submitted</p>
+                    <p className={styling.completed}>3. Select school✅</p>
+                    <p className={styling.active}>4. Verification submitted</p>
                 </div>
                 <p className="mt-4">
                     You are set up for now. Wait for our team to verify you.
@@ -157,14 +158,12 @@ export default async function Page() {
                     <p className={styling.completed}>
                         2. Choose account type ✅
                     </p>
-                    <p className={styling.active}>3. Select school</p>
+                    <p className={styling.completed}>3. Select school✅</p>
+                    <p className={styling.active}>4. Done for now</p>
                 </div>
                 <p className="mt-4 text-center">
-                    You are set up for now. <br /> Start by joining a class.
+                    You are set up for now. <br /> Start by joining a class. <br /> Ask your teacher to invite you to a class.
                 </p>
-                <Button asChild variant={"outline"}>
-                    <Link href={"/class/join"}>Join class</Link>
-                </Button>
             </section>
         );
     }
@@ -182,7 +181,8 @@ export default async function Page() {
                     <p className={styling.completed}>
                         2. Choose account type ✅
                     </p>
-                    <p className={styling.completed}>3. Verified ✅</p>
+                    <p className={styling.completed}>3. Select school✅</p>
+                    <p className={styling.completed}>4. Verified ✅</p>
                 </div>
                 <p className="mt-4 text-center">
                     You are all set up. <br /> Start by creating a class
