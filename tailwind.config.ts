@@ -164,6 +164,7 @@ export default {
                 caveat: ["var(--font-caveat)", "system-ui", "cursive"],
             },
             animation: {
+"shine": "shine 8s ease-in-out infinite",
                 "fade-up": "fade-up 0.5s",
                 "fade-down": "fade-down 0.5s",
                 "slide-up-fade":
@@ -172,6 +173,10 @@ export default {
                     "slide-down-fade 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
             },
             keyframes: {
+"shine": {
+            from: { backgroundPosition: '200% 0' },
+            to: { backgroundPosition: '-200% 0' },
+          },
                 "fade-up": {
                     "0%": {
                         opacity: "0",
