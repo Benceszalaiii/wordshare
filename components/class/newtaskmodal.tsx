@@ -183,6 +183,7 @@ export function NewTaskModal({
                                         placeholder="Task title..."
                                         {...field}
                                     />
+                                    <FormDescription>Give your task a clear name, as this will be the primary field for students to navigate between tasks.</FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}

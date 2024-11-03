@@ -1,3 +1,4 @@
+import { TaskWithProps } from "../task/studentoverview/component";
 import { Button } from "../ui/button";
 import {
     DialogTrigger,
@@ -12,11 +13,11 @@ import {
 import { TaskProp } from "./timeline";
 import { differenceInDays } from "date-fns";
 
-export function TaskViewModal({ task }: { task: TaskProp }) {
+export function TaskViewModal({ task, trigger }: { task: TaskProp | TaskWithProps, trigger?: React.ReactNode }) {
     return (
         <Dialog>
             <DialogTrigger asChild className="text-end">
-                <Button>Go to task</Button>
+                {trigger ? trigger : <Button>Go to task</Button>}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

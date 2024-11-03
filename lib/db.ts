@@ -3,7 +3,7 @@ import "server-only";
 import { getServerSession, Session } from "next-auth";
 import prisma from "./prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { Comment, User } from "@prisma/client";
+import { Class, Comment, User } from "@prisma/client";
 import { sendInviteMail } from "./aws";
 interface Essay {
     title: string;
@@ -1005,4 +1005,24 @@ export async function addUserToSchool(schoolId: number,userId: string, role: str
 export async function getBanner(){
     const banners = await prisma.banner.findMany();
     return banners.sort((a, b) => b.id - a.id)[0];
+}
+
+export async function getUserByIdWithClasses(userId: string){
+    const user = await prisma.user.findUnique({where: {id: userId}, include: {Classes: true}});
+    return user;
+}
+
+
+export async function getTasksforStudent(userId: string, classes: Class[]){
+    const dbUser = await prisma.user.findUnique({where: {id: userId}, include: {Classes: true}});
+    if (!dbUser){
+        return [];
+    }
+    const tasks = await prisma.task.findMany({where: {classId: {in: dbUser.Classes.map((c) => c.id)}}, orderBy: {dueDate: "desc"}});
+    return tasks;
+}
+
+export async function getSubmissionsForStudent(userId: string){
+    const submissions = await prisma.submission.findMany({where: {userId: userId}});
+    return submissions;
 }

@@ -5,10 +5,10 @@ export default async function Layout({children}: {children: React.ReactNode}){
     return (
         <SidebarProvider>
         <AppSidebar />
-        <section>
+        <div className='w-full'>
             <SidebarTrigger />
             {children}
-        </section>
+        </div>
         </SidebarProvider>
     )
 }
