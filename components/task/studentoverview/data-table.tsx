@@ -7,7 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
+import { capitalize, cn } from "@/lib/utils";
 import {
     ColumnDef,
     flexRender,
@@ -56,6 +56,7 @@ import {
     CaretSortIcon,
     CheckIcon,
 } from "@radix-ui/react-icons";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Class } from "@prisma/client";
 
 interface DataTableProps<TData, TValue> {
@@ -190,7 +191,7 @@ export function DataTable<TData, TValue>({
                                             column.toggleVisibility(!!value)
                                         }
                                     >
-                                        {column.columnDef.header?.toString()}
+                                        {capitalize(column.id.replace(/([A-Z])/g, ' $1').toLowerCase().trim())}
                                     </DropdownMenuCheckboxItem>
                                 );
                             })}
