@@ -32,7 +32,7 @@ export default function NavBar({
     const pathname = usePathname();
     const isIndexPage = pathname === "/";
     const needsExpand = (scrolled && isIndexPage) || !isIndexPage;
-    const isSideBar = ["/class", "/essay", "/wordplay", "/invites", "/overview"].some(
+    const isSideBar = ["/class", "/essay", "/wordplay", "/invites", "/overview", "/tasks"].some(
         (path) => pathname.startsWith(path),
     );
     const pointSum = () => {

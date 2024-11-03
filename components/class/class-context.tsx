@@ -1,4 +1,5 @@
 "use client";
+import { unpinClass } from "@/app/class/[id]/actions";
 import {
     ContextMenu,
     ContextMenuContent,
@@ -30,12 +31,9 @@ export function ClassContextWrapper({
             <ContextMenuContent>
                 <ContextMenuItem
                     onClick={async () => {
-                        const res = await fetch(`/api/class/pin/${classId}`, {
-                            method: "DELETE",
-                        });
-                        if (res.ok) {
+                        unpinClass(classId).then(()=> {
                             router.refresh();
-                        }
+                        });
                     }}
                 >
                     Unpin from Sidebar

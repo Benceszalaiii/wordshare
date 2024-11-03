@@ -35,7 +35,7 @@ const styles = {
     action: "text-center w-full",
 };
 
-const TeacherActions = ({ currentClass }: { currentClass: Class }) => {
+const TeacherActions = ({ currentClass }: { currentClass: Class}) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -70,7 +70,7 @@ const TeacherActions = ({ currentClass }: { currentClass: Class }) => {
 
 const pinFallback = <>Loading state...</>;
 
-const StudentActions = ({ currentClass }: { currentClass: Class }) => {
+const StudentActions = ({ currentClass }: { currentClass: Class}) => {
     return (
         <AlertDialog>
             <DropdownMenu>
@@ -147,11 +147,13 @@ export default function ClassLegend({
     canEdit,
     isAnon,
     session,
+
 }: {
     currentClass: Class;
     canEdit?: boolean | null;
     isAnon?: boolean;
     session?: Session;
+
 }) {
     const editable = canEdit ?? false;
     return (
@@ -186,11 +188,11 @@ export default function ClassLegend({
                             )
                         ) : editable ? (
                             <div className="flex justify-end">
-                                <TeacherActions currentClass={currentClass} />
+                                <TeacherActions  currentClass={currentClass} />
                             </div>
                         ) : (
                             <div className="flex justify-end">
-                                <StudentActions currentClass={currentClass} />
+                                <StudentActions  currentClass={currentClass} />
                             </div>
                         )}
                     </div>

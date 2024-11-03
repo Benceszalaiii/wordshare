@@ -4,56 +4,31 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import LoadingCircle from "../shared/icons/loading-circle";
+import { getPinStatus, pinClass, unpinClass } from "@/app/class/[id]/actions";
 
-const addPin = (router: any, setter: any, classId: string) => {
-    fetch(`/api/class/pin/${classId}`, { method: "PUT" }).then((res) => {
-        toast.info(`Pinned class to Sidebar`);
-        setter(true);
-        router.refresh();
-    });
-};
-const removePin = (router: any, setter: any, classId: string) => {
-    fetch(`/api/class/pin/${classId}`, { method: "DELETE" }).then((res) => {
-        toast.info(`Unpinned class from Sidebar`);
-        setter(false);
-        router.refresh();
-    });
-};
 
 export function DropdownPinCheck({ classId }: { classId: string }) {
-    const [loading, setLoading] = useState(true);
     const [remoteValue, setRemoteValue] = useState(false);
-    const router = useRouter();
-    useEffect(() => {
-        fetch(`/api/class/pin/${classId}`, { method: "GET" }).then((res) => {
+    const [ loading, setLoading ] = useState(true);
+    useEffect(()=> {
+        getPinStatus(classId).then((res)=> {
+            setRemoteValue(res || false);
             setLoading(false);
-            setRemoteValue(res.statusText === "Pinned");
-        });
-    }, [classId]);
-    if (loading) {
-        return (
-            <DropdownMenuCheckboxItem
-                disabled
-                className="flex items-center justify-between gap-2 px-2"
-            >
-                <LoadingCircle />
-                Pin to Sidebar
-            </DropdownMenuCheckboxItem>
-        );
-    }
+        })
+    }, [classId])
     return (
         <DropdownMenuCheckboxItem
             checked={remoteValue}
             onCheckedChange={(e) => {
                 if (e) {
-                    addPin(router, setRemoteValue, classId);
+                    pinClass(classId);
                 } else {
-                    removePin(router, setRemoteValue, classId);
+                    unpinClass(classId);
                 }
             }}
             disabled={loading}
         >
-            Pin Class to Sidebar
+           Pin Class to Sidebar
         </DropdownMenuCheckboxItem>
     );
 }
