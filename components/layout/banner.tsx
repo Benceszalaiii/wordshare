@@ -8,6 +8,7 @@ import * as React from "react"
 import { cookies } from "next/headers";
 import { getBanner } from "@/lib/db";
 import { useRouter } from "next/navigation";
+import { dismissBanner } from "@/app/actions";
 interface BannerProps{
     title: string;
     show: boolean;
@@ -43,8 +44,7 @@ export default function Banner({ className, bannerProps}: {bannerProps: {show: b
             <h1 className="mr-auto font-semibold font-display h-14 sm:items-center tracking-wider flex ml-auto text-center line-clamp-2 p-2">{bannerProps.title}</h1>
             <button onClick={() => {
                 toast.promise(
-                fetch("/api/banner", {method: "DELETE", headers: {"bannerId": bannerProps.id.toString()}}).then((res)=> {router.refresh()})
-                ,
+                dismissBanner(bannerProps.id.toString()).then(()=> {router.refresh()}),
             {
                 position: "top-right",
                 duration: 2000,

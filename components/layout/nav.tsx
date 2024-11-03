@@ -7,6 +7,7 @@ import { getAllPointsUser, getBanner, getUserById, isAdmin } from "@/lib/db";
 import { Bat, Tree } from "../shared/icons";
 import Banner from "./banner";
 import { cookies } from "next/headers";
+import { fetchBanner } from "@/app/actions";
 
 export default async function Nav() {
   const session = await getServerSession(authOptions);
@@ -20,14 +21,13 @@ export default async function Nav() {
         return null;
     }
   }
-  const res = await fetch(process.env.NEXTAUTH_URL + "/api/banner", { method: "GET" });
-  const bannerProps: {title: string, id: number, show: boolean} = await res.json();
+  const res = await fetchBanner();
 
   if (!session) {
-    return <Navbar bannerProps={bannerProps} EventIcon={getIcon()} points={null} session={session} role={null} />;
+    return <Navbar bannerProps={res} EventIcon={getIcon()} points={null} session={session} role={null} />;
   }
   const dbUser = await getUserById(session.user.id);
   const points = dbUser?.role === "student" && await getAllPointsUser(session.user.id) || null;
 
-  return <Navbar bannerProps={bannerProps} session={session} role={dbUser?.role} points={points} EventIcon={getIcon()} />;
+  return <Navbar bannerProps={res} session={session} role={dbUser?.role} points={points} EventIcon={getIcon()} />;
 }
