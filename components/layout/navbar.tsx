@@ -73,7 +73,7 @@ export default function NavBar({
                         isSideBar
                             ? "border-b border-border bg-gray-200 dark:bg-neutral-900"
                             : ""
-                    } z-30 transition-all duration-300`}
+                    } transition-all duration-300`}
                 >
                     <div
                         className={`mx-2 flex h-16 w-full items-center justify-between transition-all duration-500 ease-in-out ${
@@ -139,7 +139,7 @@ export default function NavBar({
                     isSideBar
                         ? "border-b  border-border bg-gray-200 dark:bg-neutral-900"
                         : ""
-                } z-30 transition-all duration-300`}
+                }  transition-all duration-300`}
             >
                 <div
                     className={`mx-2 flex h-16 w-full items-center justify-between transition-all duration-500 ease-in-out ${
