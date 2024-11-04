@@ -21,6 +21,8 @@ export default async function Nav() {
         return null;
     }
   }
+  // await fetchBanner()
+  // {title: "Welcome to the new school year!", id: 23, show:false};
   const res = await fetchBanner();
 
   if (!session) {

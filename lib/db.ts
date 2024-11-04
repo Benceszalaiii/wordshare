@@ -55,6 +55,13 @@ export async function uploadEssay(essay: Essay) {
     }
 }
 
+
+export async function getEssaysByUserId(userId: string){
+    const dbUser = await prisma.user.findUnique({where: {id: userId}, include: {Essay: true}})
+    return dbUser?.Essay || [];
+}
+
+
 export async function getEssays() {
     const auth = await getServerSession(authOptions);
     const user = auth?.user;

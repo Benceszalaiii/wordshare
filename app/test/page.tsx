@@ -1,8 +1,14 @@
-"use client";
+
+import SubmitTaskModal from "@/components/task/submittask";
 import { Button, buttonVariants, styleVariants } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import useSWR from "swr";
+import { getEssaysForUser } from "../tasks/actions";
+import { TaskWithProps } from "@/components/task/studentoverview/component";
+import { Essay } from "@prisma/client";
 
-export default function Page() {
+export default async function Page() {
+    const essays = await getEssaysForUser();
     return (
         <section className="flex flex-col items-center justify-center gap-4 space-y-4 p-4">
             <p>Test page for development purposes</p>
@@ -35,6 +41,9 @@ export default function Page() {
                     </Button>
                 ))}
             </div>
+            <SubmitTaskModal classId="23" essays={essays}>
+                <Button variant="default">Open modal</Button>
+            </SubmitTaskModal>
         </section>
     );
 }

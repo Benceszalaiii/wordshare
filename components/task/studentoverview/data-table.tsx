@@ -96,7 +96,7 @@ export function DataTable<TData, TValue>({
     React.useEffect(()=> {
         console.log(comboValue);
         table.getColumn("className")?.setFilterValue(comboValue);
-    }, [comboValue])
+    }, [comboValue, table])
     return (
         <div>
             <div className="flex flex-wrap gap-4 py-4">
