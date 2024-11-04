@@ -4,22 +4,32 @@ import React, { useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ImageCropper } from "@/components/image/icon-cropper";
 import { FileWithPath, useDropzone } from "react-dropzone";
+import { getBannerUrlWithFallback, getBannerWithFallback } from "@/app/class/actions";
+import LoaderSpinner from "../loader/spinner";
 
 export type FileWithPreview = FileWithPath & {
   preview: string;
 };
 
 const accept = {
-  "image/*": [],
+  "image/*": []
 };
 
 export function CropperComponent({ classId }: { classId: string }) {
+  const [url, setUrl] = React.useState<string>("");
+  React.useEffect(()=> {
+      const fetchClassIcon = async () => {
+          const res = await getBannerUrlWithFallback("icon", classId);
+          setUrl(res);
+      };
+      fetchClassIcon()
+  }, [])
   const [selectedFile, setSelectedFile] =
     React.useState<FileWithPreview | null>(null);
   useEffect(() => {
     const fetchClassIcon = async () => {
-      const res = await fetch(`/class/icons/${classId}`);
-      setSelectedFile((await res.blob()) as FileWithPreview);
+      const res = await JSON.parse(await getBannerWithFallback("icon", classId));
+      setSelectedFile(res.blob as FileWithPreview);
     };
   }, [classId]);
   const [isDialogOpen, setDialogOpen] = React.useState(false);
@@ -28,7 +38,7 @@ export function CropperComponent({ classId }: { classId: string }) {
     (acceptedFiles: FileWithPath[]) => {
       const file = acceptedFiles[0];
       if (!file) {
-        alert("Selected image is too large!");
+        alert("Selected image is too large! Maximum size is 8MB.");
         return;
       }
 
@@ -62,11 +72,11 @@ export function CropperComponent({ classId }: { classId: string }) {
       ) : (
         <Avatar
           {...getRootProps()}
-          className="size-36 cursor-pointer ring-2 ring-slate-200 ring-offset-2"
+          className="size-36 cursor-pointer"
         >
           <input {...getInputProps()} />
-          <AvatarImage src={`/class/icons/${classId}`} alt="Class icon" />
-          <AvatarFallback>C</AvatarFallback>
+          <AvatarImage src={url} alt="Class icon" />
+          <AvatarFallback><LoaderSpinner text variation="normal" /></AvatarFallback>
         </Avatar>
       )}
     </div>

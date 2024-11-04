@@ -24,7 +24,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { NewTaskModal } from "./newtaskmodal";
 import { Dialog } from "../ui/dialog";
@@ -160,9 +160,22 @@ export function QuickCards({
     currentClassName: string;
 }) {
     const [open, setOpen] = useState(true);
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setOpen(localStorage.getItem(`quickcards-${classId}`) === "true");
+        setMounted(true);
+    }, []);
+    useEffect(() => {
+        if (mounted) {
+            window.localStorage.setItem(
+                `quickcards-${classId}`,
+                open.toString(),
+            );
+        }
+    }, [open]);
     return (
         <section className="mt-4 w-full max-w-screen-lg px-4">
-            <Collapsible className=" px-4" defaultOpen onOpenChange={setOpen}>
+            <Collapsible className=" px-4" open={open} onOpenChange={setOpen}>
                 <CollapsibleTrigger className="flex w-full flex-row items-center justify-center">
                     <p className="text-lg font-semibold">Quick actions</p>
                     {open ? <ChevronUpIcon /> : <ChevronDownIcon />}

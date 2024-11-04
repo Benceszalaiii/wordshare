@@ -147,13 +147,13 @@ export default function ClassLegend({
     canEdit,
     isAnon,
     session,
-
+    bannerUrl
 }: {
     currentClass: Class;
     canEdit?: boolean | null;
     isAnon?: boolean;
     session?: Session;
-
+    bannerUrl: string;
 }) {
     const editable = canEdit ?? false;
     return (
@@ -206,7 +206,7 @@ export default function ClassLegend({
                 <Image
                     about="Banner"
                     className="my-4 w-full rounded-xl"
-                    src={`https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/${currentClass.id}/banner`}
+                    src={bannerUrl || "https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/banner_placeholder.webp"}
                     alt="Class banner"
                     width={820}
                     height={320}

@@ -2,8 +2,7 @@
 import * as React from "react";
 import Link from "next/link";
 import useScroll from "@/lib/hooks/use-scroll";
-import { useSignInModal } from "./sign-in-modal";
-import UserDropdown from "./user-dropdown";
+import UserDropdown from "@/components/layout/userdropdown";
 import { Session } from "next-auth";
 import { caveat } from "@/app/fonts";
 import { usePathname } from "next/navigation";
@@ -13,7 +12,7 @@ import { AllPoints } from "../shared/points";
 import { ReactNode } from "react";
 import { Points } from "@prisma/client";
 import Banner from "./banner";
-import { SidebarTrigger, useSidebar } from "../ui/sidebar";
+import SignInModal from "./signinmodal";
 export default function NavBar({
     session,
     role,
@@ -27,14 +26,18 @@ export default function NavBar({
     EventIcon?: React.ReactNode;
     bannerProps: { title: string; show: boolean; id: number };
 }) {
-    const { SignInModal, setShowSignInModal } = useSignInModal();
     const scrolled = useScroll(50);
     const pathname = usePathname();
     const isIndexPage = pathname === "/";
     const needsExpand = (scrolled && isIndexPage) || !isIndexPage;
-    const isSideBar = ["/class", "/essay", "/wordplay", "/invites", "/overview", "/tasks"].some(
-        (path) => pathname.startsWith(path),
-    );
+    const isSideBar = [
+        "/class",
+        "/essay",
+        "/wordplay",
+        "/invites",
+        "/overview",
+        "/tasks",
+    ].some((path) => pathname.startsWith(path));
     const pointSum = () => {
         let sum = 0;
         points?.forEach((point) => (sum += point.points));
@@ -47,7 +50,6 @@ export default function NavBar({
     React.useEffect(() => {
         if (pathname.startsWith("/class")) {
             const classId = pathname.split("/")[2];
-            console.log(classId);
             if (classId) {
                 let calcpoints = points?.find(
                     (point) => point.classId === classId,
@@ -62,7 +64,6 @@ export default function NavBar({
     if (role === "admin") {
         return (
             <div className="sticky top-0 z-50 mb-12 flex w-full flex-col items-center justify-center transition-all">
-                <SignInModal />
                 <Banner bannerProps={bannerProps} />
                 <div
                     className={`flex w-full items-center justify-center px-4 ${
@@ -104,12 +105,7 @@ export default function NavBar({
                                         role={role}
                                     />
                                 ) : (
-                                    <button
-                                        className={`} rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all duration-0 dark:border-white dark:bg-white dark:text-black dark:hover:border-neutral-400 dark:hover:bg-neutral-400 dark:hover:text-black`}
-                                        onClick={() => setShowSignInModal(true)}
-                                    >
-                                        Sign In
-                                    </button>
+                                    <SignInModal />
                                 )}
                             </div>
                             <ThemeSwitch className="" />
@@ -128,7 +124,6 @@ export default function NavBar({
     }
     return (
         <div className="sticky top-0 z-50 mb-12 flex w-full flex-col items-center justify-center transition-all">
-            <SignInModal />
             <Banner bannerProps={bannerProps} />
             <div
                 className={`flex w-full items-center justify-center px-4 ${
@@ -166,12 +161,7 @@ export default function NavBar({
                         {session ? (
                             <UserDropdown session={session} role={role} />
                         ) : (
-                            <button
-                                className={`} rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all duration-0 dark:border-white dark:bg-white dark:text-black dark:hover:border-neutral-400 dark:hover:bg-neutral-400 dark:hover:text-black`}
-                                onClick={() => setShowSignInModal(true)}
-                            >
-                                Sign In
-                            </button>
+                            <SignInModal />
                         )}
                         <ThemeSwitch />
                     </div>

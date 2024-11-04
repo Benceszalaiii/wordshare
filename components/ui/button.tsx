@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 export const styleVariants = {
     variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        signin: "rounded-full border border-black bg-black p-1 px-4 text-sm text-white transition-all duration-300 dark:border-white dark:bg-white dark:text-black dark:hover:border-neutral-400 dark:hover:bg-neutral-400 dark:hover:text-black",
         success:
             "bg-success text-success-foreground transition-all duration-300 hover:bg-success/90 hover:ring-2 hover:ring-success/90 hover:ring-offset-2",
         destructive:

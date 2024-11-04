@@ -10,19 +10,20 @@ import { langParse } from "@/lib/utils";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { getBannerUrlWithFallback } from "../actions";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
-
   const currentClass = await getClassById(params.id);
   if (!currentClass) {
     return notFound();
   }
   const dbUser = await getUserById(session?.user.id);
+  const bannerUrl = await getBannerUrlWithFallback("banner", currentClass.id);
   if (!dbUser){
     return (
       <section className="flex flex-col items-center justify-center gap-4">
-        <NoAuthClassPage currentClass={currentClass} />
+        <NoAuthClassPage bannerUrl={bannerUrl} currentClass={currentClass} />
       </section>
     );
   }
@@ -31,13 +32,13 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!isStudent && !canEdit) {
     return (
       <section className="flex flex-col items-center justify-center gap-4">
-        <NoAuthClassPage currentClass={currentClass} />
+        <NoAuthClassPage bannerUrl={bannerUrl} currentClass={currentClass} />
       </section>
     )
   }
 return (
     <section className="flex flex-col items-center">
-        <ClassLegend canEdit={canEdit} currentClass={currentClass} />
+        <ClassLegend bannerUrl={bannerUrl} canEdit={canEdit} currentClass={currentClass} />
         <QuickCards currentClassName={currentClass.name} classId={currentClass.id} auth={canEdit ? "teacher" : "student"} />
         <Suspense fallback={<TimelineSkeleton />}>
           <ClassTimeline currentClass={currentClass} />

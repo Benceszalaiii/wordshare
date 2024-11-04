@@ -24,6 +24,7 @@ import { FileWithPreview } from "@/components/image/image-selector";
 import { CropIcon, Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 import Image from "next/image";
+import { getBannerWithFallback, uploadImage } from "@/app/class/actions";
 
 interface ImageCropperProps {
   dialogOpen: boolean;
@@ -31,17 +32,17 @@ interface ImageCropperProps {
   selectedFile: FileWithPreview | null;
   setSelectedFile: React.Dispatch<React.SetStateAction<FileWithPreview | null>>;
   classId: string;
-  aspectRatio?: number;
   type: "icon" | "banner";
 }
 
 export function ImageCropper({
   dialogOpen,
+  // eslint-disable-next-line react/prop-types
   setDialogOpen,
   selectedFile,
-  setSelectedFile,
+  // eslint-disable-next-line react/prop-types
+  setSelectedFile, 
   classId,
-  aspectRatio,
   type,
 }: ImageCropperProps) {
   const aspect = 41/16;
@@ -99,29 +100,27 @@ export function ImageCropper({
     try {
       setCroppedImage(croppedImageUrl);
       setDialogOpen(false);
-      const imageFetch = await fetch(croppedImageUrl);
+
       if (type === "icon") {
-        const res = await fetch(`/class/icons/${classId}`, {
-          method: "POST",
-          body: await imageFetch.blob(),
-          headers: {
-            "Content-Type": "image/png",
-          },
-        });
-        toast(`${await res.text()}. It may take a few minutes to update.`);
+        const res = await uploadImage(croppedImageUrl, classId, "icon")
+        if (res.status === 200){
+            toast.success("Successfully uploaded. It may take a few minutes to update.");
+        }
+        else{
+            toast.error("Something went wrong! " + res.message);
+        }
       }
       if (type === "banner") {
-        const res = await fetch(`/class/banners/${classId}`, {
-          method: "POST",
-          body: await imageFetch.blob(),
-          headers: {
-            "Content-Type": "image/png",
-          },
-        });
-        toast(`${await res.text()}. It may take a few minutes to update.`);
+        const res = await uploadImage(croppedImageUrl, classId, "banner")
+        if (res.status === 200){
+            toast.success("Successfully uploaded. It may take a few minutes to update.");
+        }
+        else{
+            toast.error("Something went wrong! "  + res.message);
+        }
       }
     } catch (error) {
-      alert("Something went wrong!");
+      toast.error("Something went wrong! " + error);
     }
   }
 
@@ -164,8 +163,8 @@ export function ImageCropper({
               className="w-fit"
               variant={"outline"}
               onClick={async () => {
-                const res = await fetch(`/api/class/${classId}`);
-                setSelectedFile((await res.blob()) as FileWithPreview);
+                const res = await JSON.parse(await getBannerWithFallback("icon", classId))
+                setSelectedFile(res.blob as FileWithPreview);
               }}
             >
               <Trash2Icon className="mr-1.5 size-4" />

@@ -4,11 +4,11 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { SignInButton } from "../shared/buttons";
 
-export default async function NoAuthClassPage({currentClass}: {currentClass: Class}){
+export default async function NoAuthClassPage({currentClass, bannerUrl}: {currentClass: Class, bannerUrl: string}){
     const session = await getServerSession(authOptions);
     return (
         <>
-        <ClassLegend canEdit={false} currentClass={currentClass} isAnon session={session || undefined} />
+        <ClassLegend bannerUrl={bannerUrl} canEdit={false} currentClass={currentClass} isAnon session={session || undefined} />
         </>
     )
 }

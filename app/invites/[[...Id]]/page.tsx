@@ -38,7 +38,7 @@ export default async function Page({
         );
     }
     if (invites?.find((x) => x.id === inviteId)){
-        console.info("User accessed their invite");
+
         return (
             <section className="flex h-full w-full flex-col pl-4 md:pl-32">
                 <h1 className="m-4 mb-8 ml-0 text-2xl font-semibold">Invites</h1>
@@ -48,7 +48,6 @@ export default async function Page({
     }
     const exists = await inviteExists(inviteId);
     if (exists) {
-        console.info("User tried to access an invite that isnt theirs");
         return (
             <section className="flex h-full w-full flex-col pl-4 md:pl-32">
                 <h1 className="m-4 mb-8 ml-0 text-2xl font-semibold">

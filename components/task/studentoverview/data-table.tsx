@@ -94,7 +94,6 @@ export function DataTable<TData, TValue>({
     const [comboOpen, SetComboOpen] = React.useState(false);
     const [comboValue, setComboValue] = React.useState("");
     React.useEffect(()=> {
-        console.log(comboValue);
         table.getColumn("className")?.setFilterValue(comboValue);
     }, [comboValue, table])
     return (

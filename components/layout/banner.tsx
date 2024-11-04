@@ -34,7 +34,7 @@ export default function Banner({ className, bannerProps}: {bannerProps: {show: b
     if (document.cookie.includes("bannerDismissed=true") && document.cookie.includes(bannerProps.id.toString())){
         return null;
     }
-    console.log(cookieBannerId);
+
     if (cookieBannerId !== bannerProps.id.toString()){
         document.cookie.replace(`bannerId=${cookieBannerId}`, `bannerId=${bannerProps.id}`);
         document.cookie.replace("bannerDismissed=true", "bannerDismissed=false");
