@@ -118,7 +118,7 @@ export function CommandBox({
                                 return (
                                     <CommandItem
                                         onSelect={() => {
-                                            redirect(`/class/${item.id}`);
+                                            redirect(`class/${item.id}`);
                                         }}
                                         className="hover:cursor-pointer"
                                         key={item.id}
