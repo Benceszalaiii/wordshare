@@ -259,5 +259,6 @@ export default {
             addVariant("radix-side-bottom", '&[data-side="bottom"]');
         }),
         require("tailwindcss-animate"),
+        require("tailwindcss-motion")
     ],
 } satisfies Config;

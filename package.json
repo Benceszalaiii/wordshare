@@ -84,6 +84,7 @@
         "swr": "^2.2.5",
         "tailwind-merge": "^2.5.3",
         "tailwindcss-animate": "^1.0.7",
+        "tailwindcss-motion": "^0.3.0-beta",
         "typescript": "5.2.2",
         "use-debounce": "^9.0.4",
         "vaul": "^1.1.1",

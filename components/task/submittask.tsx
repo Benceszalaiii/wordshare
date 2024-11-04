@@ -51,11 +51,10 @@ export default function SubmitTaskModal({
         }
     }, [filter, essays]);
 
-    const className = "grow w-full";
     return (
         <Dialog>
             <DialogTrigger asChild>{children}</DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-screen-md">
                 <DialogHeader>
                     <DialogTitle>Submit Task</DialogTitle>
                     <DialogDescription>
@@ -71,27 +70,27 @@ export default function SubmitTaskModal({
                     }}
                 />
                 <ScrollArea className="h-72 w-full">
-                    <div className="grid w-full grid-cols-2 place-content-center gap-4">
+                    <div className="grid w-full grid-cols-1 sm:grid-cols-2 place-content-center gap-4">
                         {filteredEssays && filteredEssays.length > 0 ? (
                             <>
                                 {filteredEssays.map((t) => (
-                                    <Card key={t.id} className={className}>
+                                    <Card key={t.id} className={"h-64 flex flex-col"}>
                                         <CardHeader>
-                                            <CardTitle>{t.title}</CardTitle>
+                                            <CardTitle className="line-clamp-2 leading-normal">{t.title}</CardTitle>
                                         </CardHeader>
                                         <CardContent>
                                             <p className="line-clamp-2">
                                                 {t.content}
                                             </p>
                                         </CardContent>
-                                        <CardFooter>
-                                            <Button variant={"shine"}>
+                                        <CardFooter className="mt-auto self-end">
+                                            <Button variant={"gooeyLeft"}>
                                                 Select
                                             </Button>
                                         </CardFooter>
                                     </Card>
                                 ))}
-                                <Card className="flex items-center justify-center">
+                                <Card className="flex items-center justify-center h-64">
                                     <Link href={`/essay/write`}>
                                     <Button variant={"ringHover"} >
                                     or Create essay
