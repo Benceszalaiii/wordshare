@@ -119,7 +119,7 @@ export default function UserDropdown({
                             Log out
                         </DrawerItemWithIcon>
                     </DrawerDescription>
-                    <DrawerFooter className="mb-4 mt-6 text-center text-neutral-500">
+                    <DrawerFooter className="mb-4 mt-6 text-center text-sm text-neutral-500">
                         {session.user.email}
                     </DrawerFooter>
                 </DrawerContent>
