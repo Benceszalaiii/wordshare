@@ -62,7 +62,7 @@ export default function SignInModal({}: {}) {
                             )}{" "}
                         </Button>
                     </DrawerDescription>
-                    <DrawerFooter className="mb-6 mt-12"></DrawerFooter>
+                    <DrawerFooter className="mb-4 mt-6"></DrawerFooter>
                 </DrawerContent>
             </Drawer>
         );

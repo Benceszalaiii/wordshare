@@ -54,7 +54,7 @@ export default function UserDropdown({
     const router = useRouter();
     const redirectTo = (path: string) => {
         router.push(path[0] === "/" ? path.slice(1) : path);
-    }
+    };
     if (!session.user.email) return null;
     if (isMobile) {
         return (
@@ -69,7 +69,7 @@ export default function UserDropdown({
                         />
                     </button>
                 </DrawerTrigger>
-                <DrawerContent className="w-full border-t-main-600/25">
+                <DrawerContent className="w-full">
                     <DrawerHeader>
                         <DrawerTitle>{session.user.name}</DrawerTitle>
                         <DrawerDescription>
@@ -77,37 +77,49 @@ export default function UserDropdown({
                         </DrawerDescription>
                     </DrawerHeader>
                     <DrawerDescription className="flex w-full flex-col items-start justify-start gap-1 px-2">
-                        <DrawerItemWithIcon onClick={()=> {
-                            redirectTo("/overview")
-                        }} Icon={LayoutDashboardIcon}>
+                        <DrawerItemWithIcon
+                            onClick={() => {
+                                redirectTo("/overview");
+                            }}
+                            Icon={LayoutDashboardIcon}
+                        >
                             Overview
                         </DrawerItemWithIcon>
-                        <DrawerItemWithIcon onClick={()=> {
-                            redirectTo("/class")
-                        }}  Icon={ShapesIcon}>
+                        <DrawerItemWithIcon
+                            onClick={() => {
+                                redirectTo("/class");
+                            }}
+                            Icon={ShapesIcon}
+                        >
                             Classes
                         </DrawerItemWithIcon>
-                        <DrawerItemWithIcon onClick={()=> {
-                            redirectTo("/essay")
-                        }}  Icon={EditIcon}>
+                        <DrawerItemWithIcon
+                            onClick={() => {
+                                redirectTo("/essay");
+                            }}
+                            Icon={EditIcon}
+                        >
                             Essays
                         </DrawerItemWithIcon>
-                        <DrawerItemWithIcon onClick={()=> {
-                            redirectTo("/wordplay")
-                        }}  Icon={BlendIcon}>
+                        <DrawerItemWithIcon
+                            onClick={() => {
+                                redirectTo("/wordplay");
+                            }}
+                            Icon={BlendIcon}
+                        >
                             WordPlay
                         </DrawerItemWithIcon>
                         <DrawerItemWithIcon
-                        onClick={()=> {
-                            signOut();
-                        }}
+                            onClick={() => {
+                                signOut();
+                            }}
                             className="text-red-500 hover:text-red-600 focus:text-red-600"
                             Icon={LogOutIcon}
                         >
                             Log out
                         </DrawerItemWithIcon>
                     </DrawerDescription>
-                    <DrawerFooter className="mb-6 mt-12 text-center text-neutral-500">
+                    <DrawerFooter className="mb-4 mt-6 text-center text-neutral-500">
                         {session.user.email}
                     </DrawerFooter>
                 </DrawerContent>
@@ -137,31 +149,43 @@ export default function UserDropdown({
                     </p>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownItemWithIcon onClick={()=> {
-                            redirectTo("/overview")
-                        }}  Icon={LayoutDashboardIcon}>
+                <DropdownItemWithIcon
+                    onClick={() => {
+                        redirectTo("/overview");
+                    }}
+                    Icon={LayoutDashboardIcon}
+                >
                     Overview
                 </DropdownItemWithIcon>
-                <DropdownItemWithIcon onClick={()=> {
-                            redirectTo("/class")
-                        }}  Icon={ShapesIcon}>
+                <DropdownItemWithIcon
+                    onClick={() => {
+                        redirectTo("/class");
+                    }}
+                    Icon={ShapesIcon}
+                >
                     Classes
                 </DropdownItemWithIcon>
-                <DropdownItemWithIcon onClick={()=> {
-                            redirectTo("/essay")
-                        }}  Icon={EditIcon}>
+                <DropdownItemWithIcon
+                    onClick={() => {
+                        redirectTo("/essay");
+                    }}
+                    Icon={EditIcon}
+                >
                     Essays
                 </DropdownItemWithIcon>
-                <DropdownItemWithIcon onClick={()=> {
-                            redirectTo("/wordplay")
-                        }}  Icon={BlendIcon}>
+                <DropdownItemWithIcon
+                    onClick={() => {
+                        redirectTo("/wordplay");
+                    }}
+                    Icon={BlendIcon}
+                >
                     WordPlay
                 </DropdownItemWithIcon>
                 <DropdownMenuSeparator />
                 <DropdownItemWithIcon
-                onClick={()=> {
-                    signOut();
-                }}
+                    onClick={() => {
+                        signOut();
+                    }}
                     className="text-red-500 focus:text-red-600"
                     Icon={LogOutIcon}
                 >
@@ -185,8 +209,11 @@ const DropdownItemWithIcon = ({
 }) => {
     return (
         <DropdownMenuItem
-        onClick={onClick}
-            className={twMerge("flex flex-row items-center gap-4 cursor-pointer", className)}
+            onClick={onClick}
+            className={twMerge(
+                "flex cursor-pointer flex-row items-center gap-4",
+                className,
+            )}
         >
             <Icon className="ml-2 h-4 w-4" />
             {children}
@@ -198,7 +225,7 @@ const DrawerItemWithIcon = ({
     children,
     className,
     Icon,
-    onClick
+    onClick,
 }: {
     children: React.ReactNode;
     className?: string;
@@ -208,7 +235,10 @@ const DrawerItemWithIcon = ({
     return (
         <Button
             onClick={onClick}
-            className={twMerge("flex w-full justify-start gap-4 cursor-pointer", className)}
+            className={twMerge(
+                "flex w-full cursor-pointer justify-start gap-4",
+                className,
+            )}
             variant={"ghost"}
         >
             <Icon className="h-4 w-4" />
