@@ -55,7 +55,7 @@ export default function ConnectionGame({
             ]),
         ]);
         setInitialized(true);
-    }, []);
+    }, [allWords, goodWords]);
     if (!initialized) {
         return <p>Shuffling your options...</p>;
     }
