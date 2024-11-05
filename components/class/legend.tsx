@@ -205,7 +205,7 @@ export default function ClassLegend({
                 </div>
                 <Image
                     about="Banner"
-                    className="my-4 w-full rounded-xl"
+                    className="my-4 w-full aspect-[41/16] rounded-xl"
                     src={bannerUrl || "https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/banner_placeholder.webp"}
                     alt="Class banner"
                     priority={false}
