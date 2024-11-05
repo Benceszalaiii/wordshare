@@ -8,10 +8,8 @@ export function SignInButton({ session, signInText, signOutText, className }: { 
 
   return (
     <>
-    <SignInModal />
       {session ? (
         <Button variant={"destructive"} onClick={() => {signOut()}} className="">{signOutText ? signOutText :"Sign out"}</Button>
-        
       ) : (
         <SignInModal/>
       )}
