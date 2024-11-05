@@ -66,6 +66,7 @@ export function BannerCropperComponent({ classId }: { classId: string }) {
           <Image
             className="aspect-[41/16] w-full max-w-lg rounded-md border border-border object-cover object-center"
             src={url}
+            unoptimized
             alt="Class banner"
             width={410}
             height={160}
