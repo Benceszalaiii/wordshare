@@ -208,6 +208,8 @@ export default function ClassLegend({
                     className="my-4 w-full rounded-xl"
                     src={bannerUrl || "https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/banner_placeholder.webp"}
                     alt="Class banner"
+                    priority={false}
+                    placeholder="empty"
                     width={820}
                     height={320}
                 />

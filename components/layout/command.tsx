@@ -120,7 +120,7 @@ export function CommandBox({
                                         onSelect={() => {
                                             redirect(`class/${item.id}`);
                                         }}
-                                        className="hover:cursor-pointer"
+                                        className="hover:cursor-pointer gap-2"
                                         key={item.id}
                                     >
                                         <Avatar>

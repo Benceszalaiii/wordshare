@@ -23,7 +23,15 @@ export default async function Nav() {
   }
   // await fetchBanner()
   // {title: "Welcome to the new school year!", id: 23, show:false};
-  const res = await fetchBanner();
+  const getBannerWithFallback = async ()=> {
+    try{
+      const res = await fetchBanner();
+      return res;
+    }catch(e){
+    return {title: "You couldn't be connected to the database. Check your internet connection", id: 400, show:true};
+    }
+  }
+  const res = await getBannerWithFallback();
 
   if (!session) {
     return <Navbar bannerProps={res} EventIcon={getIcon()} points={null} session={session} role={null} />;

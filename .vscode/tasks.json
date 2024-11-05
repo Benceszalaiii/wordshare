@@ -4,7 +4,7 @@
     {
       "label": "Run local server with bun",
       "type": "shell",
-      "command": "git pull;prisma validate; bun dev",
+      "command": "git pull;prisma validate;",
       "problemMatcher": [],
       "runOptions": {
         "runOn": "folderOpen"

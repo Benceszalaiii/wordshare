@@ -11,6 +11,8 @@ export const styleVariants = {
             "bg-success text-success-foreground transition-all duration-300 hover:bg-success/90 hover:ring-2 hover:ring-success/90 hover:ring-offset-2",
         destructive:
             "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+            wrong: "bg-red-500 bg-opacity-50 cursor-default",
+            correct: "bg-green-500 bg-opacity-50 cursor-default",
         outline:
             "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary:

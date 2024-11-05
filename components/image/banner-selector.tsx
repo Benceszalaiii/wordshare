@@ -24,7 +24,7 @@ export function BannerCropperComponent({ classId }: { classId: string }) {
     getBannerUrlWithFallback("banner", classId).then((res)=> {
       setUrl(res);
     })
-  }, [])
+  }, [classId])
   const onDrop = React.useCallback(
     (acceptedFiles: FileWithPath[]) => {
       const file = acceptedFiles[0];
@@ -40,8 +40,7 @@ export function BannerCropperComponent({ classId }: { classId: string }) {
       setSelectedFile(fileWithPreview);
       setDialogOpen(true);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [classId],
+    [],
   );
 
   const { getRootProps, getInputProps } = useDropzone({

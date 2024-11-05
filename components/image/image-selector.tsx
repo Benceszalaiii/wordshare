@@ -23,7 +23,7 @@ export function CropperComponent({ classId }: { classId: string }) {
           setUrl(res);
       };
       fetchClassIcon()
-  }, [])
+  }, [classId])
   const [selectedFile, setSelectedFile] =
     React.useState<FileWithPreview | null>(null);
   useEffect(() => {

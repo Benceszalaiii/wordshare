@@ -55,12 +55,13 @@ export async function uploadEssay(essay: Essay) {
     }
 }
 
-
-export async function getEssaysByUserId(userId: string){
-    const dbUser = await prisma.user.findUnique({where: {id: userId}, include: {Essay: true}})
+export async function getEssaysByUserId(userId: string) {
+    const dbUser = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { Essay: true },
+    });
     return dbUser?.Essay || [];
 }
-
 
 export async function getEssays() {
     const auth = await getServerSession(authOptions);
@@ -102,7 +103,7 @@ export async function getEssayById(id: string) {
     if (!essay) {
         return null;
     }
-    return essay
+    return essay;
 }
 
 export async function getUserById(
@@ -552,15 +553,16 @@ export async function isOwnClass(userId: string, classId: string) {
     return false;
 }
 
-export async function getClassPoints(classId: string, userId: string){
-    const points = await prisma.points.findFirst({where:{ userId: userId, classId: classId}});
-    if (!points){
+export async function getClassPoints(classId: string, userId: string) {
+    const points = await prisma.points.findFirst({
+        where: { userId: userId, classId: classId },
+    });
+    if (!points) {
         await initializePoints(userId, classId);
         return 0;
     }
     return points.points;
 }
-
 
 //! Should be validated by API endpoint or other means.
 export async function inviteUser(
@@ -682,16 +684,18 @@ export async function leaveClass(classId: string, userId: string) {
     return new Response(null, { status: 200, statusText: "Left class." });
 }
 
-export async function deletePoints(userId: string, classId: string){
-    const point = await prisma.points.findFirst({where:{userId: userId, classId: classId}});
-    if (!point){
+export async function deletePoints(userId: string, classId: string) {
+    const point = await prisma.points.findFirst({
+        where: { userId: userId, classId: classId },
+    });
+    if (!point) {
         return new Response(null, {
             status: 404,
             statusText: "Points not found.",
         });
     }
-    const deleted = await prisma.points.delete({where:{id: point.id}});
-    if (!deleted){
+    const deleted = await prisma.points.delete({ where: { id: point.id } });
+    if (!deleted) {
         return new Response(null, {
             status: 500,
             statusText: "Error deleting points.",
@@ -699,8 +703,6 @@ export async function deletePoints(userId: string, classId: string){
     }
     return new Response(null, { status: 200, statusText: "Points deleted." });
 }
-
-
 
 export async function isStudentofClass(classId: string, userId: string) {
     const currentClass = await prisma.class.findUnique({
@@ -938,9 +940,8 @@ export async function getAllPointsUser(userId: string) {
         return [];
     }
     const points = await prisma.points.findMany({ where: { userId: userId } });
-    return points
+    return points;
 }
-
 
 export async function getAllPointsClass(classId: string) {
     const points = await prisma.points.findMany({
@@ -985,51 +986,134 @@ export async function addPoints(
     });
 }
 
-
-
-export async function getSchools(){
+export async function getSchools() {
     const schools = await prisma.school.findMany();
     return schools;
 }
 
-export async function createSchool(name: string){
-    const school = await prisma.school.create({data: {name: name}});
+export async function createSchool(name: string) {
+    const school = await prisma.school.create({ data: { name: name } });
     return school;
 }
-export async function addUserToSchool(schoolId: number,userId: string, role: string){
-    if (role === "student"){
-        const res = await prisma.school.update({where: {id: schoolId}, data: {students: {connect: {id: userId}}}})
+export async function addUserToSchool(
+    schoolId: number,
+    userId: string,
+    role: string,
+) {
+    if (role === "student") {
+        const res = await prisma.school.update({
+            where: { id: schoolId },
+            data: { students: { connect: { id: userId } } },
+        });
         return res;
     }
-    if (role === "teacher"){
-        const res = await prisma.school.update({where: {id: schoolId}, data: {teachers: {connect: {id: userId}}}})
+    if (role === "teacher") {
+        const res = await prisma.school.update({
+            where: { id: schoolId },
+            data: { teachers: { connect: { id: userId } } },
+        });
         return res;
     }
     return null;
 }
 
-
-export async function getBanner(){
+export async function getBanner() {
     const banners = await prisma.banner.findMany();
     return banners.sort((a, b) => b.id - a.id)[0];
 }
 
-export async function getUserByIdWithClasses(userId: string){
-    const user = await prisma.user.findUnique({where: {id: userId}, include: {Classes: true}});
+export async function getUserByIdWithClasses(userId: string) {
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { Classes: true },
+    });
     return user;
 }
 
-
-export async function getTasksforStudent(userId: string, classes: Class[]){
-    const dbUser = await prisma.user.findUnique({where: {id: userId}, include: {Classes: true}});
-    if (!dbUser){
+export async function getTasksforStudent(userId: string, classes: Class[]) {
+    const dbUser = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { Classes: true },
+    });
+    if (!dbUser) {
         return [];
     }
-    const tasks = await prisma.task.findMany({where: {classId: {in: dbUser.Classes.map((c) => c.id)}}, orderBy: {dueDate: "desc"}});
+    const tasks = await prisma.task.findMany({
+        where: { classId: { in: dbUser.Classes.map((c) => c.id) } },
+        orderBy: { dueDate: "desc" },
+    });
     return tasks;
 }
 
-export async function getSubmissionsForStudent(userId: string){
-    const submissions = await prisma.submission.findMany({where: {userId: userId}});
+export async function getTimeline(
+    classId: string,
+    offset: number,
+    filter?: "task" | "announcement",
+) {
+    if (!filter) {
+        const tasks = await prisma.task.findMany({
+            where: { classId: classId },
+            orderBy: { dueDate: "desc" },
+        });
+        const announcements = await prisma.announcement.findMany({
+            where: { classId: classId },
+            orderBy: { createdAt: "desc" },
+        });
+        return [...announcements, ...tasks].slice(offset, offset + 10).map((item)=> {
+            return {
+                ...item,
+                type: "dueDate" in item ? "task" : "announcement"
+            }
+        })
+            .sort((a, b) => {
+                return (
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                );
+            })
+            ;
+    }
+    if (filter === "announcement") {
+        const tasks = (await prisma.announcement.findMany({
+            where: { classId: classId },
+            orderBy: { createdAt: "desc" },
+            skip: offset,
+            take: 10,
+        })).map((a)=> {
+            return {
+                ...a,
+                type: "announcement"
+            }
+        });
+        return tasks;
+    }
+    if (filter === "task") {
+        const tasks = (await prisma.task.findMany({
+            where: { classId: classId },
+            orderBy: { createdAt: "desc" },
+            skip: offset,
+            take: 10,
+        })).map((t)=> {
+            return {
+                ...t,
+                type: "task"
+            }
+        });
+        return tasks;
+    }
+    return [];
+}
+
+export async function getSubmissionsForStudent(userId: string) {
+    const submissions = await prisma.submission.findMany({
+        where: { userId: userId },
+    });
     return submissions;
+}
+
+
+export async function getTimelineLengths(classId: string){
+    const tasks = await prisma.task.count({where: {classId: classId}});
+    const announcements = await prisma.announcement.count({where: {classId: classId}});
+    return {tasks, announcements};
 }

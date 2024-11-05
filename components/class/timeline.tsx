@@ -18,5 +18,5 @@ export default async function ClassTimeline({ currentClass, canEdit }: { current
         })
     ) || [];
     const tasks: TaskProp[] = (await getTasksByClassId(currentClass.id)).map((taskWithoutProp)=> ({...taskWithoutProp, type: "task"})) || [];
-    return <TimelineFilter tasks={tasks} announcements={announcements} />;
+    return <TimelineFilter classId={currentClass.id} />;
 }

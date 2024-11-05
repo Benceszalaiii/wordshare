@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { getEssaysForUser } from "../tasks/actions";
 import { TaskWithProps } from "@/components/task/studentoverview/component";
 import { Essay } from "@prisma/client";
+import ConnectionGame from "@/components/wordplay/connectiongame";
 
 export default async function Page() {
     const essays = await getEssaysForUser();
@@ -44,6 +45,7 @@ export default async function Page() {
             <SubmitTaskModal classId="23" essays={essays}>
                 <Button variant="default">Open modal</Button>
             </SubmitTaskModal>
+            <ConnectionGame allWords={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]} goodWords={["2", "4", "6"]} />
         </section>
     );
 }

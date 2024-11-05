@@ -43,6 +43,30 @@ import { signOut } from "next-auth/react";
 const stylings = {
     avatar: "border border-border cursor-pointer",
 };
+
+const items = [
+    {
+        name: "Overview",
+        path: "/overview",
+        icon: LayoutDashboardIcon,
+    },
+    {
+        name: "Classes",
+        path: "/class",
+        icon: ShapesIcon,
+    },
+    {
+        name: "Essays",
+        path: "/essay",
+        icon: EditIcon,
+    },
+    {
+        name: "WordPlay",
+        path: "/wordplay",
+        icon: BlendIcon,
+    },
+];
+
 export default function UserDropdown({
     session,
     role,
@@ -52,13 +76,15 @@ export default function UserDropdown({
 }) {
     const isMobile = useIsMobile();
     const router = useRouter();
+    const [open, setOpen] = React.useState(false);
     const redirectTo = (path: string) => {
-        router.push(path[0] === "/" ? path.slice(1) : path);
+        window.location.href = path;
+        setOpen(false);
     };
     if (!session.user.email) return null;
     if (isMobile) {
         return (
-            <Drawer>
+            <Drawer open={open} onOpenChange={setOpen}>
                 <DrawerTrigger asChild>
                     <button className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-gray-300 focus:outline-none active:scale-95 dark:border-gray-700 sm:h-9 sm:w-9">
                         <Image
@@ -77,38 +103,17 @@ export default function UserDropdown({
                         </DrawerDescription>
                     </DrawerHeader>
                     <DrawerDescription className="flex w-full flex-col items-start justify-start gap-1 px-2">
-                        <DrawerItemWithIcon
-                            onClick={() => {
-                                redirectTo("/overview");
-                            }}
-                            Icon={LayoutDashboardIcon}
-                        >
-                            Overview
-                        </DrawerItemWithIcon>
-                        <DrawerItemWithIcon
-                            onClick={() => {
-                                redirectTo("/class");
-                            }}
-                            Icon={ShapesIcon}
-                        >
-                            Classes
-                        </DrawerItemWithIcon>
-                        <DrawerItemWithIcon
-                            onClick={() => {
-                                redirectTo("/essay");
-                            }}
-                            Icon={EditIcon}
-                        >
-                            Essays
-                        </DrawerItemWithIcon>
-                        <DrawerItemWithIcon
-                            onClick={() => {
-                                redirectTo("/wordplay");
-                            }}
-                            Icon={BlendIcon}
-                        >
-                            WordPlay
-                        </DrawerItemWithIcon>
+                        {items.map((item) => (
+                            <DrawerItemWithIcon
+                                key={item.name}
+                                onClick={() => {
+                                    redirectTo(item.path);
+                                }}
+                                Icon={item.icon}
+                            >
+                                {item.name}
+                            </DrawerItemWithIcon>
+                        ))}
                         <DrawerItemWithIcon
                             onClick={() => {
                                 signOut();
@@ -127,7 +132,7 @@ export default function UserDropdown({
         );
     }
     return (
-        <DropdownMenu modal={false}>
+        <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
             <DropdownMenuTrigger asChild>
                 <button className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-gray-300 focus:outline-none active:scale-95 dark:border-gray-700 sm:h-9 sm:w-9">
                     <Image
@@ -149,38 +154,17 @@ export default function UserDropdown({
                     </p>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownItemWithIcon
-                    onClick={() => {
-                        redirectTo("/overview");
-                    }}
-                    Icon={LayoutDashboardIcon}
-                >
-                    Overview
-                </DropdownItemWithIcon>
-                <DropdownItemWithIcon
-                    onClick={() => {
-                        redirectTo("/class");
-                    }}
-                    Icon={ShapesIcon}
-                >
-                    Classes
-                </DropdownItemWithIcon>
-                <DropdownItemWithIcon
-                    onClick={() => {
-                        redirectTo("/essay");
-                    }}
-                    Icon={EditIcon}
-                >
-                    Essays
-                </DropdownItemWithIcon>
-                <DropdownItemWithIcon
-                    onClick={() => {
-                        redirectTo("/wordplay");
-                    }}
-                    Icon={BlendIcon}
-                >
-                    WordPlay
-                </DropdownItemWithIcon>
+                {items.map((item)=> (
+                                    <DropdownItemWithIcon
+                                    key={item.name}
+                                    onClick={() => {
+                                        redirectTo(item.path);
+                                    }}
+                                    Icon={item.icon}
+                                >
+                                    {item.name}
+                                </DropdownItemWithIcon>
+                ))}
                 <DropdownMenuSeparator />
                 <DropdownItemWithIcon
                     onClick={() => {

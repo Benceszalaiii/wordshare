@@ -162,9 +162,17 @@ export function QuickCards({
     const [open, setOpen] = useState(true);
     const [mounted, setMounted] = useState(false);
     useEffect(() => {
-        setOpen(localStorage.getItem(`quickcards-${classId}`) === "true");
-        setMounted(true);
-    }, []);
+        const stored = localStorage.getItem(`quickcards-${classId}`);
+        if (stored === null) {
+            localStorage.setItem(`quickcards-${classId}`, "true");
+            setOpen(true);
+            setMounted(true);
+        }
+        else{
+            setOpen(stored === "true");
+            setMounted(true);
+        }
+    }, [classId]);
     useEffect(() => {
         if (mounted) {
             window.localStorage.setItem(
@@ -172,7 +180,7 @@ export function QuickCards({
                 open.toString(),
             );
         }
-    }, [open]);
+    }, [open, mounted, classId]);
     return (
         <section className="mt-4 w-full max-w-screen-lg px-4">
             <Collapsible className=" px-4" open={open} onOpenChange={setOpen}>

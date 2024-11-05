@@ -31,42 +31,54 @@ import { AnnouncementProp, TaskProp } from "./timeline";
 import { AnnouncementViewModal, TaskViewModal } from "./viewmodals";
 
 import { DateTooltip } from "../shared/date-tooltip";
+import {
+    getClassTimelineLength,
+    getTimelineWithOffset,
+} from "@/app/class/[id]/actions";
+import useSWR from "swr";
 
 type MixProps = TaskProp | AnnouncementProp;
 
-export function TimelineFilter({
-    tasks,
-    announcements,
-}: {
-    tasks: TaskProp[];
-    announcements: AnnouncementProp[];
-}) {
+export function TimelineFilter({ classId }: { classId: string }) {
     const [viewMode, setViewMode] = useState("both");
     const [page, setPage] = useState(1);
-    const [filteredTimeline, setFilteredTimeline] = useState(
-        [...announcements, ...tasks].sort((a, b) => {
-            return (
-                new Date(b.createdAt).getTime() -
-                new Date(a.createdAt).getTime()
-            );
-        }),
-    );
-    const timeline = [...announcements, ...tasks].sort((a, b) => {
-        return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-    });
-    useEffect(() => {
+    const [filteredTimeline, setFilteredTimeline] = useState([] as MixProps[]);
+    const [loading, setLoading] = useState(false);
+    const { data, isLoading } = useSWR(classId, getClassTimelineLength);
+    useEffect(() => {}, []);
+    const getLengths = () => {
         if (viewMode === "both") {
-            setFilteredTimeline(timeline);
-        } else if (viewMode === "announceonly") {
-            setFilteredTimeline(announcements);
-        } else if (viewMode === "taskonly") {
-            setFilteredTimeline(tasks);
+            return (data?.announcements || 0) + (data?.tasks || 0);
         }
+        if (viewMode === "task") {
+            return data?.tasks || 0;
+        }
+        return data?.announcements || 0;
+    };
+    useEffect(() => {
         setPage(1);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [viewMode]);
+    useEffect(() => {
+        setLoading(true);
+        getTimelineWithOffset(
+            classId,
+            (page - 1) * 10,
+            viewMode !== "both"
+                ? (viewMode as "task" | "announcement")
+                : undefined,
+        )
+            .then((res) => {
+                setFilteredTimeline((res as MixProps[]) || []);
+            })
+            .catch((err) => {
+                console.error(err);
+                throw new Error("Failed to fetch timeline");
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [viewMode, page]);
     return (
         <section className="flex w-full max-w-screen-md flex-col gap-4 py-8">
             <header className="flex flex-col items-center justify-between gap-2 px-4 md:flex-row">
@@ -83,20 +95,25 @@ export function TimelineFilter({
                             <SelectLabel>Filter</SelectLabel>
                             <SelectItem value="both">
                                 All{" "}
-                                <Badge variant={"secondary"} color="red">
-                                    {timeline.length}
+                                <Badge variant={"secondary"}>
+                                    {isLoading
+                                        ? "..."
+                                        : (data?.announcements || 0) +
+                                          (data?.tasks || 0)}
                                 </Badge>
                             </SelectItem>
-                            <SelectItem value="announceonly">
+                            <SelectItem value="announcement">
                                 Announcements{" "}
                                 <Badge variant={"secondary"}>
-                                    {announcements.length}
+                                    {isLoading
+                                        ? "..."
+                                        : data?.announcements || 0}
                                 </Badge>
                             </SelectItem>
-                            <SelectItem value="taskonly">
+                            <SelectItem value="task">
                                 Tasks{" "}
                                 <Badge variant={"secondary"}>
-                                    {tasks.length}
+                                    {isLoading ? "..." : data?.tasks || 0}
                                 </Badge>
                             </SelectItem>
                         </SelectGroup>
@@ -105,14 +122,8 @@ export function TimelineFilter({
             </header>
             <Separator className="hidden md:block" />
             <div className="flex flex-col gap-4 px-4">
-                {filteredTimeline.length === 0 && (
-                    <p className="w-full text-center font-semibold text-gray-600 dark:text-gray-400">
-                        It&apos;s quiet in here.
-                    </p>
-                )}
-                {filteredTimeline
-                    .slice(10 * (page - 1), 10 * page)
-                    .map((item, index) => {
+                {filteredTimeline.length > 0 ? (
+                    filteredTimeline.map((item, index) => {
                         if (item.type === "task") {
                             return (
                                 <Card key={index} className="w-full">
@@ -168,7 +179,12 @@ export function TimelineFilter({
                                 </CardFooter>
                             </Card>
                         );
-                    })}
+                    })
+                ) : (
+                    <p className="w-full text-center font-semibold text-gray-600 dark:text-gray-400">
+                        It&apos;s quiet in here.
+                    </p>
+                )}
                 <Pagination>
                     <PaginationContent>
                         <PaginationItem
@@ -208,7 +224,7 @@ export function TimelineFilter({
                         >
                             <Button
                                 onClick={() => {
-                                    if (filteredTimeline.length > 10 * page)
+                                    if (getLengths() > 10 * page)
                                         setPage(page + 1);
                                 }}
                                 variant={"ghost"}
@@ -218,14 +234,12 @@ export function TimelineFilter({
                         </PaginationItem>
                         <PaginationItem
                             className={`${
-                                filteredTimeline.length > 10 * page
-                                    ? ""
-                                    : "hidden"
+                                getLengths() > 10 * page ? "" : "hidden"
                             }`}
                         >
                             <Button
                                 onClick={() => {
-                                    if (filteredTimeline.length > 10 * page)
+                                    if (getLengths() > 10 * page)
                                         setPage(page + 1);
                                 }}
                                 variant={"ghost"}

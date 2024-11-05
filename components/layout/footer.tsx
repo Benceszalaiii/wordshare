@@ -22,7 +22,6 @@ export default function Footer() {
   return (
     <div className="w-full bg-beige-400 z-50 bg-opacity-50 backdrop-blur-md dark:bg-neutral-950 border-t border-border flex flex-col items-center justify-center" aria-hidden="true">
       <div className="flex flex-col items-center justify-center p-4">
-        {/* TODO REMOVE AFTER EVENT */}
         {eventText && <p className="text-left font-display text-lg font-light py-4">{eventText && eventText[0]} <b className="font-extrabold text-main-600">{eventText && (eventText[1] || "")}</b></p>}
         <h2 className={"text-2xl font-bold " + caveat.className}>WordShare</h2>
         <p className="text-gray-500 text-center">
