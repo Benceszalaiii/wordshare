@@ -28,7 +28,7 @@ export default async function Nav() {
       const res = await fetchBanner();
       return res;
     }catch(e){
-    return {title: "You couldn't be connected to the database. Check your internet connection", id: 400, show:true};
+    return {title: "You couldn't be connected to the database. Check your internet connection", id: 69420, show:true};
     }
   }
   const res = await getBannerWithFallback();

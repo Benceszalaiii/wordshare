@@ -33,7 +33,7 @@ export default function ConnectionGame({
         }
         window.localStorage.setItem(
             "clickedWords-playId",
-            JSON.stringify([...(new Set([...clickedWords, word]))]),
+            JSON.stringify([...new Set([...clickedWords, word])]),
         );
         setClickedWords([...clickedWords, word]);
     };
@@ -50,8 +50,8 @@ export default function ConnectionGame({
             ...shuffle([
                 ...shuffle(
                     allWords.filter((word) => !goodWords.includes(word)),
-                ).slice(0, 5),
-                ...shuffle(goodWords).slice(0, 5),
+                ).slice(0, 10 - Math.min(5, goodWords.length)),
+                ...shuffle(goodWords).slice(0, Math.min(5, goodWords.length)),
             ]),
         ]);
         setInitialized(true);
