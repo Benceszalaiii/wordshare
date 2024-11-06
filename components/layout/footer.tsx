@@ -4,10 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { caveat } from "@/app/fonts";
 import { useEffect, useState } from "react";
+import { getEvent } from "@/app/actions";
 export default function Footer() {
   const [eventText, setEventText] = useState<string[] | null>(null);
+
   useEffect(()=> {
-    fetch(`/api/event`, {cache: "force-cache", keepalive: true}).then(async (res)=> {switch(await res.text()){
+    getEvent().then(async (res)=> {switch(res){
       case "HALLOWEEN":
         setEventText(["Happy", "Halloween!"]);
         break;

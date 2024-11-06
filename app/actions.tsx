@@ -12,3 +12,8 @@ export async function dismissBanner(bannerId: string){
 export async function fetchBanner(){
     return await getBanner();
 }
+
+export async function getEvent(){
+    const currentEvent = process.env.EVENT || null;
+    return currentEvent;
+}
