@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { caveat } from "@/app/fonts";
 import { useEffect, useState } from "react";
 import { getEvent } from "@/app/actions";
+import { Button } from "../ui/button";
 export default function Footer() {
   const [eventText, setEventText] = useState<string[] | null>(null);
 
@@ -31,8 +32,12 @@ export default function Footer() {
         </p>
         </div>
         <div className="flex flex-row gap-6">
-        <a href={"/roadmap"} className="hover:underline underline-offset-2">Roadmap</a>
-        <a href={"/shortcuts"} className="hover:underline underline-offset-2">Shortcuts</a>
+        <Button variant={"linkHover2"} onClick={()=> {
+          window.location.href = "/roadmap";
+        }} >Roadmap</Button>
+        <Button variant={"linkHover2"} onClick={()=>{
+          window.location.href = "/shortcuts"
+        }} >Shortcuts</Button>
         </div>
       <p className="text-gray-500 p-4 pb-4">
         A project by{" "}
