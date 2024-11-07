@@ -3,10 +3,9 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import Navbar from "./navbar";
 import { getServerSession } from "next-auth/next";
-import { getAllPointsUser, getBanner, getUserById, isAdmin } from "@/lib/db";
+import { getAllPointsUser, getUserById } from "@/lib/db";
 import { Bat, Tree } from "../shared/icons";
-import Banner from "./banner";
-import { cookies } from "next/headers";
+
 import { fetchBanner } from "@/app/actions";
 
 export default async function Nav() {

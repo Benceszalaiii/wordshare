@@ -19,7 +19,7 @@ export default function Page({ params }: { params: { bookLevel: string } }) {
             <h1 className="text-wrap text-lg font-semibold">
                 {currentBook.bookTitle} English File Audio Sources
             </h1>
-            <Accordion type="multiple" className="w-full md:w-96">
+            <Accordion type="multiple" className="w-full max-w-screen-sm">
                 {currentBook.sections.map((section) => {
                     const getName = ()=> {
                         if(section.section.startsWith("ce") || section.section.startsWith("pe") || section.section.startsWith("rc")) {
