@@ -1,4 +1,5 @@
 "use server";
+import { isBannerDismissed } from "@/app/actions";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import UserBanner from "@/components/user/banner";
 import MutualClassSection from "@/components/user/mutual";
@@ -24,11 +25,13 @@ export default async function Page({ params }: { params: { userId: string } }) {
             : await getClassesByUser(dbUser.id);
     const school = await getSchoolById(dbUser.schoolId);
     const session = await getServerSession(authOptions);
+    const bannerDismissed = await isBannerDismissed();
     const currentUser = await getUserById(session?.user.id);
     if (dbUser.private && !(session?.user.id === dbUser.id)) {
         return (
             <section className="mt-24 flex w-full flex-col items-center gap-4 px-4">
                 <UserBanner
+                bannerDismissed={bannerDismissed}
                     dbUser={dbUser}
                     school={school}
                     canEdit={session?.user.id === dbUser.id}
@@ -47,6 +50,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
                 dbUser={dbUser}
                 school={school}
                 canEdit={session?.user.id === dbUser.id}
+                bannerDismissed={bannerDismissed}
             />
             <RecentClassSection
                 classes={classes.slice(

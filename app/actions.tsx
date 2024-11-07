@@ -15,6 +15,15 @@ export async function fetchBanner() {
     return await getBanner();
 }
 
+export async function isBannerDismissed() {
+    const dismissedBannerId = cookies().get("bannerId");
+    const banner = await getBanner();
+    if (banner.id.toString() === dismissedBannerId?.value) {
+        return true;
+    }
+    return false;
+}
+
 export async function getEvent() {
     const currentEvent = process.env.EVENT || null;
     return currentEvent;

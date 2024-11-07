@@ -20,16 +20,18 @@ export default function UserBanner({
     dbUser,
     school,
     canEdit,
+    bannerDismissed
 }: {
     dbUser: UserWithClasses;
     school: School | null;
     canEdit?: boolean;
+    bannerDismissed: boolean;
 }) {
     const [privacy, setPrivacy] = React.useState<boolean>(dbUser.private);
     const [loading, setLoading] = React.useState<boolean>(false);
     return (
         <section
-            className="sticky top-20 z-10 flex w-full max-w-screen-lg flex-col items-center rounded-lg border border-border bg-neutral-200/90 bg-opacity-85 p-4 backdrop-blur-md dark:bg-neutral-800/90"
+            className={`sticky ${bannerDismissed ? "top-20" : "top-32"} z-10 flex w-full max-w-screen-lg flex-col items-center rounded-lg border border-border bg-neutral-200/90 bg-opacity-85 p-4 backdrop-blur-md dark:bg-neutral-800/90`}
             about="User profile"
         >
             <div className="ml-6 flex w-full flex-row items-center gap-4 self-start">
