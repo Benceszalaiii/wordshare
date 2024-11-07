@@ -33,7 +33,7 @@ export default function UserBanner({
             about="User profile"
         >
             <div className="ml-6 flex w-full flex-row items-center gap-4 self-start">
-                <Avatar className="h-24 w-24">
+                <Avatar className="h-12 md:h-24 w-12 md:w-24">
                     <AvatarImage src={dbUser.image || ""}></AvatarImage>
                     <AvatarFallback>
                         {getInitials(dbUser.name || "W")}
