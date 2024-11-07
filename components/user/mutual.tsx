@@ -10,12 +10,24 @@ export default function MutualClassSection({
     UserClasses,
     userName,
     loggedIn,
+    own
 }: {
     currentUserClasses: Class[];
     UserClasses: Class[];
     userName: string;
     loggedIn: boolean;
+    own: boolean
 }) {
+    if (own){
+        return (
+            <section className="mt-8 flex w-full max-w-screen-md flex-col gap-2 rounded-lg border border-border p-4">
+            <h2 className=" mb-4 text-xl font-semibold">Mutual classes</h2>
+            <p className="text-gray-500">
+                Your mutual classes with your profile visitors will appear here for them
+            </p>
+        </section>
+        )
+    }
     if (!loggedIn) {
         return (
             <section className="mt-8 flex w-full max-w-screen-md flex-col gap-2 rounded-lg border border-border p-4">

@@ -57,12 +57,13 @@ export default async function Page({ params }: { params: { userId: string } }) {
                 userName={dbUser.name || ""}
             />
             <MutualClassSection
-            loggedIn={session ? true : false}
+                loggedIn={session ? true : false}
                 UserClasses={classes}
                 userName={dbUser.name || ""}
                 currentUserClasses={await getClassesByUser(
                     session?.user.id || null,
                 )}
+                own={session?.user.id === dbUser.id}
             />
             <section className="h-screen w-full"></section>
         </section>

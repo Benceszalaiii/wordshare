@@ -24,6 +24,7 @@ import {
     LogOutIcon,
     LucideIcon,
     ShapesIcon,
+    User2Icon,
 } from "lucide-react";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
@@ -96,6 +97,14 @@ export default function UserDropdown({
                         </DrawerDescription>
                     </DrawerHeader>
                     <DrawerDescription className="flex w-full flex-col items-start justify-start gap-1 px-2">
+                        <DrawerItemWithIcon
+                            onClick={() => {
+                                redirectTo(`/user/${session.user.id}`);
+                            }}
+                            Icon={User2Icon}
+                        >
+                            Profile
+                        </DrawerItemWithIcon>
                         {items.map((item) => (
                             <DrawerItemWithIcon
                                 key={item.name}
@@ -147,6 +156,14 @@ export default function UserDropdown({
                     </p>
                 </div>
                 <DropdownMenuSeparator />
+                <DropdownItemWithIcon
+                    onClick={() => {
+                        redirectTo(`/user/${session.user.id}`);
+                    }}
+                    Icon={User2Icon}
+                >
+                    Profile
+                </DropdownItemWithIcon>
                 {items.map((item) => (
                     <DropdownItemWithIcon
                         key={item.name}
