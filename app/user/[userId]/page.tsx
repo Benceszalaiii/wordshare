@@ -1,4 +1,5 @@
 "use server";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,7 @@ import {
     getSchoolById,
     getUserByIdWithClasses,
 } from "@/lib/db";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -22,9 +24,26 @@ export default async function Page({ params }: { params: { userId: string } }) {
             ? dbUser.Classes
             : await getClassesByUser(dbUser.id);
     const school = await getSchoolById(dbUser.schoolId);
+    const session = await getServerSession(authOptions);
+    if (dbUser.private && !(session?.user.id === dbUser.id)) {
+        return (
+            <section className="mt-24 flex w-full flex-col items-center gap-4 px-4">
+                <UserBanner
+                    dbUser={dbUser}
+                    school={school}
+                    canEdit={session?.user.id === dbUser.id}
+                />
+                <h2>{dbUser.name ? `${dbUser.name.split(" ")[0]}'s profile is private.`: "This user profile is private."}</h2>
+            </section>
+        );
+    }
     return (
         <section className="mt-24 flex w-full flex-col items-center gap-4 px-4">
-            <UserBanner dbUser={dbUser} school={school} />
+            <UserBanner
+                dbUser={dbUser}
+                school={school}
+                canEdit={session?.user.id === dbUser.id}
+            />
             <section className="mt-8 flex w-full max-w-screen-md flex-col gap-2 rounded-lg border border-border p-4">
                 <h2 className=" mb-4 text-xl font-semibold">Recent classes</h2>
                 <div className="grid grid-cols-1 place-content-center gap-4 md:grid-cols-3">

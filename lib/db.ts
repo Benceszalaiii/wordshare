@@ -1132,3 +1132,11 @@ export async function getSchoolById(schoolId: number | null){
     const school = await prisma.school.findUnique({where: {id: schoolId} })
     return school;
 }
+
+export async function changePrivacyById(userId: string, updated: boolean){
+    const updatedUser = await prisma.user.update({where: {id: userId}, data: {private: updated}})
+    if (!updatedUser){
+        return false;
+    }
+    return true;
+}
