@@ -489,7 +489,7 @@ export async function getClassByStudentSession(session: Session | null) {
 
 export async function getClassesByTeacherUser(userId: string | undefined) {
     if (!userId) {
-        return null;
+        return [];
     }
     const classes = await prisma.class.findMany({
         where: { teacherUserId: userId },
@@ -1122,4 +1122,13 @@ export async function getTimelineLengths(classId: string) {
         where: { classId: classId },
     });
     return { tasks, announcements };
+}
+
+
+export async function getSchoolById(schoolId: number | null){
+    if (!schoolId){
+        return null;
+    }
+    const school = await prisma.school.findUnique({where: {id: schoolId} })
+    return school;
 }

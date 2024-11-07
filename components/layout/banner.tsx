@@ -61,7 +61,7 @@ export default function Banner({
                 className,
             )}
         >
-            <h1 className="ml-auto mr-auto line-clamp-2 flex h-14 p-2 text-center font-display font-semibold tracking-wider sm:items-center">
+            <h1 className="ml-auto mr-auto line-clamp-2 flex h-14 p-2 text-center font-display font-semibold tracking-wider items-center">
                 {bannerProps.title}
             </h1>
             {bannerProps.id !== 69420 && (

@@ -11,6 +11,7 @@ model Essay {
   ReviewRequest ReviewRequest[]
   Score         Score[]
   Submission    Submission[]
+  showOnProfile Boolean         @default(false)
 }
 
 model Score {
