@@ -4,7 +4,6 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { notAuthorized } from "@/components/auth";
 import { AlertWrongAccount } from "@/components/invites/alert";
 import InviteSection from "@/components/invites/section";
-import { SignInButton } from "@/components/shared/buttons";
 import { getInvites, inviteExists } from "@/lib/db";
 import { getServerSession } from "next-auth";
 
@@ -37,11 +36,12 @@ export default async function Page({
             </section>
         );
     }
-    if (invites?.find((x) => x.id === inviteId)){
-
+    if (invites?.find((x) => x.id === inviteId)) {
         return (
             <section className="flex h-full w-full flex-col pl-4 md:pl-32">
-                <h1 className="m-4 mb-8 ml-0 text-2xl font-semibold">Invites</h1>
+                <h1 className="m-4 mb-8 ml-0 text-2xl font-semibold">
+                    Invites
+                </h1>
                 <InviteSection active={inviteId} invites={invites} />
             </section>
         );
@@ -53,7 +53,7 @@ export default async function Page({
                 <h1 className="m-4 mb-8 ml-0 text-2xl font-semibold">
                     Invites
                 </h1>
-                <AlertWrongAccount  />
+                <AlertWrongAccount />
                 <InviteSection active={null} invites={invites} />
             </section>
         );

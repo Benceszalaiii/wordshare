@@ -1,5 +1,5 @@
-import plugin from "tailwindcss/plugin";
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 // gotta edit this to make it dynamic, ugh \\\\\\\\\\/\
 
 interface EventScheme {

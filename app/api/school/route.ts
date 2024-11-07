@@ -1,43 +1,54 @@
-import { addUserToSchool, createSchool, getSchools, getUserById } from "@/lib/db";
+import {
+    addUserToSchool,
+    createSchool,
+    getSchools,
+    getUserById,
+} from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/options";
 
-export async function GET(req: NextRequest){
+export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session){
-        return new Response("Unauthorized", {status: 401});
+    if (!session) {
+        return new Response("Unauthorized", { status: 401 });
     }
     const schools = await getSchools();
-    return new Response(JSON.stringify(schools), {status: 200});
+    return new Response(JSON.stringify(schools), { status: 200 });
 }
 
-export async function POST(req: NextRequest){
+export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session){
-        return new Response("Unauthorized", {status: 401});
+    if (!session) {
+        return new Response("Unauthorized", { status: 401 });
     }
     const params = await req.json();
-    if (!params.name){
-        return new Response("School name is required", {status: 400});
+    if (!params.name) {
+        return new Response("School name is required", { status: 400 });
     }
     const school = await createSchool(params.name);
-    return new Response(JSON.stringify(school), {status: 201});
+    return new Response(JSON.stringify(school), { status: 201 });
 }
 
-export async function PUT(req: NextRequest){
+export async function PUT(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session){
-        return new Response("Unauthorized", {status: 401});
+    if (!session) {
+        return new Response("Unauthorized", { status: 401 });
     }
     const body = await req.json();
     const dbUser = await getUserById(session.user.id);
-    if (!dbUser){
-        return new Response("Unauthorized", {status: 401});
+    if (!dbUser) {
+        return new Response("Unauthorized", { status: 401 });
     }
-    const school = await addUserToSchool(body.schoolId, dbUser.id, dbUser.role || "")
-    if (!school){
-        return new Response("User has inappropriate role set.", {status: 404});
+    const school = await addUserToSchool(
+        body.schoolId,
+        dbUser.id,
+        dbUser.role || "",
+    );
+    if (!school) {
+        return new Response("User has inappropriate role set.", {
+            status: 404,
+        });
     }
-    return new Response(null, {status: 201});
+    return new Response(null, { status: 201 });
 }

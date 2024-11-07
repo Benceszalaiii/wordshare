@@ -1,12 +1,11 @@
 "use client";
 
-import { Parallax } from '../shared/animations';
+import { Parallax } from "../shared/animations";
 
-
-export function Balls(){
+export function Balls() {
     return (
-        <div className='relative justify-center text-center w-full h-screen'>
-            <Parallax/>
+        <div className="relative h-screen w-full justify-center text-center">
+            <Parallax />
         </div>
-    )
+    );
 }

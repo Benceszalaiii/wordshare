@@ -1,55 +1,77 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { getEvent } from "@/app/actions";
 import { caveat } from "@/app/fonts";
 import { useEffect, useState } from "react";
-import { getEvent } from "@/app/actions";
 import { Button } from "../ui/button";
 export default function Footer() {
-  const [eventText, setEventText] = useState<string[] | null>(null);
+    const [eventText, setEventText] = useState<string[] | null>(null);
 
-  useEffect(()=> {
-    getEvent().then(async (res)=> {switch(res){
-      case "HALLOWEEN":
-        setEventText(["Happy", "Halloween!"]);
-        break;
-      case "XMAS":
-        setEventText(["Merry", "Christmas!"]);
-        break;
-      default:
-        setEventText(null);
-        break;
-    }})
-  }, [])
-  return (
-    <div className="w-full bg-beige-400 z-50 bg-opacity-50 backdrop-blur-md dark:bg-neutral-950 border-t border-border flex flex-col items-center justify-center" aria-hidden="true">
-      <div className="flex flex-col items-center justify-center p-4">
-        {eventText && <p className="text-left font-display text-lg font-light py-4">{eventText && eventText[0]} <b className="font-extrabold text-main-600">{eventText && (eventText[1] || "")}</b></p>}
-        <h2 className={"text-2xl font-bold " + caveat.className}>WordShare</h2>
-        <p className="text-gray-500 text-center">
-          Learn English with daily cards! 📚🔥
-        </p>
-        </div>
-        <div className="flex flex-row gap-6">
-        <Button variant={"linkHover2"} onClick={()=> {
-          window.location.href = "/roadmap";
-        }} >Roadmap</Button>
-        <Button variant={"linkHover2"} onClick={()=>{
-          window.location.href = "/shortcuts"
-        }} >Shortcuts</Button>
-        </div>
-      <p className="text-gray-500 p-4 pb-4">
-        A project by{" "}
-        <a
-          className="font-semibold text-gray-600 underline-offset-4 transition-colors hover:underline"
-          href="https://github.com/benceszalaiii"
-          target="_blank"
-          rel="noopener noreferrer"
+    useEffect(() => {
+        getEvent().then(async (res) => {
+            switch (res) {
+                case "HALLOWEEN":
+                    setEventText(["Happy", "Halloween!"]);
+                    break;
+                case "XMAS":
+                    setEventText(["Merry", "Christmas!"]);
+                    break;
+                default:
+                    setEventText(null);
+                    break;
+            }
+        });
+    }, []);
+    return (
+        <div
+            className="z-50 flex w-full flex-col items-center justify-center border-t border-border bg-beige-400 bg-opacity-50 backdrop-blur-md dark:bg-neutral-950"
+            aria-hidden="true"
         >
-          Benceszalaiii
-        </a>
-      </p>
-    </div>
-  );
+            <div className="flex flex-col items-center justify-center p-4">
+                {eventText && (
+                    <p className="py-4 text-left font-display text-lg font-light">
+                        {eventText && eventText[0]}{" "}
+                        <b className="font-extrabold text-main-600">
+                            {eventText && (eventText[1] || "")}
+                        </b>
+                    </p>
+                )}
+                <h2 className={"text-2xl font-bold " + caveat.className}>
+                    WordShare
+                </h2>
+                <p className="text-center text-gray-500">
+                    Learn English with daily cards! 📚🔥
+                </p>
+            </div>
+            <div className="flex flex-row gap-6">
+                <Button
+                    variant={"linkHover2"}
+                    onClick={() => {
+                        window.location.href = "/roadmap";
+                    }}
+                >
+                    Roadmap
+                </Button>
+                <Button
+                    variant={"linkHover2"}
+                    onClick={() => {
+                        window.location.href = "/shortcuts";
+                    }}
+                >
+                    Shortcuts
+                </Button>
+            </div>
+            <p className="p-4 pb-4 text-gray-500">
+                A project by{" "}
+                <a
+                    className="font-semibold text-gray-600 underline-offset-4 transition-colors hover:underline"
+                    href="https://github.com/benceszalaiii"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Benceszalaiii
+                </a>
+            </p>
+        </div>
+    );
 }

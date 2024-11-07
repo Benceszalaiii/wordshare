@@ -1,18 +1,7 @@
-import {
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "../ui/dialog";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -20,11 +9,26 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import {
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "../ui/dialog";
 
 const formSchema = z.object({
-    announcementtitle: z.string({message: "Announcement must have a title of atleast 2 characters."}).min(2).max(200),
+    announcementtitle: z
+        .string({
+            message: "Announcement must have a title of atleast 2 characters.",
+        })
+        .min(2)
+        .max(200),
     announcementdescription: z.string().max(200).optional(),
 });
 export function AnnouncementModal({
@@ -43,9 +47,20 @@ export function AnnouncementModal({
     const router = useRouter();
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setSubmitted(true);
-        const res = await fetch(`/api/class/announce/${classId}`, {method: "POST", body: JSON.stringify({title: values.announcementtitle, content: values.announcementdescription})});
-        if (res.ok) {toast.success("Announcement sent!"); router.refresh();}
-        else{ toast.error("Failed to send announcement. Try again later."); setSubmitted(false);};
+        const res = await fetch(`/api/class/announce/${classId}`, {
+            method: "POST",
+            body: JSON.stringify({
+                title: values.announcementtitle,
+                content: values.announcementdescription,
+            }),
+        });
+        if (res.ok) {
+            toast.success("Announcement sent!");
+            router.refresh();
+        } else {
+            toast.error("Failed to send announcement. Try again later.");
+            setSubmitted(false);
+        }
     }
     return (
         <>
@@ -86,13 +101,19 @@ export function AnnouncementModal({
                                 <FormItem>
                                     <FormLabel>Description</FormLabel>
                                     <FormControl>
-                                        <Textarea placeholder="Today is a great day!..." cols={3} {...field} />
+                                        <Textarea
+                                            placeholder="Today is a great day!..."
+                                            cols={3}
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <Button disabled={submitted} type="submit">Send announcement</Button>
+                        <Button disabled={submitted} type="submit">
+                            Send announcement
+                        </Button>
                     </form>
                 </Form>
             </DialogContent>

@@ -1,12 +1,7 @@
-import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import Link from "next/link";
-import BookData from '../../public/englishfile/file_structure.json';
+import BookData from "../../public/englishfile/file_structure.json";
+import { ScrollArea } from "../ui/scroll-area";
 export interface BookSection {
     section: string;
     audioFiles: string[];
@@ -18,7 +13,9 @@ export interface BookType {
     sections: BookSection[];
 }
 
-export const BookContent: BookType[] = JSON.parse(JSON.stringify(BookData.books));
+export const BookContent: BookType[] = JSON.parse(
+    JSON.stringify(BookData.books),
+);
 
 export default function FilesSideBar({ className }: { className?: string }) {
     return (

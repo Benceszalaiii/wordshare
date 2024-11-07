@@ -1,14 +1,11 @@
 "use client";
 
+import { dismissBanner } from "@/app/actions";
 import { cn } from "@/lib/utils";
 import { XIcon } from "lucide-react";
-import { Button } from "../ui/button";
-import { toast } from "sonner";
-import * as React from "react";
-import { cookies } from "next/headers";
-import { getBanner } from "@/lib/db";
 import { useRouter } from "next/navigation";
-import { dismissBanner } from "@/app/actions";
+import * as React from "react";
+import { toast } from "sonner";
 interface BannerProps {
     title: string;
     show: boolean;

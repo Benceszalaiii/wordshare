@@ -2,21 +2,19 @@
 
 import {
     Drawer,
-    DrawerClose,
     DrawerContent,
-    DrawerDescription,
     DrawerFooter,
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer";
-import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
-import { Button } from "../ui/button";
-import { useState } from "react";
-import { Switch } from "../ui/switch";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
+import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Button } from "../ui/button";
+import { Switch } from "../ui/switch";
 
 const scorecolors: Record<
     "0" | "50" | "100" | "150" | "200" | "250" | "300",

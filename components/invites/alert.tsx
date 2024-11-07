@@ -1,4 +1,5 @@
 "use server"
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -10,10 +11,9 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { SignInButton } from "../shared/buttons";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 export async function AlertWrongAccount() {
     const session = await getServerSession(authOptions);
     return (

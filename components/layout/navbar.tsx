@@ -1,16 +1,16 @@
 "use client";
-import * as React from "react";
-import Link from "next/link";
-import useScroll from "@/lib/hooks/use-scroll";
-import UserDropdown from "@/components/layout/userdropdown";
-import { Session } from "next-auth";
 import { caveat } from "@/app/fonts";
-import { usePathname } from "next/navigation";
-import ThemeSwitch from "../theme";
-import { DashboardIcon } from "@radix-ui/react-icons";
-import { AllPoints } from "../shared/points";
-import { ReactNode } from "react";
+import UserDropdown from "@/components/layout/userdropdown";
+import useScroll from "@/lib/hooks/use-scroll";
 import { Points } from "@prisma/client";
+import { DashboardIcon } from "@radix-ui/react-icons";
+import { Session } from "next-auth";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import * as React from "react";
+import { ReactNode } from "react";
+import { AllPoints } from "../shared/points";
+import ThemeSwitch from "../theme";
 import Banner from "./banner";
 import SignInModal from "./signinmodal";
 export default function NavBar({

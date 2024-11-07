@@ -30,12 +30,12 @@ import { Separator } from "../ui/separator";
 import { AnnouncementProp, TaskProp } from "./timeline";
 import { AnnouncementViewModal, TaskViewModal } from "./viewmodals";
 
-import { DateTooltip } from "../shared/date-tooltip";
 import {
     getClassTimelineLength,
     getTimelineWithOffset,
 } from "@/app/class/[id]/actions";
 import useSWR from "swr";
+import { DateTooltip } from "../shared/date-tooltip";
 
 type MixProps = TaskProp | AnnouncementProp;
 

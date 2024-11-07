@@ -1,16 +1,12 @@
 "use server";
-import { BackArrow } from "@/components/shared/icons";
 import { getEssayById, getUserById } from "@/lib/db";
-import { Essay } from "@/lib/utils";
-import Link from "next/link";
-import React from "react";
 
-import { countWords } from "@/lib/utils";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { Header } from "@/components/blank";
 import CommentWrapper from "@/components/commentwrapper";
 import { ScoreDrawerWrapper } from "@/components/essay/score";
 import { Button } from "@/components/ui/button";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { countWords } from "@/lib/utils";
 import { getServerSession } from "next-auth";
 
 export default async function Page({ params }: { params: { slug: string } }) {
@@ -25,7 +21,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
         return <p>Author not found</p>;
     }
     const ownEssay = dbUser?.id === essay.userId;
-    const canEdit = dbUser?.role === "admin" || (dbUser?.role === "teacher" && dbUser?.teacherVerified);
+    const canEdit =
+        dbUser?.role === "admin" ||
+        (dbUser?.role === "teacher" && dbUser?.teacherVerified);
     const createdAtReadable = new Date(essay.createdAt).toLocaleDateString(
         "en-GB",
         {

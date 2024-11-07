@@ -62,7 +62,7 @@ export async function getTimelineWithOffset(
     return res;
 }
 
-export async function getClassTimelineLength(classId: string){
+export async function getClassTimelineLength(classId: string) {
     const res = await getTimelineLengths(classId);
     return res;
 }

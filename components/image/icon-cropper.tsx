@@ -19,11 +19,11 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import "react-image-crop/dist/ReactCrop.css";
+import { getBannerWithFallback, uploadImage } from "@/app/class/actions";
 import { FileWithPreview } from "@/components/image/image-selector";
 import { CropIcon, Trash2Icon } from "lucide-react";
+import "react-image-crop/dist/ReactCrop.css";
 import { toast } from "sonner";
-import { getBannerWithFallback, uploadImage } from "@/app/class/actions";
 
 interface ImageCropperProps {
     dialogOpen: boolean;

@@ -1,15 +1,12 @@
 "use client";
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
+    DialogTrigger
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function InviteDoesntExist() {

@@ -1,6 +1,6 @@
 "use client";
-import { Class, Invite } from "@prisma/client";
 import { Button } from "@/components/ui/button";
+import { Class, Invite } from "@prisma/client";
 
 import {
     Dialog,
@@ -12,9 +12,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 export function ActionButtons({
     invite,
     currentClass,
@@ -35,7 +35,7 @@ export function ActionButtons({
                     <DialogTitle>
                         You&apos;ve been invited to {currentClass.name}
                     </DialogTitle>
-                    <DialogDescription className="pt-4 flex justify-center flex-col w-full items-center">
+                    <DialogDescription className="flex w-full flex-col items-center justify-center pt-4">
                         <Image
                             src={`https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/${invite.classId}/banner`}
                             alt="Class Banner"
@@ -58,9 +58,12 @@ export function ActionButtons({
                                         headers: { inviteId: invite.id },
                                     },
                                 );
-                                if (res.ok) {toast.success(await res.text()); router.replace(`/class/${invite.classId}`);}
-                                else {toast.error(await res.text());}
-                                
+                                if (res.ok) {
+                                    toast.success(await res.text());
+                                    router.replace(`/class/${invite.classId}`);
+                                } else {
+                                    toast.error(await res.text());
+                                }
                             }}
                         >
                             Accept
@@ -78,8 +81,12 @@ export function ActionButtons({
                                         headers: { inviteId: invite.id },
                                     },
                                 );
-                                if (res.ok){toast.success(await res.text());router.replace(`/invites`)}
-                                else{toast.error(await res.text())};
+                                if (res.ok) {
+                                    toast.success(await res.text());
+                                    router.replace(`/invites`);
+                                } else {
+                                    toast.error(await res.text());
+                                }
                             }}
                         >
                             Decline

@@ -1,23 +1,14 @@
 "use server";
 
-import { getServerSession } from "next-auth";
-import { caveat } from "../fonts";
-import React from "react";
-import { authOptions } from "../api/auth/[...nextauth]/options";
-import { SignInButton } from "@/components/shared/buttons";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-    changeRoleById,
-    getSchools,
-    getUserByEmail,
-    getUserById,
-} from "@/lib/db";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { RoleForm } from "@/components/quickstart/role-form";
-import Link from "next/link";
 import StudentModal from "@/components/quickstart/studentmodal";
+import { SignInButton } from "@/components/shared/buttons";
+import { Button } from "@/components/ui/button";
+import { getSchools, getUserById } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import Link from "next/link";
+import { authOptions } from "../api/auth/[...nextauth]/options";
+import { caveat } from "../fonts";
 
 const styling = {
     section: "flex flex-col gap-2 items-center pt-12",
@@ -162,7 +153,8 @@ export default async function Page() {
                     <p className={styling.active}>4. Done for now</p>
                 </div>
                 <p className="mt-4 text-center">
-                    You are set up for now. <br /> Start by joining a class. <br /> Ask your teacher to invite you to a class.
+                    You are set up for now. <br /> Start by joining a class.{" "}
+                    <br /> Ask your teacher to invite you to a class.
                 </p>
             </section>
         );

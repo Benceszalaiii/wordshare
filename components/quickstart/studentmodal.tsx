@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/dialog";
 import { School } from "@prisma/client";
 
-import { ComboSearch } from "../combosearch";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { ComboSearch } from "../combosearch";
 export default function StudentModal({ schools }: { schools: School[] }) {
     const schoolValues = schools.map((school) => ({
         value: school.id,
@@ -89,8 +89,8 @@ export default function StudentModal({ schools }: { schools: School[] }) {
                     <DialogTitle>Select school</DialogTitle>
                     <DialogDescription>
                         Choose your school from the list below. Note that this
-                        data will only be used to provide teachers an
-                        easier time to manage your account.
+                        data will only be used to provide teachers an easier
+                        time to manage your account.
                     </DialogDescription>
                 </DialogHeader>
                 <ComboSearch

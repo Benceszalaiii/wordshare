@@ -1,13 +1,8 @@
-import {
-    deleteTemplate,
-    sendEmail,
-    sendTemplate,
-    uploadTemplate,
-} from "@/lib/aws";
+import { sendTemplate } from "@/lib/aws";
+import { getUserById } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/options";
-import { getUserById } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);

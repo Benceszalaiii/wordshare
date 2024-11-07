@@ -1,9 +1,8 @@
 "use client";
 
-import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
+import * as React from "react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
     Command,
@@ -18,6 +17,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 interface ComboSearchProps {
     onValueChange?: React.Dispatch<
@@ -40,9 +40,17 @@ export function ComboSearch({
             if (onCreate) {
                 onCreate(newValue || null);
             }
-        }
-        else if (onValueChange) {
-            onValueChange((newValue ? { label: newValue, value: options.find((item)=> item.label === newValue)?.value || 0 }: null));
+        } else if (onValueChange) {
+            onValueChange(
+                newValue
+                    ? {
+                          label: newValue,
+                          value:
+                              options.find((item) => item.label === newValue)
+                                  ?.value || 0,
+                      }
+                    : null,
+            );
         }
         setValue(newValue);
         setOpen(false);
@@ -59,9 +67,7 @@ export function ComboSearch({
                 >
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     <span className="truncate text-center">
-                        {value
-                            ? value
-                            : "Select school..."}
+                        {value ? value : "Select school..."}
                     </span>
                 </Button>
             </PopoverTrigger>

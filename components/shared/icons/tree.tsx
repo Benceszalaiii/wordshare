@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 export default function Tree({ className }: { className?: string }) {
     return (
         <svg
-        className={cn("w-6 h-6", className)}
+            className={cn("h-6 w-6", className)}
             version="1.1"
             id="Capa_1"
             xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +15,7 @@ export default function Tree({ className }: { className?: string }) {
         >
             <g>
                 <path
-                fill="currentcolor"
+                    fill="currentcolor"
                     d="M504.862,476.096c-21.7-47.1-58.1-89-90.899-128.5c-9.5-11.3-22-27.8-36.101-43.5c12.5-1.8,25.101-3.699,37.601-5.5
 		c11.899-1.8,12.899-17.099,6.399-24.499c-36.1-41.6-74.1-81.1-116.899-116c25.399,0.3,54.8,4,74.699-10.4
 		c9.2-4.6,10.101-18.7,0.9-24.8c-47.3-32.3-96.3-61.4-134.5-104.8c-0.9-1.2-2.1-1.8-3.1-2.4c7.3-9.5-4.3-20.8-13.8-13.2

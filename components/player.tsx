@@ -1,3 +1,1 @@
-export default function SpotifyPlayer(){
-
-}
+export default function SpotifyPlayer() {}

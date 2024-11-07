@@ -2,16 +2,19 @@
 
 import FilesSideBar from "@/components/file/sidebar";
 
-
-export default async function Layout({children}: {children: React.ReactNode}) {
+export default async function Layout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     return (
         <>
-        <section className="flex flex-col md:flex-row px-4 mx-4 md:pl-16 h-full ">
-        <FilesSideBar />
-        <article className="space-y-4 grow w-full text-center flex flex-col items-center">
-        {children}
-        </article>
-        </section>
+            <section className="mx-4 flex h-full flex-col px-4 md:flex-row md:pl-16 ">
+                <FilesSideBar />
+                <article className="flex w-full grow flex-col items-center space-y-4 text-center">
+                    {children}
+                </article>
+            </section>
         </>
-    )
+    );
 }

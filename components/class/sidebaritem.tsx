@@ -1,8 +1,7 @@
-import Link from "next/link";
-import { SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import { Class } from "@prisma/client";
-import Image from "next/image";
+import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 
 export function ClassItem({ item }: { item: Class }) {
   return (

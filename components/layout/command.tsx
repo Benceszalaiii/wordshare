@@ -1,17 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import * as React from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import {
-    LayoutDashboard,
-    EditIcon,
-    List,
-    HouseIcon,
-    SquareSlashIcon,
-    BlendIcon,
-    Shapes,
-} from "lucide-react";
 import {
     CommandDialog,
     CommandEmpty,
@@ -21,14 +11,14 @@ import {
     CommandList,
     CommandShortcut,
 } from "@/components/ui/command";
+import { getInitials } from "@/lib/utils";
+import { Class } from "@prisma/client";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useTheme } from "next-themes";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { Command } from "./commandprovider";
-import { Class } from "@prisma/client";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { getInitials } from "@/lib/utils";
+import { Command } from "./commandprovider";
 
 const iconstyles = "mr-2 h-4 w-4";
 
@@ -120,7 +110,7 @@ export function CommandBox({
                                         onSelect={() => {
                                             redirect(`class/${item.id}`);
                                         }}
-                                        className="hover:cursor-pointer gap-2"
+                                        className="gap-2 hover:cursor-pointer"
                                         key={item.id}
                                     >
                                         <Avatar>

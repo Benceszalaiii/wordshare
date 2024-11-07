@@ -28,7 +28,6 @@ export default async function InviteSection({
                 <div className="flex w-full flex-col justify-center gap-2 pl-12">
                     <p>No invites found</p>
                     <p>Check back later!</p>
-
                 </div>
             </section>
         );
@@ -44,7 +43,7 @@ export default async function InviteSection({
                     isActive={invite.id === active}
                 />
             ))}
-            {(!hasActive && active)? <InviteDoesntExist /> : null}
+            {!hasActive && active ? <InviteDoesntExist /> : null}
         </section>
     );
 }

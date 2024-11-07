@@ -1,5 +1,5 @@
 import AudioDialog from "@/components/file/dialog";
-import { BookType, BookContent } from "@/components/file/sidebar";
+import { BookContent, BookType } from "@/components/file/sidebar";
 import {
     Accordion,
     AccordionContent,
@@ -21,22 +21,34 @@ export default function Page({ params }: { params: { bookLevel: string } }) {
             </h1>
             <Accordion type="multiple" className="w-full max-w-screen-sm">
                 {currentBook.sections.map((section) => {
-                    const getName = ()=> {
-                        if(section.section.startsWith("ce") || section.section.startsWith("pe") || section.section.startsWith("rc")) {
-                            return decodeSectionTitle(section.section)
+                    const getName = () => {
+                        if (
+                            section.section.startsWith("ce") ||
+                            section.section.startsWith("pe") ||
+                            section.section.startsWith("rc")
+                        ) {
+                            return decodeSectionTitle(section.section);
                         }
-                        return `File ${section.section}`
-                    }
+                        return `File ${section.section}`;
+                    };
                     return (
-                    <AccordionItem key={section.section} value={section.section}>
-                        <AccordionTrigger>{getName()}</AccordionTrigger>
-                        <AccordionContent className="flex flex-row gap-3 flex-wrap">
-                            {section.audioFiles.map((audioFile) => (
-                                <AudioDialog currentBook={currentBook} section={section.section} audioFile={audioFile} key={audioFile} />
-                            ))}
-                        </AccordionContent>
-                    </AccordionItem>
-                );
+                        <AccordionItem
+                            key={section.section}
+                            value={section.section}
+                        >
+                            <AccordionTrigger>{getName()}</AccordionTrigger>
+                            <AccordionContent className="flex flex-row flex-wrap gap-3">
+                                {section.audioFiles.map((audioFile) => (
+                                    <AudioDialog
+                                        currentBook={currentBook}
+                                        section={section.section}
+                                        audioFile={audioFile}
+                                        key={audioFile}
+                                    />
+                                ))}
+                            </AccordionContent>
+                        </AccordionItem>
+                    );
                 })}
             </Accordion>
         </>

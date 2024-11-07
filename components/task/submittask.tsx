@@ -1,32 +1,28 @@
 "use client";
 
 import {
-    Dialog,
-    DialogTrigger,
-    DialogContent,
-    DialogHeader,
-    DialogClose,
-    DialogFooter,
-    DialogTitle,
-    DialogDescription,
-} from "@/components/ui/dialog";
-import { DataTable } from "./studentoverview/data-table";
-import { columns } from "./studentoverview/columns";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { TaskWithProps } from "./studentoverview/component";
-import { Button } from "../ui/button";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Essay } from "@prisma/client";
-import { useEffect, useState } from "react";
-import { Input } from "../ui/input";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 export default function SubmitTaskModal({
     children,
@@ -70,13 +66,18 @@ export default function SubmitTaskModal({
                     }}
                 />
                 <ScrollArea className="h-72 w-full">
-                    <div className="grid w-full grid-cols-1 sm:grid-cols-2 place-content-center gap-4">
+                    <div className="grid w-full grid-cols-1 place-content-center gap-4 sm:grid-cols-2">
                         {filteredEssays && filteredEssays.length > 0 ? (
                             <>
                                 {filteredEssays.map((t) => (
-                                    <Card key={t.id} className={"h-64 flex flex-col"}>
+                                    <Card
+                                        key={t.id}
+                                        className={"flex h-64 flex-col"}
+                                    >
                                         <CardHeader>
-                                            <CardTitle className="line-clamp-2 leading-normal">{t.title}</CardTitle>
+                                            <CardTitle className="line-clamp-2 leading-normal">
+                                                {t.title}
+                                            </CardTitle>
                                         </CardHeader>
                                         <CardContent>
                                             <p className="line-clamp-2">
@@ -90,11 +91,11 @@ export default function SubmitTaskModal({
                                         </CardFooter>
                                     </Card>
                                 ))}
-                                <Card className="flex items-center justify-center h-64">
+                                <Card className="flex h-64 items-center justify-center">
                                     <Link href={`/essay/write`}>
-                                    <Button variant={"ringHover"} >
-                                    or Create essay
-                                    </Button>
+                                        <Button variant={"ringHover"}>
+                                            or Create essay
+                                        </Button>
                                     </Link>
                                 </Card>
                             </>

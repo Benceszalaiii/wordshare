@@ -1,19 +1,25 @@
+import { differenceInDays } from "date-fns";
 import { TaskWithProps } from "../task/studentoverview/component";
 import { Button } from "../ui/button";
 import {
-    DialogTrigger,
-    DialogContent,
-    DialogHeader,
-    DialogFooter,
-    DialogClose,
-    DialogTitle,
     Dialog,
+    DialogClose,
+    DialogContent,
     DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "../ui/dialog";
 import { TaskProp } from "./timeline";
-import { differenceInDays } from "date-fns";
 
-export function TaskViewModal({ task, trigger }: { task: TaskProp | TaskWithProps, trigger?: React.ReactNode }) {
+export function TaskViewModal({
+    task,
+    trigger,
+}: {
+    task: TaskProp | TaskWithProps;
+    trigger?: React.ReactNode;
+}) {
     return (
         <Dialog>
             <DialogTrigger asChild className="text-end">

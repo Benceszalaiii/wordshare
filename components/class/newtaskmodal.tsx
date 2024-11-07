@@ -1,23 +1,12 @@
-"use client"
+"use client";
+import { Calendar } from "@/components/ui/calendar";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Calendar } from "@/components/ui/calendar";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { addDays, format } from "date-fns";
 import {
     Form,
     FormControl,
@@ -29,18 +18,28 @@ import {
     Input,
 } from "@/components/ui/form";
 import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { addDays, format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 import { LoadingCircle } from "../shared/icons";
+import { Button } from "../ui/button";
 const formSchema = z.object({
     taskname: z
         .string({ message: "Title must be atleast 2 characters." })
@@ -52,11 +51,11 @@ const formSchema = z.object({
 export function NewTaskModal({
     children,
     currentClassName,
-    classId
+    classId,
 }: {
     children: React.ReactNode;
     currentClassName: string;
-    classId: string
+    classId: string;
 }) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -65,9 +64,21 @@ export function NewTaskModal({
     const router = useRouter();
     async function onSubmit(data: z.infer<typeof formSchema>) {
         setSubmitted(true);
-        const res = await fetch(`/api/class/task/${classId}`, {method: "POST", body: JSON.stringify({title: data.taskname, dueDate: addDays(data.taskduedate, 1), content: data.taskdescription})});
-        if (res.ok){ toast.success("Task uploaded!"); router.refresh()}
-        else {toast.error("Failed to upload task."); setSubmitted(false);};
+        const res = await fetch(`/api/class/task/${classId}`, {
+            method: "POST",
+            body: JSON.stringify({
+                title: data.taskname,
+                dueDate: addDays(data.taskduedate, 1),
+                content: data.taskdescription,
+            }),
+        });
+        if (res.ok) {
+            toast.success("Task uploaded!");
+            router.refresh();
+        } else {
+            toast.error("Failed to upload task.");
+            setSubmitted(false);
+        }
     }
     return (
         <>
@@ -167,7 +178,9 @@ export function NewTaskModal({
                                         </Popover>
                                     </Dialog>
                                     <FormDescription>
-                                        The due date of the task. <br /> Submissions will be accepted until 23:59 on this date.
+                                        The due date of the task. <br />{" "}
+                                        Submissions will be accepted until 23:59
+                                        on this date.
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
@@ -183,7 +196,11 @@ export function NewTaskModal({
                                         placeholder="Task title..."
                                         {...field}
                                     />
-                                    <FormDescription>Give your task a clear name, as this will be the primary field for students to navigate between tasks.</FormDescription>
+                                    <FormDescription>
+                                        Give your task a clear name, as this
+                                        will be the primary field for students
+                                        to navigate between tasks.
+                                    </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -202,7 +219,10 @@ export function NewTaskModal({
                                 </FormItem>
                             )}
                         />
-                        <Button disabled={submitted} type="submit">{submitted && <LoadingCircle className="mr-2"/>} Submit</Button>
+                        <Button disabled={submitted} type="submit">
+                            {submitted && <LoadingCircle className="mr-2" />}{" "}
+                            Submit
+                        </Button>
                     </form>
                 </Form>
             </DialogContent>

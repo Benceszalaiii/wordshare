@@ -1,17 +1,14 @@
-import "./globals.css";
-import cx from "classnames";
-import { sfPro, inter } from "./fonts";
-import Nav from "@/components/layout/nav";
-import Footer from "@/components/layout/footer";
-import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
-import { ThemeProvider } from "next-themes";
-import { Toaster } from "@/components/toaster";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CommandProvider } from "@/components/layout/commandprovider";
+import Footer from "@/components/layout/footer";
+import Nav from "@/components/layout/nav";
+import { Toaster } from "@/components/toaster";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import cx from "classnames";
 import { Metadata } from "next";
-import { getBanner } from "@/lib/db";
-import { cookies } from "next/headers";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { ThemeProvider } from "next-themes";
+import { inter, sfPro } from "./fonts";
+import "./globals.css";
 export const metadata: Metadata = {
     metadataBase: new URL("http://localhost:3000"),
     title: {
@@ -92,10 +89,10 @@ export default async function RootLayout({
             <body className={cx(sfPro.variable, inter.variable)}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
                     <CommandProvider />
-                        <main className="z-10 flex min-h-screen w-full flex-col">
-                            <Nav />
-                            {children}
-                        </main>
+                    <main className="z-10 flex min-h-screen w-full flex-col">
+                        <Nav />
+                        {children}
+                    </main>
                     <Footer />
                     <Toaster visibleToasts={2} />
                     <VercelAnalytics debug={false} mode="auto" />

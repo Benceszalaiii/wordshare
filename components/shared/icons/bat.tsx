@@ -31,7 +31,7 @@ const BatIcon = ({ className }: { className?: string }) => {
             </g>
         </svg>
     );
-}
+};
 BatIcon.displayName = "BatIcon";
 
 export default BatIcon;

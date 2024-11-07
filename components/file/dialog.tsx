@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
     Dialog,
     DialogContent,
@@ -7,9 +7,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { BookType } from "./sidebar";
-import ReactAudioPlayer from "react-audio-player";
 import { decodeSectionTitle } from "@/lib/utils";
+import ReactAudioPlayer from "react-audio-player";
+import { BookType } from "./sidebar";
 
 export default function AudioDialog({
     currentBook,
@@ -21,19 +21,29 @@ export default function AudioDialog({
     section: string;
     audioFile: string;
 }) {
-    const getName = ()=> {
-        if(section.startsWith("ce") || section.startsWith("pe") || section.startsWith("rc")) {
-            return decodeSectionTitle(section)
+    const getName = () => {
+        if (
+            section.startsWith("ce") ||
+            section.startsWith("pe") ||
+            section.startsWith("rc")
+        ) {
+            return decodeSectionTitle(section);
         }
-        return `File ${section}`
-    }
+        return `File ${section}`;
+    };
     return (
         <>
             <Dialog>
                 <DialogTrigger>{audioFile}</DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>{getName()}: <span className="font-normal ml-2"> {audioFile}</span></DialogTitle>
+                        <DialogTitle>
+                            {getName()}:{" "}
+                            <span className="ml-2 font-normal">
+                                {" "}
+                                {audioFile}
+                            </span>
+                        </DialogTitle>
                         <DialogDescription>
                             <ReactAudioPlayer
                                 className="h-16 w-full"

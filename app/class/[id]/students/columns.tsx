@@ -1,9 +1,6 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { UserWithClassId } from "./page";
-import { CoinsIcon, MoreHorizontal } from "lucide-react";
-import { ArrowUpDown } from "lucide-react";
+import { WordPoints } from "@/components/shared/points";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -13,9 +10,11 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { WordPoints } from "@/components/shared/points";
+import { UserWithClassId } from "./page";
 export const columns: ColumnDef<UserWithClassId>[] = [
     {
         accessorKey: "Avatar",

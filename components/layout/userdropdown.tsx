@@ -1,19 +1,6 @@
 "use client";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-    DropdownMenuSubContent,
-    DropdownMenuSub,
-    DropdownMenuSubTrigger,
-    DropdownMenuShortcut,
-} from "@/components/ui/dropdown-menu";
-import {
     Drawer,
-    DrawerClose,
     DrawerContent,
     DrawerDescription,
     DrawerFooter,
@@ -21,10 +8,15 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useIsMobile } from "@/lib/hooks/use-mobile";
-import { Button } from "../ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Session } from "next-auth";
+import { capitalize } from "@/lib/utils";
 import {
     BlendIcon,
     EditIcon,
@@ -33,12 +25,13 @@ import {
     LucideIcon,
     ShapesIcon,
 } from "lucide-react";
-import { capitalize, getInitials } from "@/lib/utils";
-import Image from "next/image";
-import { twMerge } from "tailwind-merge";
-import * as React from "react";
-import { useRouter } from "next/navigation";
+import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import * as React from "react";
+import { twMerge } from "tailwind-merge";
+import { Button } from "../ui/button";
 
 const stylings = {
     avatar: "border border-border cursor-pointer",
@@ -154,16 +147,16 @@ export default function UserDropdown({
                     </p>
                 </div>
                 <DropdownMenuSeparator />
-                {items.map((item)=> (
-                                    <DropdownItemWithIcon
-                                    key={item.name}
-                                    onClick={() => {
-                                        redirectTo(item.path);
-                                    }}
-                                    Icon={item.icon}
-                                >
-                                    {item.name}
-                                </DropdownItemWithIcon>
+                {items.map((item) => (
+                    <DropdownItemWithIcon
+                        key={item.name}
+                        onClick={() => {
+                            redirectTo(item.path);
+                        }}
+                        Icon={item.icon}
+                    >
+                        {item.name}
+                    </DropdownItemWithIcon>
                 ))}
                 <DropdownMenuSeparator />
                 <DropdownItemWithIcon

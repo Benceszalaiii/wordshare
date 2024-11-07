@@ -1,31 +1,6 @@
 "use client";
 
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { capitalize, cn } from "@/lib/utils";
-import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    useReactTable,
-    SortingState,
-    ColumnFiltersState,
-    getFilteredRowModel,
-    getSortedRowModel,
-    VisibilityState,
-} from "@tanstack/react-table";
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import {
     Command,
     CommandEmpty,
@@ -35,12 +10,23 @@ import {
     CommandList,
 } from "@/components/ui/command";
 import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import * as React from "react";
-import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import {
     Table,
     TableBody,
@@ -49,15 +35,27 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import { capitalize, cn } from "@/lib/utils";
+import { Class } from "@prisma/client";
 import {
     ArrowLeftIcon,
     ArrowRightIcon,
     CaretSortIcon,
     CheckIcon,
 } from "@radix-ui/react-icons";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Class } from "@prisma/client";
+import {
+    ColumnDef,
+    ColumnFiltersState,
+    SortingState,
+    VisibilityState,
+    flexRender,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    useReactTable,
+} from "@tanstack/react-table";
+import * as React from "react";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -93,9 +91,9 @@ export function DataTable<TData, TValue>({
     });
     const [comboOpen, SetComboOpen] = React.useState(false);
     const [comboValue, setComboValue] = React.useState("");
-    React.useEffect(()=> {
+    React.useEffect(() => {
         table.getColumn("className")?.setFilterValue(comboValue);
-    }, [comboValue, table])
+    }, [comboValue, table]);
     return (
         <div>
             <div className="flex flex-wrap gap-4 py-4">
@@ -190,7 +188,12 @@ export function DataTable<TData, TValue>({
                                             column.toggleVisibility(!!value)
                                         }
                                     >
-                                        {capitalize(column.id.replace(/([A-Z])/g, ' $1').toLowerCase().trim())}
+                                        {capitalize(
+                                            column.id
+                                                .replace(/([A-Z])/g, " $1")
+                                                .toLowerCase()
+                                                .trim(),
+                                        )}
                                     </DropdownMenuCheckboxItem>
                                 );
                             })}

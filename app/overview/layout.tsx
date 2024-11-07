@@ -1,40 +1,37 @@
-import NextAuth, { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 
-import { authOptions } from "../api/auth/[...nextauth]/options";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
 import { SignInButton } from "../../components/shared/buttons";
-import { SideBar } from "@/components/layout/sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import { authOptions } from "../api/auth/[...nextauth]/options";
 
 export const metadata = {
-  title: "Overview",
+    title: "Overview",
 };
 export default async function Layout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        return (
+            <div className="z-10 flex flex-col items-center justify-center gap-5">
+                <div className="text-dark dark:text-light">
+                    Please sign in to view this page.
+                </div>
+                <SignInButton session={session} />
+            </div>
+        );
+    }
     return (
-      <div className="z-10 flex flex-col items-center justify-center gap-5">
-        <div className="text-dark dark:text-light">
-          Please sign in to view this page.
-        </div>
-        <SignInButton session={session} />
-      </div>
+        <SidebarProvider>
+            <AppSidebar />
+            <main className="mx-4 w-full">
+                <SidebarTrigger className="" />
+                <section className=" ">{children}</section>
+            </main>
+        </SidebarProvider>
     );
-  }
-  return (
-      <SidebarProvider>
-      <AppSidebar />
-      <main className="w-full mx-4">
-        <SidebarTrigger className="" />
-        <section className=" ">
-        {children}
-        </section>
-      </main>
-    </SidebarProvider>
-  );
 }

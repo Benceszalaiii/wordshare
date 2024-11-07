@@ -1,10 +1,10 @@
 "use server";
-import "server-only";
-import { getServerSession, Session } from "next-auth";
-import prisma from "./prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { Class, Comment, User } from "@prisma/client";
+import { Session, getServerSession } from "next-auth";
+import "server-only";
 import { sendInviteMail } from "./aws";
+import prisma from "./prisma";
 interface Essay {
     title: string;
     content: string;
@@ -1059,45 +1059,50 @@ export async function getTimeline(
             where: { classId: classId },
             orderBy: { createdAt: "desc" },
         });
-        return [...announcements, ...tasks].slice(offset, offset + 10).map((item)=> {
-            return {
-                ...item,
-                type: "dueDate" in item ? "task" : "announcement"
-            }
-        })
+        return [...announcements, ...tasks]
+            .slice(offset, offset + 10)
+            .map((item) => {
+                return {
+                    ...item,
+                    type: "dueDate" in item ? "task" : "announcement",
+                };
+            })
             .sort((a, b) => {
                 return (
                     new Date(b.createdAt).getTime() -
                     new Date(a.createdAt).getTime()
                 );
-            })
-            ;
+            });
     }
     if (filter === "announcement") {
-        const tasks = (await prisma.announcement.findMany({
-            where: { classId: classId },
-            orderBy: { createdAt: "desc" },
-            skip: offset,
-            take: 10,
-        })).map((a)=> {
+        const tasks = (
+            await prisma.announcement.findMany({
+                where: { classId: classId },
+                orderBy: { createdAt: "desc" },
+                skip: offset,
+                take: 10,
+            })
+        ).map((a) => {
             return {
                 ...a,
-                type: "announcement"
-            }
+                type: "announcement",
+            };
         });
         return tasks;
     }
     if (filter === "task") {
-        const tasks = (await prisma.task.findMany({
-            where: { classId: classId },
-            orderBy: { createdAt: "desc" },
-            skip: offset,
-            take: 10,
-        })).map((t)=> {
+        const tasks = (
+            await prisma.task.findMany({
+                where: { classId: classId },
+                orderBy: { createdAt: "desc" },
+                skip: offset,
+                take: 10,
+            })
+        ).map((t) => {
             return {
                 ...t,
-                type: "task"
-            }
+                type: "task",
+            };
         });
         return tasks;
     }
@@ -1111,9 +1116,10 @@ export async function getSubmissionsForStudent(userId: string) {
     return submissions;
 }
 
-
-export async function getTimelineLengths(classId: string){
-    const tasks = await prisma.task.count({where: {classId: classId}});
-    const announcements = await prisma.announcement.count({where: {classId: classId}});
-    return {tasks, announcements};
+export async function getTimelineLengths(classId: string) {
+    const tasks = await prisma.task.count({ where: { classId: classId } });
+    const announcements = await prisma.announcement.count({
+        where: { classId: classId },
+    });
+    return { tasks, announcements };
 }

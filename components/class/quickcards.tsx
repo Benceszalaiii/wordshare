@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
 import {
     Collapsible,
     CollapsibleContent,
@@ -24,11 +23,12 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { NewTaskModal } from "./newtaskmodal";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Dialog } from "../ui/dialog";
 import { AnnouncementModal } from "./announcemodal";
+import { NewTaskModal } from "./newtaskmodal";
 
 const CollapsibleTeacherContent = ({
     classId,
@@ -167,8 +167,7 @@ export function QuickCards({
             localStorage.setItem(`quickcards-${classId}`, "true");
             setOpen(true);
             setMounted(true);
-        }
-        else{
+        } else {
             setOpen(stored === "true");
             setMounted(true);
         }

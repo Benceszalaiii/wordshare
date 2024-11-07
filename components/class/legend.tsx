@@ -13,7 +13,10 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 import { Ellipsis } from "lucide-react";
+import { Session } from "next-auth";
+import { SignInButton } from "../shared/buttons";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -26,9 +29,6 @@ import {
     AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { DropdownPinCheck as Pin } from "./pin";
-import { SignInButton } from "../shared/buttons";
-import { Session } from "next-auth";
-import { Separator } from "@/components/ui/separator";
 import RequestInviteButton from "./requestbutton";
 const styles = {
     separator: "md:block hidden",

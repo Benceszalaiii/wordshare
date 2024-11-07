@@ -1,7 +1,3 @@
-export default function Page(){
-    return (
-        <>
-        asdsad
-        </>
-    )
+export default function Page() {
+    return <>asdsad</>;
 }

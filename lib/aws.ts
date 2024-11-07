@@ -1,12 +1,9 @@
-import { Class } from "@prisma/client";
-import templates from "./schemas.json";
 import {
     SendEmailCommandInput,
     SendTemplatedEmailCommandInput,
     SES,
-    SESClientConfig,
 } from "@aws-sdk/client-ses";
-import { getUserById } from "./db";
+import templates from "./schemas.json";
 
 const ses = new SES({
     region: "eu-central-1",
@@ -22,7 +19,6 @@ export interface InviteMailDataProps {
     action_url: string;
     receiver_name: string;
 }
-
 
 export interface EmailProps {
     from: string;
@@ -72,8 +68,7 @@ export async function uploadTemplate() {
     const res = await ses.createTemplate({
         Template: {
             TemplateName: "class-request",
-            SubjectPart:
-                "{{requester_name}} requested to join {{class_name}}!",
+            SubjectPart: "{{requester_name}} requested to join {{class_name}}!",
             HtmlPart: templates.request,
             TextPart:
                 "You have a new request to invite {{class_name}} to {{requester_name}}, please review the request. You can accept or reject the request by clicking the link below. {{action_url}}",
@@ -86,7 +81,7 @@ export async function deleteTemplate() {
     return await ses.deleteTemplate({ TemplateName: "class-request" });
 }
 
-export interface RequestMailDataProps{
+export interface RequestMailDataProps {
     to: string[];
     requester_name: string;
     requester_mail: string;
@@ -94,7 +89,7 @@ export interface RequestMailDataProps{
     action_url: string;
     name: string;
 }
-export async function sendRequest(mailData: RequestMailDataProps){
+export async function sendRequest(mailData: RequestMailDataProps) {
     return await ses.sendTemplatedEmail({
         Template: "class-request",
         Source: `${mailData.requester_name} at WordShare<invites@wordshare.tech>`,
@@ -107,7 +102,7 @@ export async function sendRequest(mailData: RequestMailDataProps){
             class_name: mailData.class_name,
             action_url: mailData.action_url,
             name: mailData.name,
-            support_email: "contact@wordshare.tech"
-        })
+            support_email: "contact@wordshare.tech",
+        }),
     });
 }

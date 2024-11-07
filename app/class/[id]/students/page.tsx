@@ -1,31 +1,36 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { SignInButton } from "@/components/shared/buttons";
+import { Button } from "@/components/ui/button";
 import {
     checkForPoints,
-    getAllStudents,
     getClassById,
     getClassStudentsByClassId,
     getUserById,
     isOwnClass,
 } from "@/lib/db";
-import { DataTable } from "./data-table";
 import { Points, User } from "@prisma/client";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { SignInButton } from "@/components/shared/buttons";
-import { columns } from "./columns";
 import { Metadata } from "next";
-import { Button } from "@/components/ui/button";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
 
 export interface UserWithClassId extends User {
     classId: string;
     points: number;
 }
-async function getData(classId: string, classStudents: User[], classPoints: Points[]){
+async function getData(
+    classId: string,
+    classStudents: User[],
+    classPoints: Points[],
+) {
     const students: UserWithClassId[] = classStudents.map((student) => {
         return {
             ...student,
             classId: classId,
-            points: classPoints.find((point) => point.userId === student.id)?.points || 0,
+            points:
+                classPoints.find((point) => point.userId === student.id)
+                    ?.points || 0,
         };
     });
     await checkForPoints(classStudents, classId);
@@ -67,17 +72,25 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
         );
     }
-    const data: UserWithClassId[] = await getData(params.id, currentClass.students, currentClass.Points);
-    if (data.length === 0){
+    const data: UserWithClassId[] = await getData(
+        params.id,
+        currentClass.students,
+        currentClass.Points,
+    );
+    if (data.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center gap-4">
                 <h1>There are no students in this class.</h1>
-                <Button><Link href={`/class/${currentClass.id}/invite`}>Invite Students</Link></Button>
+                <Button>
+                    <Link href={`/class/${currentClass.id}/invite`}>
+                        Invite Students
+                    </Link>
+                </Button>
             </div>
         );
     }
     return (
-        <section className="flex py-8 w-full flex-col items-center justify-center">
+        <section className="flex w-full flex-col items-center justify-center py-8">
             <h1 className="text-xl font-semibold">
                 Students of {currentClass.name}
             </h1>

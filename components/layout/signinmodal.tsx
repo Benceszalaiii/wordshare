@@ -1,6 +1,5 @@
 "use client";
 
-import { useIsMobile } from "@/lib/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -12,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import {
     Drawer,
-    DrawerClose,
     DrawerContent,
     DrawerDescription,
     DrawerFooter,
@@ -20,9 +18,10 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer";
+import { useIsMobile } from "@/lib/hooks/use-mobile";
+import { signIn } from "next-auth/react";
 import * as React from "react";
 import { Google, LoadingDots } from "../shared/icons";
-import { signIn } from "next-auth/react";
 export default function SignInModal({}: {}) {
     const isMobile = useIsMobile();
     const [open, setOpen] = React.useState(false);

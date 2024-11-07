@@ -1,10 +1,14 @@
-import "server-only"
 import { getAllClasses } from "@/lib/db";
 import { Class } from "@prisma/client";
+import "server-only";
 
 export default async function sitemap() {
     const baseUrl = "https://www.wordshare.tech";
-    const fetchedClasses = (await getAllClasses()).map((c: Class)=> ({url: `${baseUrl}/class/${c.id}`, lastModified: c.createdAt, priority: 0.7}));
+    const fetchedClasses = (await getAllClasses()).map((c: Class) => ({
+        url: `${baseUrl}/class/${c.id}`,
+        lastModified: c.createdAt,
+        priority: 0.7,
+    }));
     return [
         {
             url: baseUrl + "/",
@@ -36,6 +40,6 @@ export default async function sitemap() {
             lastModified: new Date(),
             priority: 0.8,
         },
-        ...fetchedClasses
+        ...fetchedClasses,
     ];
 }

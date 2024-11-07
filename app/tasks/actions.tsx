@@ -1,9 +1,14 @@
 "use server";
 
-import { getSubmissionsForStudent, getTasksforStudent, getUserByIdWithClasses, getEssaysByUserId } from '@/lib/db';
-import { Class, Essay, Task } from "@prisma/client";
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/options';
+import {
+    getEssaysByUserId,
+    getSubmissionsForStudent,
+    getTasksforStudent,
+    getUserByIdWithClasses,
+} from "@/lib/db";
+import { Class, Task } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/options";
 
 type StatusMethods = "done" | "pending" | "overdue" | "late";
 type TaskWithProps = Task & { status: StatusMethods; className: string };
@@ -12,11 +17,11 @@ type TaskResponse = {
     userClasses: Class[];
     filteredTasks: TaskWithProps[];
     userRole: string;
-}
+};
 
-export async function getFilteredTasks(userId: string){
+export async function getFilteredTasks(userId: string) {
     const dbUser = await getUserByIdWithClasses(userId);
-    if (!dbUser){
+    if (!dbUser) {
         return null;
     }
     const tasks = await getTasksforStudent(dbUser.id, dbUser.Classes);
@@ -39,9 +44,7 @@ export async function getFilteredTasks(userId: string){
                 taskStatus = "overdue";
             }
         }
-        const classObj = dbUser.Classes.find(
-            (cls) => cls.id === task.classId,
-        );
+        const classObj = dbUser.Classes.find((cls) => cls.id === task.classId);
         if (classObj) {
             return {
                 ...task,
@@ -50,15 +53,18 @@ export async function getFilteredTasks(userId: string){
             };
         }
         return { ...task, status: taskStatus, className: "-" };
-    })
-    const res: TaskResponse = {userClasses: dbUser.Classes, filteredTasks: filtered, userRole: dbUser.role || "invalid"};
+    });
+    const res: TaskResponse = {
+        userClasses: dbUser.Classes,
+        filteredTasks: filtered,
+        userRole: dbUser.role || "invalid",
+    };
     return res;
 }
 
-
-export async function getEssaysForUser(){
-    const session = await getServerSession(authOptions)
-    if (!session){
+export async function getEssaysForUser() {
+    const session = await getServerSession(authOptions);
+    if (!session) {
         return [];
     }
     const essays = await getEssaysByUserId(session.user.id);
