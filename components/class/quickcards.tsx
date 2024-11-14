@@ -29,6 +29,9 @@ import { useEffect, useState } from "react";
 import { Dialog } from "../ui/dialog";
 import { AnnouncementModal } from "./announcemodal";
 import { NewTaskModal } from "./newtaskmodal";
+import useMediaQuery from "@/lib/hooks/use-media-query";
+import { Drawer } from "../ui/drawer";
+import { z } from "zod";
 
 const CollapsibleTeacherContent = ({
     classId,
@@ -59,7 +62,7 @@ const CollapsibleTeacherContent = ({
                 cardClass="hover:border-amber-700"
                 title="Active Tasks"
                 description="Tasks that have not reached their deadline"
-                actionUrl={`/class/${classId}/scan`}
+                actionUrl={`/class/${classId}/tasks?active`}
             />
             <CardWithIcon
                 classId={classId}
@@ -68,7 +71,7 @@ const CollapsibleTeacherContent = ({
                 cardClass="hover:border-violet-700"
                 title="All Tasks"
                 description="All tasks in this class"
-                actionUrl={`/class/${classId}/scan`}
+                actionUrl={`/class/${classId}/tasks`}
             />
             <CardWithIcon
                 classId={classId}
@@ -77,7 +80,7 @@ const CollapsibleTeacherContent = ({
                 cardClass="hover:border-sky-700"
                 title="New An&shy;nounce&shy;ment"
                 description="Share a new announcement with your students"
-                actionUrl={`/class/${classId}/scan`}
+                actionUrl={`/class/${classId}/new`}
                 announcementWithClassName={currentClassName}
             />
             <CardWithIcon
@@ -87,7 +90,7 @@ const CollapsibleTeacherContent = ({
                 cardClass="hover:border-pink-500"
                 title="Latest Sub&shy;mis&shy;sions"
                 description="View the latest submissions from your students"
-                actionUrl={`/class/${classId}/scan`}
+                actionUrl={`/class/${classId}/submissions`}
             />
             <CardWithIcon
                 classId={classId}
@@ -115,7 +118,7 @@ const CollapsibleStudentContent = ({ classId }: { classId: string }) => {
                 cardClass="hover:border-amber-700"
                 title="Active Tasks"
                 description="Tasks that have not reached their deadline"
-                actionUrl={`/class/${classId}/scan`}
+                actionUrl={`/class/${classId}/tasks?active`}
             />
             <CardWithIcon
                 classId={classId}
@@ -124,7 +127,7 @@ const CollapsibleStudentContent = ({ classId }: { classId: string }) => {
                 cardClass="hover:border-violet-700"
                 title="All Tasks"
                 description="All tasks in this class"
-                actionUrl={`/class/${classId}/scan`}
+                actionUrl={`/class/${classId}/tasks`}
             />
             <CardWithIcon
                 classId={classId}
@@ -133,7 +136,7 @@ const CollapsibleStudentContent = ({ classId }: { classId: string }) => {
                 cardClass="hover:border-pink-500"
                 title="Latest Sub&shy;mis&shy;sions"
                 description="View the latest submissions from your students"
-                actionUrl={`/class/${classId}/tasks/latest`}
+                actionUrl={`/class/${classId}/tasks?latest`}
             />
             <CardWithIcon
                 classId={classId}
@@ -142,7 +145,7 @@ const CollapsibleStudentContent = ({ classId }: { classId: string }) => {
                 cardClass="hover:border-sky-700"
                 title="New An&shy;nounce&shy;ment"
                 description="Share a new announcement with your students"
-                actionUrl={`/class/${classId}/scan`}
+                actionUrl={`/class/${classId}/new`}
             />
         </CollapsibleContent>
     );
@@ -200,6 +203,8 @@ export function QuickCards({
     );
 }
 
+
+
 function CardWithIcon({
     Icon,
     iconClass,
@@ -221,10 +226,26 @@ function CardWithIcon({
     newTaskWithClassName?: string;
     classId: string;
 }) {
+    const [open, setOpen] = useState(false);
+    useEffect(() => {
+		if (open) {
+			// Pushing the change to the end of the call stack
+			const timer = setTimeout(() => {
+				document.body.style.pointerEvents = "";
+			}, 0);
+
+			return () => clearTimeout(timer);
+		} else {
+			document.body.style.pointerEvents = "auto";
+		}
+	}, [open]);
+    const { isMobile } = useMediaQuery();
     if (newTaskWithClassName) {
+        const ModalWrapper = isMobile ? Drawer : Dialog;
         return (
-            <Dialog>
+            <ModalWrapper open={open} onOpenChange={setOpen}>
                 <NewTaskModal
+                isMobile={isMobile}
                     classId={classId}
                     currentClassName={newTaskWithClassName}
                 >
@@ -259,12 +280,53 @@ function CardWithIcon({
                         </Tooltip>
                     </TooltipProvider>
                 </NewTaskModal>
-            </Dialog>
+            </ModalWrapper>
         );
     }
     if (announcementWithClassName) {
+        if (isMobile){
+            return (
+                <Drawer noBodyStyles open={open} onOpenChange={setOpen}>
+                <AnnouncementModal
+                    classId={classId}
+                    currentClassName={announcementWithClassName}
+                >
+                    <TooltipProvider>
+                        <Tooltip delayDuration={300}>
+                            <TooltipTrigger asChild>
+                                <Card
+                                    className={cn(
+                                        "group h-full w-full transform-gpu antialiased transition-transform hover:scale-105",
+                                        cardClass || `hover:border-violet-900`,
+                                    )}
+                                >
+                                    <CardHeader>
+                                        <Icon
+                                            className={cn(
+                                                "h-8 w-8 transform-gpu transition-transform group-hover:scale-105",
+                                                `${
+                                                    iconClass ||
+                                                    " group-hover:stroke-violet-800"
+                                                }`,
+                                            )}
+                                        />
+                                        <CardTitle className="hyphens-auto text-wrap lg:hyphens-none">
+                                            {title}
+                                        </CardTitle>
+                                    </CardHeader>
+                                </Card>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>{description}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </AnnouncementModal>
+            </Drawer>
+            )
+        }
         return (
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
                 <AnnouncementModal
                     classId={classId}
                     currentClassName={announcementWithClassName}

@@ -1060,18 +1060,18 @@ export async function getTimeline(
             orderBy: { createdAt: "desc" },
         });
         return [...announcements, ...tasks]
+            .sort((a, b) => {
+                return (
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                );
+            })
             .slice(offset, offset + 10)
             .map((item) => {
                 return {
                     ...item,
                     type: "dueDate" in item ? "task" : "announcement",
                 };
-            })
-            .sort((a, b) => {
-                return (
-                    new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime()
-                );
             });
     }
     if (filter === "announcement") {
@@ -1124,18 +1124,20 @@ export async function getTimelineLengths(classId: string) {
     return { tasks, announcements };
 }
 
-
-export async function getSchoolById(schoolId: number | null){
-    if (!schoolId){
+export async function getSchoolById(schoolId: number | null) {
+    if (!schoolId) {
         return null;
     }
-    const school = await prisma.school.findUnique({where: {id: schoolId} })
+    const school = await prisma.school.findUnique({ where: { id: schoolId } });
     return school;
 }
 
-export async function changePrivacyById(userId: string, updated: boolean){
-    const updatedUser = await prisma.user.update({where: {id: userId}, data: {private: updated}})
-    if (!updatedUser){
+export async function changePrivacyById(userId: string, updated: boolean) {
+    const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: { private: updated },
+    });
+    if (!updatedUser) {
         return false;
     }
     return true;
