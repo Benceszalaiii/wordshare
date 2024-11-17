@@ -28,7 +28,6 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "../ui/alert-dialog";
-import { DropdownPinCheck as Pin } from "./pin";
 import RequestInviteButton from "./requestbutton";
 const styles = {
     separator: "md:block hidden",
@@ -45,8 +44,6 @@ const TeacherActions = ({ currentClass }: { currentClass: Class}) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>{currentClass.name}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <Pin classId={currentClass.id} />
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                     <Link href={`/class/${currentClass.id}/invite`}>
@@ -81,8 +78,6 @@ const StudentActions = ({ currentClass }: { currentClass: Class}) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuLabel>{currentClass.name}</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <Pin classId={currentClass.id} />
                     <DropdownMenuSeparator />
                     <AlertDialogTrigger className="w-full">
                         <DropdownMenuItem className="w-full cursor-pointer font-semibold text-red-700 focus:text-red-500">
@@ -155,7 +150,7 @@ export default function ClassLegend({
     session?: Session;
     bannerUrl: string;
 }) {
-    const editable = canEdit ?? false;
+
     return (
         <>
             <section className="px-4">
@@ -186,15 +181,7 @@ export default function ClassLegend({
                                     signInText={`Sign in to interact with ${currentClass.name}`}
                                 />
                             )
-                        ) : editable ? (
-                            <div className="flex justify-end">
-                                <TeacherActions  currentClass={currentClass} />
-                            </div>
-                        ) : (
-                            <div className="flex justify-end">
-                                <StudentActions  currentClass={currentClass} />
-                            </div>
-                        )}
+                        ) : null}
                     </div>
                     <p className={`ml-2 text-gray-800 dark:text-gray-400`}>
                         {currentClass.description}

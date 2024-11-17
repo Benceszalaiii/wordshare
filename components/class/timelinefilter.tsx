@@ -82,7 +82,7 @@ export function TimelineFilter({ classId }: { classId: string }) {
     return (
         <section className="flex w-full max-w-screen-md flex-col gap-4 py-8">
             <header className="flex flex-col items-center justify-between gap-2 px-4 md:flex-row">
-                <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-400">
+                <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200">
                     Timeline
                 </h2>
                 <Separator className="md:hidden" />

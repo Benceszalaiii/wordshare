@@ -3,6 +3,7 @@ import {
     Blend,
     Home,
     Inbox,
+    LayoutDashboard,
     ListTodo,
     LucideProps,
     Notebook,
@@ -45,47 +46,131 @@ interface SideBarItem {
     >;
 }
 
+const studentItems: SideBarItem[] = [
+    {
+        title: "Home",
+        url: "/",
+        icon: Home,
+    },
+    {
+        title: "Invites",
+        url: "/invites",
+        icon: Inbox,
+        banner: 0,
+    },
+    {
+        title: "Classes",
+        url: "/class",
+        icon: Shapes,
+    },
+    {
+        title: "Essay",
+        url: "/essay",
+        icon: Notebook,
+    },
+    {
+        title: "WordPlay",
+        url: "/wordplay",
+        icon: Blend,
+    },
+    {
+        title: "Tasks",
+        url: "/tasks",
+        icon: ListTodo,
+    },
+];
+const defaultNavigation: SideBarItem[] = [
+    {
+        title: "Home",
+        url: "/",
+        icon: Home,
+    },
+    {
+        title: "Classes",
+        url: "/class",
+        icon: Shapes,
+    },
+    {
+        title: "WordPlay",
+        url: "/wordplay",
+        icon: Blend,
+    },
+    {
+        title: "Tasks",
+        url: "/tasks",
+        icon: ListTodo,
+    },
+];
+const teacherNavigation: SideBarItem[] = [
+    {
+        title: "Home",
+        url: "/",
+        icon: Home,
+    },
+    {
+        title: "Classes",
+        url: "/class",
+        icon: Shapes,
+    },
+    {
+        title: "Tasks",
+        url: "/tasks",
+        icon: ListTodo,
+    },
+    {
+        title: "WordPlay",
+        url: "/wordplay",
+        icon: Blend,
+    },
+];
+const adminNavigation: SideBarItem[] = [
+    {
+        title: "Home",
+        url: "/",
+        icon: Home,
+    },
+    {
+        title: "Dashboard",
+        url: "/admin/",
+        icon: LayoutDashboard,
+    },
+    {
+        title: "Classes",
+        url: "/class",
+        icon: Shapes,
+    },
+    {
+        title: "WordPlay",
+        url: "/wordplay",
+        icon: Blend,
+    },
+    {
+        title: "Tasks",
+        url: "/tasks",
+        icon: ListTodo,
+    },
+];
 export async function AppSidebar() {
     const session = await getServerSession(authOptions);
-    const navigation: SideBarItem[] = [
-        {
-            title: "Home",
-            url: "/",
-            icon: Home,
-        },
-        {
-            title: "Essay",
-            url: "/essay",
-            icon: Notebook,
-        },
-        {
-            title: "WordPlay",
-            url: "/wordplay",
-            icon: Blend,
-        },
-        {
-            title: "Invites",
-            url: "/invites",
-            icon: Inbox,
-            banner: 0,
-        },
-        {
-            title: "Classes",
-            url: "/class",
-            icon: Shapes,
-        },
-        {
-            title: "Tasks",
-            url: "/tasks",
-            icon: ListTodo,
-        },
-    ];
+
     const user = session?.user;
     const invites = await getInvites(user?.id);
     const dbUser = await getUserById(user?.id);
-
+    const getCurrentItems = (): SideBarItem[] => {
+        switch (dbUser?.role) {
+            case "admin":
+                return adminNavigation;
+            case "teacher":
+                return teacherNavigation;
+            case "student":
+                return studentItems;
+            default:
+                return defaultNavigation;
+        }
+    };
+    const navigation = getCurrentItems();
     const classes = await getClassesByIds(dbUser?.pinnedClassIds || []);
-    if (invites) {
+    if (invites && navigation.find((x) => x.title === "Invites")) {
         navigation.find((x) => x.title === "Invites")!.banner = invites.length;
     }
     return (

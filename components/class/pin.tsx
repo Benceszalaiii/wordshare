@@ -1,19 +1,19 @@
 "use client";
 import { getPinStatus, pinClass, unpinClass } from "@/app/class/[id]/actions";
-import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { MenubarCheckboxItem } from "../ui/menubar";
 
-export function DropdownPinCheck({ classId }: { classId: string }) {
-    const [remoteValue, setRemoteValue] = useState(false);
+export function MenubarPinCheck({ classId }: { classId: string }) {
     const [loading, setLoading] = useState(true);
-    useEffect(() => {
+    const [remoteValue, setRemoteValue] = useState(false);
+    const cachedValue = useMemo(() => {
         getPinStatus(classId).then((res) => {
-            setRemoteValue(res || false);
             setLoading(false);
+            setRemoteValue(res);
         });
     }, [classId]);
     return (
-        <DropdownMenuCheckboxItem
+        <MenubarCheckboxItem
             checked={remoteValue}
             onCheckedChange={(e) => {
                 if (e) {
@@ -24,7 +24,7 @@ export function DropdownPinCheck({ classId }: { classId: string }) {
             }}
             disabled={loading}
         >
-            Pin Class to Sidebar
-        </DropdownMenuCheckboxItem>
+            {loading ? "Getting pin status..." : "Pin Class to Sidebar"}
+        </MenubarCheckboxItem>
     );
 }

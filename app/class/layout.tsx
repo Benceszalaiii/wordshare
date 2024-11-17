@@ -25,7 +25,7 @@ export default async function Layout({
                 <AppSidebar />
                 <article className="w-full">
                     <SidebarTrigger />
-                    <section className="mx-4 mt-8">{children}</section>
+                    <section className="mx-4">{children}</section>
                 </article>
             </SidebarProvider>
         );
