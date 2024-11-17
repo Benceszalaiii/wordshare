@@ -5,6 +5,7 @@ import UserBanner from "@/components/user/banner";
 import MutualClassSection from "@/components/user/mutual";
 import RecentClassSection from "@/components/user/recentclasses";
 import {
+    getAllPointsUser,
     getClassesByUser,
     getSchoolById,
     getUserById,
@@ -26,8 +27,10 @@ export default async function Page({ params }: { params: { userId: string } }) {
     const school = await getSchoolById(dbUser.schoolId);
     const session = await getServerSession(authOptions);
     const bannerDismissed = await isBannerDismissed();
+    const points = await getAllPointsUser(dbUser.id); // Since this will probably not have more than 5 classes, we can just use Array.Prototype.reduce to sum the points, O(n) is fine here.
+    // Cannot send points: Point[] to client, would expose too much information. Hence sum is server sided.
     const currentUser = await getUserById(session?.user.id);
-    if (dbUser.private && !(session?.user.id === dbUser.id)) {
+    if (dbUser.private && !(session?.user.id === dbUser.id) && currentUser?.role !== "admin") {
         return (
             <section className="mt-24 flex w-full flex-col items-center gap-4 px-4">
                 <UserBanner
@@ -35,6 +38,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
                     dbUser={dbUser}
                     school={school}
                     canEdit={session?.user.id === dbUser.id}
+                    points={points.reduce((a, b) => a + b.points, 0)}
                 />
                 <h2>
                     {dbUser.name
@@ -51,6 +55,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
                 school={school}
                 canEdit={session?.user.id === dbUser.id}
                 bannerDismissed={bannerDismissed}
+                points={points.reduce((a, b) => a + b.points, 0)}
             />
             <RecentClassSection
                 classes={classes.slice(

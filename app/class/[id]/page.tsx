@@ -16,6 +16,7 @@ import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getBannerUrlWithFallback } from "../actions";
+import ClassMenubar from "@/components/class/menubar";
 
 export default async function Page({ params }: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
@@ -51,6 +52,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     }
     return (
         <section className="flex flex-col items-center">
+            <div className="sticky top-20 ">
+            <ClassMenubar currentClass={currentClass} isTeacher={canEdit} />
+            </div>
             <ClassLegend
                 bannerUrl={bannerUrl}
                 canEdit={canEdit}

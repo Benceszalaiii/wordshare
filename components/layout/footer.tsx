@@ -2,6 +2,7 @@
 
 import { getEvent } from "@/app/actions";
 import { caveat } from "@/app/fonts";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 export default function Footer() {
@@ -44,22 +45,16 @@ export default function Footer() {
                 </p>
             </div>
             <div className="flex flex-row gap-6">
+                <Link href="mailto:szalaibence0817@gmail.com">
+                    <Button variant={"linkHover2"}>Contact us</Button>
+                </Link>
+                <Link href={"/shortcuts"}>
                 <Button
                     variant={"linkHover2"}
-                    onClick={() => {
-                        window.location.href = "/roadmap";
-                    }}
-                >
-                    Roadmap
-                </Button>
-                <Button
-                    variant={"linkHover2"}
-                    onClick={() => {
-                        window.location.href = "/shortcuts";
-                    }}
-                >
+                    >
                     Shortcuts
                 </Button>
+                    </Link>
             </div>
             <p className="p-4 pb-4 text-gray-500">
                 A project by{" "}

@@ -20,12 +20,14 @@ export default function UserBanner({
     dbUser,
     school,
     canEdit,
-    bannerDismissed
+    bannerDismissed,
+    points
 }: {
     dbUser: UserWithClasses;
     school: School | null;
     canEdit?: boolean;
     bannerDismissed: boolean;
+    points: number
 }) {
     const [privacy, setPrivacy] = React.useState<boolean>(dbUser.private);
     const [loading, setLoading] = React.useState<boolean>(false);
@@ -47,7 +49,7 @@ export default function UserBanner({
                             {dbUser.name}
                         </h1>
                         <div className="ml-auto mr-4 flex flex-row items-center gap-2 self-start">
-                            <WordPoints points={2000} />
+                            <WordPoints points={points} />
                             {canEdit && (
                                 <>
                                     <Checkbox

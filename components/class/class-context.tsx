@@ -36,7 +36,7 @@ export function ClassContextWrapper({
                         });
                     }}
                 >
-                    Unpin from Sidebar
+                    Unpin
                 </ContextMenuItem>
                 <ContextMenuSeparator />
                 <ContextMenuSub>
