@@ -3,10 +3,12 @@ import { isBannerDismissed } from "@/app/actions";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import UserBanner from "@/components/user/banner";
 import MutualClassSection from "@/components/user/mutual";
+import PokeCards from "@/components/user/pokecard";
 import RecentClassSection from "@/components/user/recentclasses";
 import {
     getAllPointsUser,
     getClassesByUser,
+    getEssaysByUserId,
     getSchoolById,
     getUserById,
     getUserByIdWithClasses,
@@ -30,11 +32,15 @@ export default async function Page({ params }: { params: { userId: string } }) {
     const points = await getAllPointsUser(dbUser.id); // Since this will probably not have more than 5 classes, we can just use Array.Prototype.reduce to sum the points, O(n) is fine here.
     // Cannot send points: Point[] to client, would expose too much information. Hence sum is server sided.
     const currentUser = await getUserById(session?.user.id);
-    if (dbUser.private && !(session?.user.id === dbUser.id) && currentUser?.role !== "admin") {
+    if (
+        dbUser.private &&
+        !(session?.user.id === dbUser.id) &&
+        currentUser?.role !== "admin"
+    ) {
         return (
             <section className="mt-24 flex w-full flex-col items-center gap-4 px-4">
                 <UserBanner
-                bannerDismissed={bannerDismissed}
+                    bannerDismissed={bannerDismissed}
                     dbUser={dbUser}
                     school={school}
                     canEdit={session?.user.id === dbUser.id}
@@ -48,6 +54,8 @@ export default async function Page({ params }: { params: { userId: string } }) {
             </section>
         );
     }
+    const essays = await getEssaysByUserId(dbUser.id);
+    const wordCount = essays.reduce((a, b) => a + (b.wordCount || 0), 0);
     return (
         <section className="mt-24 flex w-full flex-col items-center gap-4 px-4">
             <UserBanner
@@ -57,6 +65,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
                 bannerDismissed={bannerDismissed}
                 points={points.reduce((a, b) => a + b.points, 0)}
             />
+            <PokeCards streak={0} essays={essays.length} wordCount={wordCount} />
             <RecentClassSection
                 classes={classes.slice(
                     Math.max(0, classes.length - 3),

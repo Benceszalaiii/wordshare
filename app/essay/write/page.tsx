@@ -11,7 +11,6 @@ import {
     Input,
     Textarea,
 } from "@/components/ui/form";
-import { uploadEssay } from "@/lib/db";
 import { countWords } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -20,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { cn } from "../../../lib/utils";
+import { uploadEssayAction } from "../actions";
 const formSchema = z.object({
     title: z.string().min(2).max(50),
     textarea: z.string().min(2).max(2500),
@@ -29,10 +29,14 @@ const inputclassName =
     "dark:text-light dark:bg-black focus:border focus:ring-none";
 
 async function onSubmit(values: z.infer<typeof formSchema>, router: any) {
-    const essay = { title: values.title, content: values.textarea };
+    const essay = {
+        title: values.title,
+        content: values.textarea,
+        wordCount: countWords(values.textarea),
+    };
     toast.promise(
         async () => {
-            const fetched = await uploadEssay(essay);
+            await uploadEssayAction(essay);
         },
         {
             richColors: true,
