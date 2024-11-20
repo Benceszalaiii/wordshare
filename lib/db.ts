@@ -5,47 +5,24 @@ import { Session, getServerSession } from "next-auth";
 import "server-only";
 import { sendInviteMail } from "./aws";
 import prisma from "./prisma";
+import { countWords } from "./utils";
 interface Essay {
     title: string;
     content: string;
+    wordCount: number;
 }
 
-export async function uploadEssay(essay: Essay) {
-    const auth = getServerSession(authOptions);
-    const a = await auth;
-    const user = a?.user;
-    if (!user) {
-        return new Response(null, {
-            status: 401,
-            statusText: "No user found.",
-        });
+export async function dangerouslyRevalidateWordCounts(){
+    const essays = await prisma.essay.findMany({where: {wordCount: 0}});
+    for (const essay of essays){
+        const wordCount = countWords(essay.content);
+        await prisma.essay.update({where: {id: essay.id}, data: {wordCount: wordCount}});
     }
-    if (!essay.title || !essay.content) {
-        return new Response(null, {
-            status: 400,
-            statusText: "Elemental data missing. Try adding a title/content.",
-        });
-    }
-    if (user.email === null) {
-        return new Response(null, {
-            status: 401,
-            statusText: "User has no email connected.",
-        });
-    }
+}
 
-    const dbUser = await prisma.user.findUnique({
-        where: { email: user.email },
-    });
-    if (!dbUser?.id) {
-        return new Response(null, {
-            status: 401,
-            statusText: "No user found in database.",
-        });
-    }
 
-    const created = await prisma.essay.create({
-        data: { title: essay.title, userId: dbUser.id, content: essay.content },
-    });
+export async function uploadEssay(essay: Essay, userId: string) {
+    const created = await prisma.essay.create({data: {title: essay.title, content: essay.content, userId: userId, wordCount: essay.wordCount}});
     if (!created) {
         return new Response(null, {
             status: 500,
