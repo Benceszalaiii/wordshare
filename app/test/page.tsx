@@ -8,13 +8,14 @@ import UserHoverCard from "@/components/user/user-hover";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
 import { getUserById } from "@/lib/db";
+import UserBanner from "@/components/user/banner";
 
 export default async function Page() {
-    const essays = await getEssaysForUser();
+    // const essays = await getEssaysForUser();
     const user = await getServerSession(authOptions);
     const dbUser = await getUserById(user?.user.id);
     return (
-        <section className="flex flex-col items-center justify-center gap-4 space-y-4 p-4">
+        <section className="flex flex-col items-center justify-center gap-4 p-4 space-y-4">
             <p>Test page for development purposes</p>
             <Label>Button styles</Label>
             <div className="grid grid-cols-2 gap-16 md:grid-cols-7">
@@ -45,9 +46,9 @@ export default async function Page() {
                     </Button>
                 ))}
             </div>
-            <SubmitTaskModal classId="23" essays={essays}>
+            {/* <SubmitTaskModal classId="23" essays={essays}>
                 <Button variant="default">Open modal</Button>
-            </SubmitTaskModal>
+            </SubmitTaskModal> */}
             <Label>User Hover Card test</Label>
             {dbUser && <UserHoverCard user={dbUser} />}
             
@@ -56,6 +57,7 @@ export default async function Page() {
                 allWords={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
                 goodWords={["2", "4", "6"]}
             />
+            <div className="w-full min-h-screen rounded-lg" />
         </section>
     );
 }

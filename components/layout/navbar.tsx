@@ -63,7 +63,7 @@ export default function NavBar({
     }, [pathname, points]);
     if (role === "admin") {
         return (
-            <div className="sticky top-0 z-50 flex w-full flex-col items-center justify-center transition-all">
+            <div className="sticky top-0 z-50 mb-12 flex w-full flex-col items-center justify-center transition-all">
                 <Banner bannerProps={bannerProps} />
                 <div
                     className={`flex w-full items-center justify-center px-4 ${

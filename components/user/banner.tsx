@@ -4,6 +4,8 @@ import { caveat } from "@/app/fonts";
 import { changePrivacy } from "@/app/user/actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
+
+import useScroll from "@/lib/hooks/use-scroll";
 import { capitalize, dateToLocalTime, getInitials } from "@/lib/utils";
 import { Class, School, User } from "@prisma/client";
 import { CalendarDaysIcon, GraduationCapIcon } from "lucide-react";
@@ -21,40 +23,81 @@ export default function UserBanner({
     school,
     canEdit,
     bannerDismissed,
-    points
+    points,
 }: {
     dbUser: UserWithClasses;
     school: School | null;
     canEdit?: boolean;
     bannerDismissed: boolean;
-    points: number
+    points: number;
 }) {
     const [privacy, setPrivacy] = React.useState<boolean>(dbUser.private);
     const [loading, setLoading] = React.useState<boolean>(false);
+    const isSticked = useScroll(bannerDismissed ? 148 : 240);
+    React.useEffect(()=> {
+        window.scrollTo({top: window.scrollY + 1, behavior: "smooth"});
+    }, [])
+    const scrollToTop = () => {
+        if (!isSticked) return;
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      };
     return (
-        <section
-            className={`sticky ${bannerDismissed ? "top-20" : "top-32"} z-10 flex w-full max-w-screen-lg flex-col items-center rounded-lg border border-border bg-neutral-200/90 bg-opacity-85 p-4 backdrop-blur-md dark:bg-neutral-800/90`}
+        <div
+            className={` ${bannerDismissed ? "top-16" : "top-[7.5rem]"} ${
+                isSticked
+                    ? "sticky border-t border-border select-none bg-white/50 p-2 backdrop-blur-xl dark:bg-black/70 z-50"
+                    : "max-w-screen-lg rounded-lg border border-border bg-neutral-200/90 bg-opacity-85 p-4 backdrop-blur-md dark:bg-neutral-800/90"
+            }  flex w-screen transform-gpu flex-col items-center justify-center overflow-hidden transition-all duration-500 `}
             about="User profile"
         >
-            <div className="ml-6 flex w-full flex-row items-center gap-4 self-start">
-                <Avatar className="h-12 md:h-24 w-12 md:w-24">
+            <div
+                className={`flex w-full flex-row items-center gap-4 pl-4 md:pl-24 ${
+                    !isSticked && "self-start"
+                }`}
+            >
+                <Avatar
+                onClick={scrollToTop}
+                    className={` transition-all ${
+                        isSticked
+                            ? "h-8 w-8 md:h-12 my-1 md:w-12 cursor-pointer"
+                            : "h-12 w-12 md:h-24 md:w-24"
+                    }`}
+                >
                     <AvatarImage src={dbUser.image || ""}></AvatarImage>
                     <AvatarFallback>
                         {getInitials(dbUser.name || "W")}
                     </AvatarFallback>
                 </Avatar>
-                <div className="flex w-full flex-col gap-2">
-                    <div className="flex w-full flex-col-reverse sm:flex-row gap-4">
-                        <h1 className="text-3xl font-semibold pr-4">
+                <div className="flex flex-col w-full gap-2">
+                    <div
+                        className={`flex w-full ${
+                            isSticked ? "flex-row" : "flex-col-reverse"
+                        } gap-4 sm:flex-row`}
+                    >
+                        <h1
+                        onClick={scrollToTop}
+                            className={`${
+                                isSticked ? "text-xl cursor-pointer" : "text-3xl"
+                            } pr-4 font-semibold transition-all `}
+                        >
                             {dbUser.name}
                         </h1>
-                        <div className="ml-auto mr-4 flex flex-row items-center gap-2 self-start">
+                        <div
+                            className={`ml-auto mr-4 flex flex-row items-center gap-2 self-start ${
+                                isSticked && "mr-8"
+                            }`}
+                        >
                             <WordPoints points={points} />
                             {canEdit && (
                                 <>
                                     <Checkbox
                                         id="privacy"
-                                        className="ml-4"
+                                        className={`ml-4 ${
+                                            isSticked && "hidden"
+                                        }`}
                                         checked={privacy}
                                         disabled={loading}
                                         onCheckedChange={(e) => {
@@ -82,7 +125,7 @@ export default function UserBanner({
                                                         "Successfully changed privacy.",
                                                     error: "An error occured. Try again later.",
                                                     dismissible: true,
-                                                    closeButton: true
+                                                    closeButton: true,
                                                 },
                                             );
                                             setTimeout(() => {
@@ -91,7 +134,9 @@ export default function UserBanner({
                                         }}
                                     />
                                     <Label
-                                        className="ml-auto"
+                                        className={`${
+                                            isSticked && "hidden"
+                                        } ml-auto mr-8`}
                                         htmlFor="privacy"
                                     >
                                         Private profile
@@ -100,9 +145,13 @@ export default function UserBanner({
                             )}
                         </div>
                     </div>
-                    <div className="flex flex-row items-center gap-2">
-                        <CalendarDaysIcon className="h-6 w-6 shrink-0 text-gray-500" />
-                        <p className="mt-1 text-gray-500 pr-2 line-clamp-2">
+                    <div
+                        className={`flex flex-row items-center gap-2 ${
+                            isSticked && "hidden"
+                        }`}
+                    >
+                        <CalendarDaysIcon className="w-6 h-6 text-gray-500 shrink-0" />
+                        <p className="pr-2 mt-1 text-gray-500 line-clamp-2">
                             Member since{" "}
                             {dateToLocalTime(
                                 dbUser.createdAt,
@@ -111,10 +160,14 @@ export default function UserBanner({
                             })}
                         </p>
                     </div>
-                    <div className="line-clamp-2 flex flex-row items-center gap-2 ">
-                        <GraduationCapIcon className="h-6 w-6 shrink-0 text-gray-500" />
+                    <div
+                        className={`line-clamp-2 flex flex-row items-center gap-2 ${
+                            isSticked && "hidden"
+                        }`}
+                    >
+                        <GraduationCapIcon className="w-6 h-6 text-gray-500 shrink-0" />
                         {dbUser.role !== "admin" ? (
-                            <p className="mt-1 line-clamp-2 text-gray-500 pr-2">
+                            <p className="pr-2 mt-1 text-gray-500 line-clamp-2">
                                 {capitalize(dbUser.role || "")} at{" "}
                                 {school?.url ? (
                                     <Link
@@ -129,7 +182,7 @@ export default function UserBanner({
                                 )}
                             </p>
                         ) : (
-                            <p className="mt-1 line-clamp-2 text-gray-500 w-full pr-2">
+                            <p className="w-full pr-2 mt-1 text-gray-500 line-clamp-2">
                                 Developer at{" "}
                                 <span className={caveat.className}>
                                     WordShare
@@ -139,6 +192,6 @@ export default function UserBanner({
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     );
 }

@@ -20,8 +20,8 @@ export default function MutualClassSection({
 }) {
     if (own){
         return (
-            <section className="mt-8 flex w-full max-w-screen-md flex-col gap-2 rounded-lg border border-border p-4">
-            <h2 className=" mb-4 text-xl font-semibold">Mutual classes</h2>
+            <section className="flex flex-col w-full max-w-screen-md gap-2 p-4 mt-8 border rounded-lg border-border">
+            <h2 className="mb-4 text-xl font-semibold ">Mutual classes</h2>
             <p className="text-gray-500">
                 Your mutual classes with your profile visitors will appear here for them
             </p>
@@ -30,8 +30,8 @@ export default function MutualClassSection({
     }
     if (!loggedIn) {
         return (
-            <section className="mt-8 flex w-full max-w-screen-md flex-col gap-2 rounded-lg border border-border p-4">
-                <h2 className=" mb-4 text-xl font-semibold">Mutual classes</h2>
+            <section className="flex flex-col w-full max-w-screen-md gap-2 p-4 mt-8 border rounded-lg border-border">
+                <h2 className="mb-4 text-xl font-semibold ">Mutual classes</h2>
                 <p className="text-gray-500">
                     You need to log in to see your mutual classes
                 </p>
@@ -42,10 +42,10 @@ export default function MutualClassSection({
         UserClasses.some((ucls) => ucls.id === cls.id),
     );
     return (
-        <section className="mt-8 flex w-full max-w-screen-md flex-col gap-2 rounded-lg border border-border p-4">
-            <h2 className=" mb-4 text-xl font-semibold">Mutual classes</h2>
+        <section className="flex flex-col w-full max-w-screen-md gap-2 p-4 mt-8 border rounded-lg border-border">
+            <h2 className="mb-4 text-xl font-semibold ">Mutual classes</h2>
             {mutualClasses.length > 0 ? (
-                <div className="grid grid-cols-1 place-content-center gap-4 md:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 place-content-center md:grid-cols-3">
                     {mutualClasses
                         .slice(
                             Math.max(0, mutualClasses.length - 3),
@@ -54,7 +54,7 @@ export default function MutualClassSection({
                         .map((cls) => {
                             return (
                                 <Card
-                                    className="flex h-48 grow transform-gpu flex-col justify-between antialiased transition-all duration-500 hover:scale-110"
+                                    className="flex flex-col justify-between h-48 antialiased transition-all duration-500 grow transform-gpu hover:scale-110"
                                     key={cls.id}
                                 >
                                     <CardHeader className="flex flex-row items-center gap-2">
@@ -68,7 +68,7 @@ export default function MutualClassSection({
                                         </Avatar>
                                         <CardTitle>{cls.name}</CardTitle>
                                     </CardHeader>
-                                    <CardFooter className="mt-auto flex w-full flex-row items-end justify-end">
+                                    <CardFooter className="flex flex-row items-end justify-end w-full mt-auto">
                                         <Link
                                             href={`/class/${cls.id}`}
                                             className={buttonVariants({
