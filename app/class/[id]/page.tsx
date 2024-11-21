@@ -52,7 +52,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     }
     return (
         <section className="flex flex-col items-center">
-            <div className="sticky top-20 ">
+            <div className="sticky top-20 z-30">
             <ClassMenubar currentClass={currentClass} isTeacher={canEdit} />
             </div>
             <ClassLegend

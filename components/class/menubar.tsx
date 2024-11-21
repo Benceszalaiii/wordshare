@@ -40,7 +40,7 @@ export default function ClassMenubar({
                         <MenubarContent>
                                 <MenubarPinCheck classId={currentClass.id} />
                                 <MenubarSeparator/>
-                                <ItemWithIcon href={`/class/${currentClass.id}/tasks`} Icon={HouseIcon}>
+                                <ItemWithIcon href={`/class/${currentClass.id}/`} Icon={HouseIcon}>
                                     Front page
                                 </ItemWithIcon>
                             <ItemWithIcon href={`/class/${currentClass.id}/edit`} Icon={CogIcon}>
@@ -82,7 +82,7 @@ export default function ClassMenubar({
                         <MenubarContent>
                                 <MenubarPinCheck classId={currentClass.id} />
                                 <MenubarSeparator/>
-                                <ItemWithIcon href={`/class/${currentClass.id}/tasks`} Icon={HouseIcon}>
+                                <ItemWithIcon href={`/class/${currentClass.id}/`} Icon={HouseIcon}>
                                     Front page
                                 </ItemWithIcon>
                         </MenubarContent>
