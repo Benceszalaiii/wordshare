@@ -8,6 +8,7 @@ import UserHoverCard from "@/components/user/user-hover";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
 import { getUserById } from "@/lib/db";
+import UserBanner from "@/components/user/banner";
 
 export default async function Page() {
     const essays = await getEssaysForUser();
@@ -45,17 +46,20 @@ export default async function Page() {
                     </Button>
                 ))}
             </div>
-            <SubmitTaskModal classId="23" essays={essays}>
+            {/* <SubmitTaskModal classId="23" essays={essays}>
                 <Button variant="default">Open modal</Button>
-            </SubmitTaskModal>
+            </SubmitTaskModal> */}
             <Label>User Hover Card test</Label>
             {dbUser && <UserHoverCard user={dbUser} />}
             
+            <UserBanner bannerDismissed={false} points={23} school={{id: 23, name: "Asp", url: "asp.net"}} canEdit={false} dbUser={{Classes: [], teacherVerified: true, createdAt: new Date(), email: "asdasd", grade: 11, id: "cumaasdsd", image: "https://lh3.googleusercontent.com/a/ACg8ocLkUJfpzIpbd001ApLsU28EsdR2XOSilCt9oaUKliLetzPM=s96-c", name: "Test user", private: false, role: "admin", pinnedClassIds: [], emailVerified: new Date(),schoolId: 123}} />
+
             <Label>Connection game test</Label>
             <ConnectionGame
                 allWords={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
                 goodWords={["2", "4", "6"]}
             />
+            <div className="w-full min-h-screen border-border border rounded-lg" />
         </section>
     );
 }
