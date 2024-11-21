@@ -48,9 +48,9 @@ export default function UserBanner({
         <div
             className={` ${bannerDismissed ? "top-16" : "top-[7.5rem]"} ${
                 isSticked
-                    ? "sticky border-t border-border bg-white/50 p-2 backdrop-blur-xl dark:bg-black/70"
+                    ? "sticky border-t border-border bg-white/50 p-2 backdrop-blur-xl dark:bg-black/70 z-50"
                     : "max-w-screen-lg rounded-lg border border-border bg-neutral-200/90 bg-opacity-85 p-4 backdrop-blur-md dark:bg-neutral-800/90"
-            } z-50 flex w-screen transform-gpu flex-col items-center justify-center overflow-hidden transition-all duration-500 `}
+            }  flex w-screen transform-gpu flex-col items-center justify-center overflow-hidden transition-all duration-500 `}
             about="User profile"
         >
             <div
