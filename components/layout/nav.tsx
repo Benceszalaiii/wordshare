@@ -24,8 +24,7 @@ export default async function Nav() {
                 return null;
         }
     };
-    // await fetchBanner()
-    // {title: "Welcome to the new school year!", id: 23, show:false};
+
     const getBannerWithFallback = async () => {
         try {
             const res = await fetchBanner();
@@ -34,7 +33,7 @@ export default async function Nav() {
             return {
                 title: "You couldn't be connected to the database. Check your internet connection",
                 id: 69420,
-                show: true,
+                show: false,
             };
         }
     };

@@ -30,16 +30,19 @@ export default function PokeCards({wordCount, essays, streak}: {wordCount: numbe
             onMouseLeave={cursorLeave}
             onMouseMove={cursorMove}
             onMouseEnter={cursorEnter}
-            className="relative flex mt-4 flex-col md:flex-row gap-4 md:gap-8 justify-center items-center w-full max-w-screen-md md:overflow-hidden rounded-lg border border-border p-8"
+            className="relative flex flex-col items-center justify-center w-full max-w-screen-md gap-4 p-8 mt-8 border rounded-lg md:gap-8 md:overflow-hidden border-border"
         >
+            <legend about="Legend" className="z-20 self-start text-lg font-semibold text-black text-opacity-75 select-none animate-in dark:text-white">Statistics</legend>
             <motion.div
                 hidden={!isHovered || isMobile}
-                className={`absolute h-32 w-32 -z-10 rounded-xl bg-violet-800 opacity-25 blur-2xl`}
+                className={`absolute h-32 w-32 -z-10 rounded-xl bg-violet-800 opacity-35 blur-2xl`}
                 animate={{ x: mousePos.x, y: mousePos.y }}
             />
-            <TiltCard title="WordStreak" value={streak} unit="days" colorVariant="main" />
-            <TiltCard title="Words written" value={wordCount} unit="words" colorVariant="orange" />
+            <div className="flex flex-col items-center w-full gap-4 md:flex-row md:gap-8 justify-evenly">
+            <TiltCard title="WordStreak" value={streak} unit="days" colorVariant="orange" />
+            <TiltCard title="Words written" value={wordCount} unit="words" colorVariant="main" />
             <TiltCard title="Essays" value={essays} unit="essays" colorVariant="emerald" />
+            </div>
         </section>
     );
 }
@@ -83,7 +86,7 @@ export function TiltCard({title, value, unit, colorVariant = "main"}: {title: st
                 onMouseLeave={handleMouseLeave}
                 data-name="Wrapper"
                 style={{ rotateY: rotateX, rotateX: rotateY }}
-                className="group/card pointer relative mb-8 h-64 w-full md:w-48 transform-gpu select-none rounded-lg bg-opacity-90 bg-gradient-to-tr from-emerald-500 to-lime-600 p-1 shadow-lg transition-shadow duration-500 hover:from-lime-500 hover:to-emerald-500 hover:shadow-emerald-500 dark:to-emerald-800 "
+                className="relative w-full h-64 p-1 mb-8 transition-shadow duration-500 rounded-lg shadow-lg select-none group/card pointer md:w-48 transform-gpu bg-opacity-90 bg-gradient-to-tr from-emerald-500 to-lime-600 hover:from-lime-500 hover:to-emerald-500 hover:shadow-emerald-500 dark:to-emerald-800 "
             >
                 <motion.div
                     data-name="Content"
@@ -94,7 +97,7 @@ export function TiltCard({title, value, unit, colorVariant = "main"}: {title: st
                     >
                         {title}
                     </h4>
-                    <motion.div className="absolute bottom-8 right-4 ml-12 h-32 w-32 rounded-full bg-gradient-to-tr from-emerald-500 to-emerald-800 opacity-20 shadow-lg blur-2xl" />
+                    <motion.div className="absolute w-32 h-32 ml-12 rounded-full shadow-lg bottom-8 right-4 bg-gradient-to-tr from-emerald-500 to-emerald-800 opacity-20 blur-2xl" />
                     <p className="z-20 mb-auto mr-4 ">
                         <span
                             className={`transform-gpu text-5xl font-semibold text-emerald-700 antialiased transition-all group-hover/card:scale-125 ${caveat.className}`}
@@ -119,7 +122,7 @@ export function TiltCard({title, value, unit, colorVariant = "main"}: {title: st
                 onMouseLeave={handleMouseLeave}
                 data-name="Wrapper"
                 style={{ rotateY: rotateX, rotateX: rotateY }}
-                className="group/card pointer relative mb-8 h-64 w-full md:w-48 transform-gpu select-none rounded-lg bg-opacity-90 bg-gradient-to-tr from-red-500 to-orange-600 p-1 shadow-lg transition-shadow duration-500 hover:from-orange-500  hover:to-red-500 hover:shadow-orange-500 dark:to-red-800 "
+                className="relative w-full h-64 p-1 mb-8 transition-shadow duration-500 rounded-lg shadow-lg select-none group/card pointer md:w-48 transform-gpu bg-opacity-90 bg-gradient-to-tr from-red-500 to-orange-600 hover:from-orange-500 hover:to-red-500 hover:shadow-orange-500 dark:to-red-800 "
             >
                 <motion.div
                     data-name="Content"
@@ -130,7 +133,7 @@ export function TiltCard({title, value, unit, colorVariant = "main"}: {title: st
                     >
                         {title}
                     </h4>
-                    <motion.div className="absolute bottom-8 right-4 ml-12 h-32 w-32 rounded-full bg-gradient-to-tr from-orange-500 to-red-800 opacity-20 shadow-lg blur-2xl" />
+                    <motion.div className="absolute w-32 h-32 ml-12 rounded-full shadow-lg bottom-8 right-4 bg-gradient-to-tr from-orange-500 to-red-800 opacity-20 blur-2xl" />
                     <p className="z-20 mb-auto mr-4 ">
                         <span
                             className={`transform-gpu text-5xl font-semibold text-orange-700 antialiased transition-all group-hover/card:scale-125 ${caveat.className}`}
@@ -154,7 +157,7 @@ export function TiltCard({title, value, unit, colorVariant = "main"}: {title: st
             onMouseLeave={handleMouseLeave}
             data-name="Wrapper"
             style={{ rotateY: rotateX, rotateX: rotateY }}
-            className="group/card pointer relative mb-8 h-64 w-full md:w-48 transform-gpu select-none rounded-lg bg-opacity-90 bg-gradient-to-tr from-violet-500 to-sky-600 p-1 shadow-lg transition-shadow duration-500 hover:from-sky-500  hover:to-violet-500 hover:shadow-sky-500 dark:to-sky-800 "
+            className="relative w-full h-64 p-1 mb-8 transition-shadow duration-500 rounded-lg shadow-lg select-none group/card pointer md:w-48 transform-gpu bg-opacity-90 bg-gradient-to-tr from-violet-500 to-sky-600 hover:from-sky-500 hover:to-violet-500 hover:shadow-sky-500 dark:to-sky-800 "
         >
             <motion.div
                 data-name="Content"
@@ -165,7 +168,7 @@ export function TiltCard({title, value, unit, colorVariant = "main"}: {title: st
                 >
                     {title}
                 </h4>
-                <motion.div className="absolute bottom-8 right-4 ml-12 h-32 w-32 rounded-full bg-gradient-to-tr from-violet-500 to-sky-800 opacity-20 shadow-lg blur-2xl" />
+                <motion.div className="absolute w-32 h-32 ml-12 rounded-full shadow-lg bottom-8 right-4 bg-gradient-to-tr from-violet-500 to-sky-800 opacity-20 blur-2xl" />
                 <p className="z-20 mb-auto mr-4 ">
                     <span
                         className={`transform-gpu text-5xl font-semibold text-main-700 antialiased transition-all group-hover/card:scale-125 ${caveat.className}`}

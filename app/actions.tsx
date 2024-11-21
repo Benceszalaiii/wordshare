@@ -17,8 +17,9 @@ export async function fetchBanner() {
 
 export async function isBannerDismissed() {
     const dismissedBannerId = cookies().get("bannerId");
+    const state = cookies().get("bannerDismissed");
     const banner = await getBanner();
-    if (banner.id.toString() === dismissedBannerId?.value) {
+    if (banner.id.toString() === dismissedBannerId?.value && state?.value === "true") {
         return true;
     }
     return false;

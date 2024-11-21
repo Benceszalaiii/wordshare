@@ -13,6 +13,7 @@ import {
     getUserById,
     getUserByIdWithClasses,
 } from "@/lib/db";
+import { Metadata } from 'next';
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
@@ -65,7 +66,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
                 bannerDismissed={bannerDismissed}
                 points={points.reduce((a, b) => a + b.points, 0)}
             />
-            <PokeCards streak={0} essays={essays.length} wordCount={wordCount} />
+            <PokeCards streak={0} essays={essays.length}  wordCount={wordCount} />
             <RecentClassSection
                 classes={classes.slice(
                     Math.max(0, classes.length - 3),
@@ -83,9 +84,22 @@ export default async function Page({ params }: { params: { userId: string } }) {
                 )}
                 own={session?.user.id === dbUser.id}
             />
-            <section className="h-screen w-full"></section>
+            <section className="h-screen w-full"/>
         </section>
     );
 }
 
-// TODO METADATA
+
+export async function generateMetadata({params}: {params: {userId: string}}): Promise<Metadata>{
+    const dbUser = await getUserByIdWithClasses(params.userId);
+    if (!dbUser){
+        return {
+            title: "User not found",
+            description: "User not found. | WordShare"
+        }
+    }
+    return {
+        title: `${dbUser.name}`,
+        description: `${dbUser.name} | WordShare`,
+    }
+}
