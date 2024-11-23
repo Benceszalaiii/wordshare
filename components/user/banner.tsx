@@ -33,7 +33,7 @@ export default function UserBanner({
 }) {
     const [privacy, setPrivacy] = React.useState<boolean>(dbUser.private);
     const [loading, setLoading] = React.useState<boolean>(false);
-    const isSticked = useScroll(bannerDismissed ? 148 : 240);
+    const isSticked = useScroll(bannerDismissed ? 140 : 240);
     React.useEffect(()=> {
         window.scrollTo({top: window.scrollY + 1, behavior: "smooth"});
     }, [])
@@ -48,13 +48,13 @@ export default function UserBanner({
         <div
             className={` ${bannerDismissed ? "top-16" : "top-[7.5rem]"} ${
                 isSticked
-                    ? "sticky border-t border-border select-none bg-white/50 p-2 backdrop-blur-xl dark:bg-black/70 z-50"
+                    ? "fixed border-t border-border select-none bg-white/50 p-2 backdrop-blur-xl dark:bg-black/70 z-50"
                     : "max-w-screen-lg rounded-lg border border-border bg-neutral-200/90 bg-opacity-85 p-4 backdrop-blur-md dark:bg-neutral-800/90"
-            }  flex w-screen transform-gpu flex-col items-center justify-center overflow-hidden transition-all duration-500 `}
+            }  flex transform-gpu flex-col items-center w-screen max-w-full justify-center overflow-hidden transition-all duration-500 `}
             about="User profile"
         >
             <div
-                className={`flex w-full flex-row items-center gap-4 pl-4 md:pl-24 ${
+                className={`flex w-full flex-row items-center overflow-hidden gap-4 pl-4 md:pl-24 ${
                     !isSticked && "self-start"
                 }`}
             >

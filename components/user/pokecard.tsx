@@ -1,8 +1,9 @@
 "use client";
 import { caveat, sfPro } from "@/app/fonts";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useIsMobile } from "hooks/use-mobile";
 import * as React from "react";
+import CursorWrapper from "./cursor-wrapper";
+import useCursorTheme from "@/lib/hooks/use-cursor-theme";
 export default function PokeCards({
     wordCount,
     essays,
@@ -12,65 +13,33 @@ export default function PokeCards({
     streak: number;
     essays: number;
 }) {
-    const [isHovered, setIsHovered] = React.useState(false);
-    const cursorLeave = () => {
-        setIsHovered(false);
-    };
-    const cursorEnter = () => {
-        setIsHovered(true);
-    };
-    const [mousePos, setMousePos] = React.useState<{ x: number; y: number }>({
-        x: 0,
-        y: 0,
-    });
-    const cursorMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
-        const mouseX = e.clientX - rect.left - width / 2;
-        const mouseY = e.clientY - rect.top - height / 2;
-        setMousePos({ x: mouseX, y: mouseY });
-    };
-    const isMobile = useIsMobile();
+    const cursorColor = "#dc2626";
     return (
-        <section
-            onMouseLeave={cursorLeave}
-            onMouseMove={cursorMove}
-            onMouseEnter={cursorEnter}
-            className="relative mt-8 flex w-full max-w-screen-md flex-col items-center justify-center gap-4 rounded-lg border border-border p-8 md:gap-8 md:overflow-hidden"
-        >
-            <legend
-                about="Legend"
-                className="z-20 select-none self-start text-lg font-semibold text-black text-opacity-75 animate-in dark:text-white"
-            >
-                Statistics
-            </legend>
-            <motion.div
-                hidden={!isHovered || isMobile}
-                className={`absolute -z-10 h-32 w-32 rounded-xl bg-main-800 opacity-35 blur-2xl`}
-                animate={{ x: mousePos.x, y: mousePos.y }}
-            />
-            <div className="flex w-full flex-col items-center justify-evenly gap-4 md:flex-row md:gap-8">
+        <CursorWrapper cursorColor={cursorColor} title="Statistics">
+            <div className="flex flex-col items-center w-full gap-4 justify-evenly md:flex-row md:gap-8">
                 <TiltCard
                     title="WordStreak"
                     value={streak}
                     unit="days"
                     colorVariant="orange"
+                    sectionCursorColor={cursorColor}
                 />
                 <TiltCard
                     title="Words written"
                     value={wordCount}
                     unit="words"
                     colorVariant="sky"
+                    sectionCursorColor={cursorColor}
                 />
                 <TiltCard
                     title="Essays"
                     value={essays}
                     unit="essays"
                     colorVariant="emerald"
+                    sectionCursorColor={cursorColor}
                 />
             </div>
-        </section>
+        </CursorWrapper>
     );
 }
 
@@ -81,6 +50,7 @@ type Variant = {
     value: string;
     unit: string;
     splash: string;
+    color: string;
 };
 
 type colorKeys = "orange" | "emerald" | "main" | "sky";
@@ -91,6 +61,7 @@ type colorVariantProps = {
 
 const colorVariants: colorVariantProps = {
     emerald: {
+        color: "#047857",
         wrapper:
             "hover:from-lime-500 hover:to-emerald-500 hover:shadow-emerald-500 dark:to-emerald-800 from-emerald-500 to-lime-600",
         content:
@@ -101,6 +72,7 @@ const colorVariants: colorVariantProps = {
         splash: "from-emerald-500 to-emerald-800",
     },
     main: {
+        color: "#6d28d9",
         wrapper:
             "hover:from-main-500 hover:to-main-500 hover:shadow-main-500 dark:to-main-800 from-main-500 to-main-600",
         content:
@@ -111,6 +83,7 @@ const colorVariants: colorVariantProps = {
         splash: "from-main-500 to-main-800",
     },
     orange: {
+        color: "#c2410c",
         wrapper:
             "hover:from-orange-500 hover:to-red-500 hover:shadow-orange-500 dark:to-red-800 from-red-500 to-orange-600",
         content:
@@ -121,6 +94,7 @@ const colorVariants: colorVariantProps = {
         splash: "from-orange-500 to-red-800",
     },
     sky: {
+        color: "#0369a1",
         wrapper:
             "hover:from-sky-500 hover:to-violet-500 hover:shadow-sky-500 dark:to-sky-800 from-violet-500 to-sky-600",
         content:
@@ -137,10 +111,12 @@ export function TiltCard({
     value,
     unit,
     colorVariant = "main",
+    sectionCursorColor
 }: {
     title: string;
     value: number | string;
     unit?: string;
+    sectionCursorColor?: string;
     colorVariant?: colorKeys;
 }) {
     const currentVariant = colorVariants[colorVariant];
@@ -174,10 +150,13 @@ export function TiltCard({
     const handleMouseLeave = () => {
         x.set(0);
         y.set(0);
+        sectionCursorColor ? setTheme(sectionCursorColor) : setCursorDefault();
     };
+    const {setCursorDefault, setTheme} = useCursorTheme();
     return (
         <motion.div
             onMouseMove={handleMouseMove}
+            onMouseEnter={()=> {setTheme(currentVariant.color)}}
             onMouseLeave={handleMouseLeave}
             data-name="Wrapper"
             style={{ rotateY: rotateX, rotateX: rotateY }}
@@ -200,7 +179,7 @@ export function TiltCard({
                 </h4>
                 <motion.div
                     className={
-                        "absolute bottom-8 right-4 ml-12 h-32 w-32 rounded-full bg-gradient-to-tr opacity-20 shadow-lg blur-2xl "
+                        "absolute bottom-8 right-4 ml-12 h-32 w-32 rounded-full bg-gradient-to-tr opacity-20 shadow-lg blur-2xl"
                     }
                 />
                 <p className="z-20 mb-auto mr-4">

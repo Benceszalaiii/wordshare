@@ -86,10 +86,10 @@ export default async function RootLayout({
                     content="width=device-width, initial-scale=1.0"
                 />
             </head>
-            <body className={cx(sfPro.variable, inter.variable)}>
+            <body id="page" className={cx(sfPro.variable, inter.variable)}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
                     <CommandProvider />
-                    <main className="z-10 flex min-h-screen w-full flex-col">
+                    <main className="z-10 flex flex-col w-full min-h-screen ">
                         <Nav />
                         {children}
                     </main>

@@ -2,6 +2,7 @@
 import { isBannerDismissed } from "@/app/actions";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import UserBanner from "@/components/user/banner";
+import { CursorMotion } from "@/components/user/cursor-wrapper";
 import MutualClassSection from "@/components/user/mutual";
 import PokeCards from "@/components/user/pokecard";
 import RecentClassSection from "@/components/user/recentclasses";
@@ -13,7 +14,7 @@ import {
     getUserById,
     getUserByIdWithClasses,
 } from "@/lib/db";
-import { Metadata } from 'next';
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
@@ -39,7 +40,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
         currentUser?.role !== "admin"
     ) {
         return (
-            <section className="mt-24 flex w-full flex-col items-center gap-4 px-4">
+            <section className="flex flex-col items-center w-full gap-4 px-4 mt-24">
                 <UserBanner
                     bannerDismissed={bannerDismissed}
                     dbUser={dbUser}
@@ -58,7 +59,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
     const essays = await getEssaysByUserId(dbUser.id);
     const wordCount = essays.reduce((a, b) => a + (b.wordCount || 0), 0);
     return (
-        <section className="mt-24 flex w-full flex-col items-center gap-4 px-4">
+        <section className="flex flex-col items-center w-full gap-4 px-4 mt-24 ">
             <UserBanner
                 dbUser={dbUser}
                 school={school}
@@ -66,7 +67,12 @@ export default async function Page({ params }: { params: { userId: string } }) {
                 bannerDismissed={bannerDismissed}
                 points={points.reduce((a, b) => a + b.points, 0)}
             />
-            <PokeCards streak={0} essays={essays.length}  wordCount={wordCount} />
+            <CursorMotion />
+            <PokeCards
+                streak={0}
+                essays={essays.length}
+                wordCount={wordCount}
+            />
             <RecentClassSection
                 classes={classes.slice(
                     Math.max(0, classes.length - 3),
@@ -84,22 +90,26 @@ export default async function Page({ params }: { params: { userId: string } }) {
                 )}
                 own={session?.user.id === dbUser.id}
             />
-            <section className="h-screen w-full"/>
+            <section className="w-full h-screen" />
         </section>
     );
 }
 
-
-export async function generateMetadata({params}: {params: {userId: string}}): Promise<Metadata>{
+export async function generateMetadata({
+    params,
+}: {
+    params: { userId: string };
+}): Promise<Metadata> {
     const dbUser = await getUserByIdWithClasses(params.userId);
-    if (!dbUser){
+    if (!dbUser) {
         return {
             title: "User not found",
-            description: "User not found. | WordShare"
-        }
+            description: "User not found. | WordShare",
+        };
     }
     return {
         title: `${dbUser.name}`,
+        icons: [{ url: dbUser.image || "" }],
         description: `${dbUser.name} | WordShare`,
-    }
+    };
 }
