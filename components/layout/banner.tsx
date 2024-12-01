@@ -33,10 +33,12 @@ export default function Banner({
     if (bannerProps.show === false) {
         return null;
     }
-    const cookieBannerId = document.cookie
+    const activeBannerCookie = document.cookie
         .split(";")
-        .find((cookie) => cookie.includes("bannerId"))
-        ?.split("=")[1];
+        .find((cookie) => cookie.includes("bannerId"));
+    const cookieBannerId = activeBannerCookie
+        ? activeBannerCookie.split("=")[1]
+        : "0";
     if (
         document.cookie.includes("bannerDismissed=true") &&
         document.cookie.includes(bannerProps.id.toString())
@@ -61,7 +63,7 @@ export default function Banner({
                 className,
             )}
         >
-            <h1 className="ml-auto mr-auto line-clamp-2 flex h-14 p-2 text-center font-display font-semibold tracking-wider items-center">
+            <h1 className="ml-auto mr-auto line-clamp-2 flex h-14 items-center p-2 text-center font-display font-semibold tracking-wider">
                 {bannerProps.title}
             </h1>
             {bannerProps.id !== 69420 && (

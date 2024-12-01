@@ -7,8 +7,12 @@ import { ScoreDrawerWrapper } from "@/components/essay/score";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import { countWords } from "@/lib/utils";
-export default async function Page({ params }: { params: { slug: string } }) {
-    const essay = await getEssayById(params.slug);
+
+type Params = Promise<{essayId: string}>;
+
+export default async function Page({ params }: { params: Params }) {
+    const { essayId } = await params;
+    const essay = await getEssayById(essayId);
     if (!essay) {
         return <p>Essay not found</p>;
     }
@@ -88,7 +92,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                     {essay.content}
                 </p>
             </div>
-            <CommentWrapper essayId={params.slug} />
+            <CommentWrapper essayId={essayId} />
         </>
     );
 }

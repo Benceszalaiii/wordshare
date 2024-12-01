@@ -57,7 +57,7 @@
     ".next/types/**/*.ts",
     "next-auth.d.ts",
     "node_mudules/@types"
-, "next.config.js"  ],
+, "next.config.ts"  ],
   "exclude": [
     "node_modules"
   ]

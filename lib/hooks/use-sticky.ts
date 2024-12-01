@@ -11,7 +11,8 @@ export default function useSticky(topValue: string) {
             return;
         }
         const observer = new IntersectionObserver(
-            ([event]) => ref.current && setIsSticky(ref.current.clientTop < value * 4),
+            ([event]) =>
+                ref.current && setIsSticky(ref.current.clientTop < value * 4),
             { threshold: [1] },
         );
         observer.observe(ref.current);

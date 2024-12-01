@@ -101,12 +101,15 @@ export default async function Page({ params }: { params: { id: string } }) {
     );
 }
 
+type Params = Promise<{ id: string }>;
+
 export async function generateMetadata({
     params,
 }: {
-    params: { id: string };
+    params: Params
 }): Promise<Metadata> {
-    const currentClass = await getClassById(params.id);
+    const { id } = await params;
+    const currentClass = await getClassById(id);
     const teacher = await getUserById(currentClass?.teacherUserId);
     if (!currentClass || !teacher) {
         return {
@@ -117,7 +120,7 @@ export async function generateMetadata({
                 title: "Join a class on WordShare!",
                 description:
                     "Learn more about languages and prepare for your exam with WordShare",
-                url: `https://www.wordshare.tech/class/${params.id}`,
+                url: `https://www.wordshare.tech/class/${id}`,
             },
         };
     }

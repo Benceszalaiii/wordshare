@@ -55,7 +55,7 @@ export default async function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+        <html lang="en" className={cx(sfPro.variable, inter.variable, caveat.variable, "scroll-smooth")} suppressHydrationWarning>
             <head>
                 <link
                     rel="apple-touch-icon"
@@ -89,28 +89,12 @@ export default async function RootLayout({
             </head>
             <body
                 id="page"
-                className={cx(sfPro.variable, inter.variable, caveat.variable)}
             >
                 <ThemeProvider attribute="class" defaultTheme="dark">
                     <CommandProvider />
                     <main className="z-10 flex min-h-screen w-full flex-col">
                         <Nav />
                         {children}
-                        {/* <Suspense
-                            fallback={
-                                <div className="fixed left-0 top-0 -z-10 m-0 h-full w-full bg-light object-contain p-0 dark:bg-dark" />
-                            }
-                        >
-                            <div className="fixed left-0 top-0 -z-10 m-0 h-full w-full bg-main-light bg-cover bg-center bg-no-repeat p-0 dark:bg-main-dark" />
-                        </Suspense>
-                        <h1 className="mb-16 mt-8 w-full text-center font-caveat text-3xl text-main-600">
-                            WordShare
-                        </h1>
-                        <h1 className="flex h-full w-full flex-col items-center justify-center gap-4 text-center">
-                            We are undergoing maintenance right now. <br />{" "}
-                            Please be patient as we are striving to find a
-                            solution.
-                        </h1> */}
                     </main>
                     <Footer />
                     <Toaster visibleToasts={2} />

@@ -2,16 +2,20 @@ import { NextRequest } from "next/server";
 import { addPoints, getClassPoints, getUserById, isOwnClass } from "@/lib/db";
 import { auth } from "@/lib/auth";
 
-export async function GET(req: NextRequest, {params}: {params: {classId: string}}){
+type Params = Promise<{classId: string}>;
+
+export async function GET(req: NextRequest, {params}: {params: Params}){
+    const { classId } = await params;
     const session = await auth();
     if (!session){
         return new Response(null, {status: 401});
     }
-    const points = await getClassPoints(params.classId, session?.user?.id);
+    const points = await getClassPoints(classId, session?.user?.id);
     return new Response(points.toString(), {status: 200});
 }
 
-export async function POST(req: NextRequest, {params}: {params: {classId: string}}){
+export async function POST(req: NextRequest, {params}: {params: Params}){
+    const { classId } = await params;
     const session = await auth();
     if (!session){
         return new Response(null, {status: 401});
@@ -29,7 +33,6 @@ export async function POST(req: NextRequest, {params}: {params: {classId: string
     if (!dbUser){
         return new Response(null, {status: 401});
     }
-    const classId = params.classId;
     const hasRights = await isOwnClass(userId, classId) || dbUser.role === "admin";
     if (!hasRights){
         return new Response("Insufficient power", {status: 401});
