@@ -6,7 +6,7 @@ import { MenubarCheckboxItem } from "../ui/menubar";
 export function MenubarPinCheck({ classId }: { classId: string }) {
     const [loading, setLoading] = useState(true);
     const [remoteValue, setRemoteValue] = useState(false);
-    const cachedValue = useMemo(() => {
+    useEffect(() => {
         getPinStatus(classId).then((res) => {
             setLoading(false);
             setRemoteValue(res);

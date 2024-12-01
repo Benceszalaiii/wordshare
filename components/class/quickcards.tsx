@@ -177,7 +177,7 @@ export function QuickCards({
     }, [classId]);
     useEffect(() => {
         if (mounted) {
-            window.localStorage.setItem(
+            localStorage.setItem(
                 `quickcards-${classId}`,
                 open.toString(),
             );

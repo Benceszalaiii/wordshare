@@ -5,11 +5,9 @@ import StudentModal from "@/components/quickstart/studentmodal";
 import { SignInButton } from "@/components/shared/buttons";
 import { Button } from "@/components/ui/button";
 import { getSchools, getUserById } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
-import { authOptions } from "../api/auth/[...nextauth]/options";
 import { caveat } from "../fonts";
-
+import { auth } from "@/lib/auth";
 const styling = {
     section: "flex flex-col gap-2 items-center pt-12",
     h1: "text-2xl font-serif mb-8",
@@ -21,8 +19,8 @@ export default async function Page() {
     // return (<>
     // This page is work in progress. Make sure to check back later.
     // </>)
-    const auth = await getServerSession(authOptions);
-    const user = auth?.user;
+    const session = await auth();
+    const user = session?.user;
     if (!user?.id) {
         return (
             <section className={styling.section}>
@@ -31,7 +29,7 @@ export default async function Page() {
                     <span className={`${caveat.className}`}>WordShare</span>
                 </h1>
                 <p className={styling.active}>1. Authenticate using Google.</p>
-                <SignInButton session={auth} />
+                <SignInButton session={session} />
             </section>
         );
     }

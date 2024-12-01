@@ -34,7 +34,7 @@ const styles = {
     action: "text-center w-full",
 };
 
-const TeacherActions = ({ currentClass }: { currentClass: Class}) => {
+const TeacherActions = ({ currentClass }: { currentClass: Class }) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -67,7 +67,7 @@ const TeacherActions = ({ currentClass }: { currentClass: Class}) => {
 
 const pinFallback = <>Loading state...</>;
 
-const StudentActions = ({ currentClass }: { currentClass: Class}) => {
+const StudentActions = ({ currentClass }: { currentClass: Class }) => {
     return (
         <AlertDialog>
             <DropdownMenu>
@@ -142,7 +142,7 @@ export default function ClassLegend({
     canEdit,
     isAnon,
     session,
-    bannerUrl
+    bannerUrl,
 }: {
     currentClass: Class;
     canEdit?: boolean | null;
@@ -150,14 +150,13 @@ export default function ClassLegend({
     session?: Session;
     bannerUrl: string;
 }) {
-
     return (
         <>
             <section className="px-4">
                 <div className="flex w-full flex-col justify-start gap-2 px-4">
                     <div className="flex flex-col-reverse justify-between sm:flex-row">
                         <h1
-                            className={` w-full text-center text-3xl font-bold sm:text-start ${
+                            className={`w-full text-center text-3xl font-bold sm:text-start ${
                                 isAnon ? "text-center" : ""
                             }`}
                         >
@@ -173,15 +172,15 @@ export default function ClassLegend({
                                 currentClass.name
                             )}
                         </h1>
-                        {isAnon ? (
-                            !session && (
-                                <SignInButton
-                                    session={session || null}
-                                    className="w-full"
-                                    signInText={`Sign in to interact with ${currentClass.name}`}
-                                />
-                            )
-                        ) : null}
+                        {isAnon
+                            ? !session && (
+                                  <SignInButton
+                                      session={session || null}
+                                      className="w-full"
+                                      signInText={`Sign in to interact with ${currentClass.name}`}
+                                  />
+                              )
+                            : null}
                     </div>
                     <p className={`ml-2 text-gray-800 dark:text-gray-400`}>
                         {currentClass.description}
@@ -192,7 +191,7 @@ export default function ClassLegend({
                 </div>
                 <Image
                     about="Banner"
-                    className="my-4 w-full max-w-screen-lg aspect-[41/16] rounded-xl"
+                    className="my-4 aspect-[41/16] w-full max-w-screen-lg rounded-xl"
                     src={bannerUrl}
                     alt="Class banner"
                     priority={false}

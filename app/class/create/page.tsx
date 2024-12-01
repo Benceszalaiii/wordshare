@@ -1,13 +1,12 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { notAuthorized } from "@/components/auth";
 import CreateForm from "@/components/class/createform";
+import { auth } from "@/lib/auth";
 import { getTeacher, getUserById } from "@/lib/db";
 import { getUserElevation } from "@/lib/utils";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 
 export default async function Page() {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return notAuthorized("the class creation page");
     }

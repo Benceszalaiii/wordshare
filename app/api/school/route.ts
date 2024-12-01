@@ -1,15 +1,14 @@
+import { auth } from "@/lib/auth";
 import {
     addUserToSchool,
     createSchool,
     getSchools,
     getUserById,
 } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function GET(req: NextRequest) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return new Response("Unauthorized", { status: 401 });
     }
@@ -18,7 +17,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return new Response("Unauthorized", { status: 401 });
     }
@@ -31,7 +30,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return new Response("Unauthorized", { status: 401 });
     }

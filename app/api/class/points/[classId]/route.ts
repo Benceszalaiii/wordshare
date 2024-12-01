@@ -1,19 +1,18 @@
-import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
-import { authOptions } from "../../../auth/[...nextauth]/options";
 import { addPoints, getClassPoints, getUserById, isOwnClass } from "@/lib/db";
+import { auth } from "@/lib/auth";
 
 export async function GET(req: NextRequest, {params}: {params: {classId: string}}){
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session){
         return new Response(null, {status: 401});
     }
-    const points = await getClassPoints(params.classId, session.user.id);
+    const points = await getClassPoints(params.classId, session?.user?.id);
     return new Response(points.toString(), {status: 200});
 }
 
 export async function POST(req: NextRequest, {params}: {params: {classId: string}}){
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session){
         return new Response(null, {status: 401});
     }
@@ -25,7 +24,7 @@ export async function POST(req: NextRequest, {params}: {params: {classId: string
     if (!recipientId){
         return new Response("No userId provided", {status: 400});
     }
-    const userId = session.user.id;
+    const userId = session?.user?.id;
     const dbUser = await getUserById(userId);
     if (!dbUser){
         return new Response(null, {status: 401});

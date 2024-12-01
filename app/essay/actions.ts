@@ -1,15 +1,13 @@
 "use server";
 
+import { auth } from "@/lib/auth";
 import { dangerouslyRevalidateWordCounts, uploadEssay } from "@/lib/db";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/options";
-
 export async function uploadEssayAction(essay: {
     title: string;
     content: string;
     wordCount: number;
 }) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
     const user = session?.user;
     if (!user) {

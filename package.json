@@ -51,6 +51,7 @@
         "@types/react-highlight-words": "^0.20.0",
         "@upstash/ratelimit": "^2.0.4",
         "@vercel/analytics": "^0.1.11",
+        "@vercel/functions": "^1.5.1",
         "@vercel/og": "^0.0.26",
         "@vercel/speed-insights": "^1.0.12",
         "aws-sdk": "^2.1691.0",

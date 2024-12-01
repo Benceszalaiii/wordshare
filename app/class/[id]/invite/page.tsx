@@ -1,4 +1,3 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { SignInButton } from "@/components/shared/buttons";
 import {
     getAllStudents,
@@ -7,9 +6,9 @@ import {
     isOwnClass,
 } from "@/lib/db";
 import { User } from "@prisma/client";
-import { getServerSession } from "next-auth";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
+import { auth } from "@/lib/auth";
 
 export interface UserWithClassId extends User {
     classId: string;
@@ -34,7 +33,7 @@ async function getData(classId: string): Promise<UserWithClassId[]> {
 }
 
 export default async function Page({ params }: { params: { id: string } }) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return (
             <div className="flex flex-col items-center justify-center gap-4">

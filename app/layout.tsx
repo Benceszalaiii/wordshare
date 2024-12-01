@@ -9,6 +9,7 @@ import { ThemeProvider } from "next-themes";
 import { caveat, inter, sfPro } from "./fonts";
 import "./globals.css";
 import { Suspense } from "react";
+import Nav from "@/components/layout/nav";
 export const metadata: Metadata = {
     metadataBase: new URL("http://localhost:3000"),
     title: {
@@ -93,9 +94,9 @@ export default async function RootLayout({
                 <ThemeProvider attribute="class" defaultTheme="dark">
                     <CommandProvider />
                     <main className="z-10 flex min-h-screen w-full flex-col">
-                        {/* <Nav />
-                        {children} */}
-                        <Suspense
+                        <Nav />
+                        {children}
+                        {/* <Suspense
                             fallback={
                                 <div className="fixed left-0 top-0 -z-10 m-0 h-full w-full bg-light object-contain p-0 dark:bg-dark" />
                             }
@@ -109,7 +110,7 @@ export default async function RootLayout({
                             We are undergoing maintenance right now. <br />{" "}
                             Please be patient as we are striving to find a
                             solution.
-                        </h1>
+                        </h1> */}
                     </main>
                     <Footer />
                     <Toaster visibleToasts={2} />

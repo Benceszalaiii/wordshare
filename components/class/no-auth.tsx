@@ -1,8 +1,6 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/lib/auth";
 import { Class } from "@prisma/client";
-import { getServerSession } from "next-auth";
 import ClassLegend from "./legend";
-
 export default async function NoAuthClassPage({
     currentClass,
     bannerUrl,
@@ -10,7 +8,7 @@ export default async function NoAuthClassPage({
     currentClass: Class;
     bannerUrl: string;
 }) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     return (
         <>
             <ClassLegend

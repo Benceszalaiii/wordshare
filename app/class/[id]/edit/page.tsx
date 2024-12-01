@@ -1,8 +1,7 @@
 "use server";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { CropperComponent } from "@/components/image/image-selector";
+import { auth } from "@/lib/auth";
 import { getClassById } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { BannerCropperComponent } from "../../../../components/image/banner-selector";
 
@@ -11,7 +10,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     if (!currentClass) {
         return notFound();
     }
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     const user = session?.user;
     const isOwneer = user?.id === currentClass?.teacherUserId;
     if (!session) {

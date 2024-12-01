@@ -1,9 +1,7 @@
-import { getServerSession } from "next-auth";
-import WipPage from "../../components/wip";
-import { authOptions } from "../api/auth/[...nextauth]/options";
-
+import { auth } from "@/lib/auth";
+import { default as WipPage } from "../../components/wip";
 export default async function Page() {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     return (
         <>
             <WipPage>

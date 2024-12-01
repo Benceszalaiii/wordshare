@@ -16,7 +16,7 @@ export async function pinClass(classId: string) {
     if (!session) {
         return false;
     }
-    const dbUser = await getUserById(session?.user?.id);
+    const dbUser = await getUserById(session?.user.id);
     if (!dbUser) {
         return false;
     }

@@ -1,5 +1,6 @@
 "use server";
 
+import { auth } from "@/lib/auth";
 import {
     getEssaysByUserId,
     getSubmissionsForStudent,
@@ -7,9 +8,6 @@ import {
     getUserByIdWithClasses,
 } from "@/lib/db";
 import { Class, Task } from "@prisma/client";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/options";
-
 type StatusMethods = "done" | "pending" | "overdue" | "late";
 type TaskWithProps = Task & { status: StatusMethods; className: string };
 
@@ -63,7 +61,7 @@ export async function getFilteredTasks(userId: string) {
 }
 
 export async function getEssaysForUser() {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return [];
     }

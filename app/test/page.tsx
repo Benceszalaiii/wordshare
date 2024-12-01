@@ -5,14 +5,13 @@ import { Label } from "@/components/ui/label";
 import ConnectionGame from "@/components/wordplay/connectiongame";
 import { getEssaysForUser } from "../tasks/actions";
 import UserHoverCard from "@/components/user/user-hover";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/options";
 import { getUserById } from "@/lib/db";
 import UserBanner from "@/components/user/banner";
+import { auth } from "@/lib/auth";
 
 export default async function Page() {
     // const essays = await getEssaysForUser();
-    const user = await getServerSession(authOptions);
+    const user = await auth();
     const dbUser = await getUserById(user?.user.id);
     return (
         <section className="flex flex-col items-center justify-center gap-4 p-4 space-y-4">

@@ -539,7 +539,10 @@ export async function isOwnClass(userId: string | undefined, classId: string) {
     return false;
 }
 
-export async function getClassPoints(classId: string, userId: string) {
+export async function getClassPoints(classId: string, userId: string | undefined) {
+    if (!userId) {
+        return 0;
+    }
     const points = await prisma.points.findFirst({
         where: { userId: userId, classId: classId },
     });

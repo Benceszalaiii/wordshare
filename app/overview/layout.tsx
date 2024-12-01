@@ -1,11 +1,8 @@
-import { getServerSession } from "next-auth";
-
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { auth } from "@/lib/auth";
 import React from "react";
 import { SignInButton } from "../../components/shared/buttons";
-import { authOptions } from "../api/auth/[...nextauth]/options";
-
 export const metadata = {
     title: "Overview",
 };
@@ -14,7 +11,7 @@ export default async function Layout({
 }: {
     children: React.ReactNode;
 }) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return (
             <div className="z-10 flex flex-col items-center justify-center gap-5">

@@ -1,15 +1,14 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/lib/auth";
 import { sendRequest } from "@/lib/aws";
 import { getClassById, getUserById } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 
 export async function POST(
     req: NextRequest,
     { params }: { params: { classId: string } },
 ) {
-    const session = await getServerSession(authOptions);
-    const dbUser = await getUserById(session?.user.id);
+    const session = await auth();
+    const dbUser = await getUserById(session?.user?.id);
     const currentClass = await getClassById(params.classId);
     const teacher = await getUserById(currentClass?.teacherUserId);
     if (!dbUser) {

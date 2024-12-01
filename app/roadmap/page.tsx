@@ -1,23 +1,22 @@
 "use server";
 import { AddRoadMap2 } from "@/components/roadmap/roadmapsubmit";
+import { auth } from "@/lib/auth";
 import { getRoadmap, getUserById } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import {
     AdminRoadmapBlock,
     RoadmapBlock,
 } from "../../components/roadmap/roadmap";
-import { authOptions } from "../api/auth/[...nextauth]/options";
 
 export default async function Page() {
     const roadmap = await getRoadmap();
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     const user = session?.user;
     if (user) {
         const dbUser = await getUserById(user.id);
         if (dbUser && dbUser.role === "admin") {
             return (
                 <div className="flex flex-col items-start lg:mx-64">
-                    <div className=" flex flex-col items-start  gap-4 px-4 py-12 sm:px-6 lg:px-8">
+                    <div className="flex flex-col items-start gap-4 px-4 py-12 sm:px-6 lg:px-8">
                         <h2 className="mb-8 ml-4 text-3xl font-bold text-neutral-900 dark:text-neutral-200">
                             Roadmap
                         </h2>
@@ -46,7 +45,7 @@ export default async function Page() {
     }
     return (
         <div className="flex flex-col items-start md:mx-96">
-            <div className=" flex flex-col items-start gap-4 px-4 py-12 sm:px-6 lg:px-8">
+            <div className="flex flex-col items-start gap-4 px-4 py-12 sm:px-6 lg:px-8">
                 <h2 className="mb-8 ml-4 text-3xl font-bold text-neutral-900 dark:text-neutral-200">
                     Roadmap
                 </h2>
