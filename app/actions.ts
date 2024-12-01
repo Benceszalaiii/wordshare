@@ -7,8 +7,9 @@ export async function dismissBanner(bannerId: string) {
     if (bannerId === "69420") {
         return;
     }
-    cookies().set("bannerId", bannerId);
-    cookies().set("bannerDismissed", "true");
+    const cookieStore = await cookies();
+    cookieStore.set("bannerId", bannerId);
+    cookieStore.set("bannerDismissed", "true");
 }
 
 export async function fetchBanner() {
@@ -16,8 +17,9 @@ export async function fetchBanner() {
 }
 
 export async function isBannerDismissed() {
-    const dismissedBannerId = cookies().get("bannerId");
-    const state = cookies().get("bannerDismissed");
+    const cookieStore = await cookies();
+    const dismissedBannerId = cookieStore.get("bannerId");
+    const state = cookieStore.get("bannerDismissed");
     const banner = await getBanner();
     if (banner.id.toString() === dismissedBannerId?.value && state?.value === "true") {
         return true;

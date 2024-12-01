@@ -1,14 +1,15 @@
 import { CommandProvider } from "@/components/layout/commandprovider";
 import Footer from "@/components/layout/footer";
-import Nav from "@/components/layout/nav";
 import { Toaster } from "@/components/toaster";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import cx from "classnames";
 import { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
-import { inter, sfPro } from "./fonts";
+import { caveat, inter, sfPro } from "./fonts";
 import "./globals.css";
+import { Suspense } from "react";
+import Nav from "@/components/layout/nav";
 export const metadata: Metadata = {
     metadataBase: new URL("http://localhost:3000"),
     title: {
@@ -54,7 +55,7 @@ export default async function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="scroll-smooth " suppressHydrationWarning>
+        <html lang="en" className={cx(sfPro.variable, inter.variable, caveat.variable, "scroll-smooth")} suppressHydrationWarning>
             <head>
                 <link
                     rel="apple-touch-icon"
@@ -86,7 +87,9 @@ export default async function RootLayout({
                     content="width=device-width, initial-scale=1.0"
                 />
             </head>
-            <body className={cx(sfPro.variable, inter.variable)}>
+            <body
+                id="page"
+            >
                 <ThemeProvider attribute="class" defaultTheme="dark">
                     <CommandProvider />
                     <main className="z-10 flex min-h-screen w-full flex-col">

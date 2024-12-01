@@ -1,13 +1,13 @@
 "use server"
 
-import { getServerSession } from "next-auth"
-import { authOptions } from "../api/auth/[...nextauth]/options"
+
+import { auth } from "@/lib/auth";
 import { changePrivacyById } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 export async function changePrivacy(userId: string, updatedState: boolean){
-    const session = await getServerSession(authOptions);
-    if (session?.user.id !== userId){
+    const session = await auth();
+    if (session?.user?.id !== userId){
         return;
     }
     const res = await changePrivacyById(session.user.id, updatedState);

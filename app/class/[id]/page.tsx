@@ -1,10 +1,11 @@
 "use server";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import ClassLegend from "@/components/class/legend";
 import { TimelineSkeleton } from "@/components/class/loading-components";
+import ClassMenubar from "@/components/class/menubar";
 import NoAuthClassPage from "@/components/class/no-auth";
 import { QuickCards } from "@/components/class/quickcards";
 import ClassTimeline from "@/components/class/timeline";
+import { auth } from "@/lib/auth";
 import {
     getClassById,
     getUserById,
@@ -12,15 +13,18 @@ import {
     isStudentofClass,
 } from "@/lib/db";
 import { langParse } from "@/lib/utils";
-import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getBannerUrlWithFallback } from "../actions";
-import ClassMenubar from "@/components/class/menubar";
 
-export default async function Page({ params }: { params: { id: string } }) {
-    const session = await getServerSession(authOptions);
-    const currentClass = await getClassById(params.id);
+const dynamic = 'force-dynamic'
+
+type Params = Promise<{ id: string }>;
+
+export default async function Page({ params }: { params: Params }) {
+    const { id } = await params;
+    const session = await auth();
+    const currentClass = await getClassById(id);
     if (!currentClass) {
         return notFound();
     }
@@ -53,7 +57,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     return (
         <section className="flex flex-col items-center">
             <div className="sticky top-20 z-30">
-            <ClassMenubar currentClass={currentClass} isTeacher={canEdit} />
+                <ClassMenubar currentClass={currentClass} isTeacher={canEdit} />
             </div>
             <ClassLegend
                 bannerUrl={bannerUrl}
@@ -72,8 +76,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     );
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-    const currentClass = await getClassById(params.id);
+export async function generateMetadata({ params }: { params: Params }) {
+    const { id } = await params;
+    const currentClass = await getClassById(id);
     if (!currentClass) {
         return {
             title: "Class not found",
@@ -83,7 +88,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
                 title: "Join a class on WordShare!",
                 description:
                     "Learn more about languages and prepare for your exam with WordShare",
-                url: `https://www.wordshare.tech/class/${params.id}`,
+                url: `https://www.wordshare.tech/class/${id}`,
             },
         };
     }
@@ -104,7 +109,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
                 `Join ${currentClass?.name} to learn more about ${langParse(
                     currentClass?.language || "en",
                 )}`,
-            url: `https://www.wordshare.tech/class/${params.id}`,
+            url: `https://www.wordshare.tech/class/${id}`,
             images: `https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/${currentClass.id}/banner`,
         },
     };

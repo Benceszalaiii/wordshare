@@ -1,12 +1,11 @@
 "use server";
 
 import { notAuthorized } from "@/components/auth";
-import { getServerSession } from "next-auth";
+import { auth } from "@/lib/auth";
 import StudentTaskTable from "../../components/task/studentoverview/component";
-import { authOptions } from "../api/auth/[...nextauth]/options";
 import { getFilteredTasks } from "./actions";
 export default async function Page() {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return notAuthorized("Tasks");
     }

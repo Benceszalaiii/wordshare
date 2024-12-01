@@ -1,8 +1,8 @@
 "use server";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { Class, Comment, User } from "@prisma/client";
-import { Session, getServerSession } from "next-auth";
+import { Session } from "next-auth";
 import "server-only";
+import { auth } from "./auth";
 import { sendInviteMail } from "./aws";
 import prisma from "./prisma";
 import { countWords } from "./utils";
@@ -12,17 +12,26 @@ interface Essay {
     wordCount: number;
 }
 
-export async function dangerouslyRevalidateWordCounts(){
-    const essays = await prisma.essay.findMany({where: {wordCount: 0}});
-    for (const essay of essays){
+export async function dangerouslyRevalidateWordCounts() {
+    const essays = await prisma.essay.findMany({ where: { wordCount: 0 } });
+    for (const essay of essays) {
         const wordCount = countWords(essay.content);
-        await prisma.essay.update({where: {id: essay.id}, data: {wordCount: wordCount}});
+        await prisma.essay.update({
+            where: { id: essay.id },
+            data: { wordCount: wordCount },
+        });
     }
 }
 
-
 export async function uploadEssay(essay: Essay, userId: string) {
-    const created = await prisma.essay.create({data: {title: essay.title, content: essay.content, userId: userId, wordCount: essay.wordCount}});
+    const created = await prisma.essay.create({
+        data: {
+            title: essay.title,
+            content: essay.content,
+            userId: userId,
+            wordCount: essay.wordCount,
+        },
+    });
     if (!created) {
         return new Response(null, {
             status: 500,
@@ -41,8 +50,8 @@ export async function getEssaysByUserId(userId: string) {
 }
 
 export async function getEssays() {
-    const auth = await getServerSession(authOptions);
-    const user = auth?.user;
+    const session = await auth();
+    const user = session?.user;
     if (!user) {
         return new Response(null, {
             status: 401,
@@ -119,14 +128,14 @@ export async function isTeacher(id: string) {
 }
 
 export async function deleteEssayByEssayId(essayId: string) {
-    const auth = await getServerSession(authOptions);
-    if (!auth) {
+    const session = await auth();
+    if (!session) {
         return new Response(null, {
             status: 401,
             statusText: "Please sign in.",
         });
     }
-    const user = auth.user;
+    const user = session.user;
     if (!user) {
         return new Response(null, {
             status: 401,
@@ -172,24 +181,9 @@ export async function deleteEssayByEssayId(essayId: string) {
     return new Response(null, { status: 200, statusText: "Essay deleted." });
 }
 
-export async function getUserByEmail(email: string) {
-    const user = await prisma.user.findUnique({ where: { email: email } });
-    if (!user) {
-        return new Response(null, {
-            status: 404,
-            statusText: "User not found.",
-        });
-    }
-    return new Response(JSON.stringify(user), {
-        status: 200,
-        statusText: "User found",
-        headers: { "Content-Type": "application/json" },
-    });
-}
-
 export async function isOwnEssay(essayId: string) {
-    const auth = await getServerSession(authOptions);
-    const user = auth?.user;
+    const session = await auth();
+    const user = session?.user;
     if (!user) {
         return new Response(null, {
             status: 401,
@@ -260,6 +254,12 @@ export async function uploadComment(
         return new Response(null, {
             status: 400,
             statusText: "No content found.",
+        });
+    }
+    if (!author.user?.id) {
+        return new Response(null, {
+            status: 401,
+            statusText: "Please sign in.",
         });
     }
     const created = await prisma.comment.create({
@@ -389,7 +389,7 @@ interface ClassObject {
 }
 
 export async function createClass(datajson: ClassObject) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return new Response("Please sign in", {
             status: 401,
@@ -457,6 +457,9 @@ export async function getClassByStudentSession(session: Session | null) {
     if (!session) {
         return null;
     }
+    if (!session.user) {
+        return null;
+    }
     const user = session.user;
     const classes = await prisma.class.findMany({
         where: { students: { some: { id: user.id } } },
@@ -483,7 +486,10 @@ export async function getClassById(id: string | null) {
 }
 
 export async function isTeacherBySession(session: Session | null) {
-    if (!session || session?.user) {
+    if (!session) {
+        return false;
+    }
+    if (!session.user) {
         return false;
     }
     const user = await prisma.user.findUnique({
@@ -519,7 +525,10 @@ export async function getAllStudents() {
     return students;
 }
 
-export async function isOwnClass(userId: string, classId: string) {
+export async function isOwnClass(userId: string | undefined, classId: string) {
+    if (!userId) {
+        return false;
+    }
     const c = await prisma.class.findUnique({ where: { id: classId } });
     if (!c) {
         return false;
@@ -530,7 +539,10 @@ export async function isOwnClass(userId: string, classId: string) {
     return false;
 }
 
-export async function getClassPoints(classId: string, userId: string) {
+export async function getClassPoints(classId: string, userId: string | undefined) {
+    if (!userId) {
+        return 0;
+    }
     const points = await prisma.points.findFirst({
         where: { userId: userId, classId: classId },
     });
@@ -545,8 +557,14 @@ export async function getClassPoints(classId: string, userId: string) {
 export async function inviteUser(
     classId: string,
     userId: string,
-    inviterId: string,
+    inviterId: string | undefined,
 ) {
+    if (!inviterId) {
+        return new Response(null, {
+            status: 400,
+            statusText: "Inviter user not found.",
+        });
+    }
     const exists = await prisma.invite.findFirst({
         where: { userId: userId, classId: classId },
     });
@@ -647,7 +665,13 @@ export async function getClassStudentsByClassId(classId: string) {
     return students;
 }
 
-export async function leaveClass(classId: string, userId: string) {
+export async function leaveClass(classId: string, userId: string | undefined) {
+    if (!userId) {
+        return new Response(null, {
+            status: 500,
+            statusText: "Error leaving class. No user found.",
+        });
+    }
     const updated = await prisma.class.update({
         where: { id: classId },
         data: { students: { disconnect: { id: userId } } },
@@ -745,7 +769,10 @@ export async function unpinClassFromSidebar(classId: string, userId: string) {
     return new Response(null, { status: 200, statusText: "Class unpinned." });
 }
 
-export async function isPinned(classId: string, userId: string) {
+export async function isPinned(classId: string, userId: string | undefined) {
+    if (!userId){
+        return false;
+    }
     const pins = await prisma.user.findUnique({
         where: { id: userId },
         select: { pinnedClassIds: true },

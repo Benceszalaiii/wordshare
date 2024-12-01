@@ -1,15 +1,14 @@
+import { auth } from "@/lib/auth";
 import { sendTemplate } from "@/lib/aws";
 import { getUserById } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]/options";
 
 export async function POST(req: NextRequest) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return new Response("No session found", { status: 401 });
     }
-    const dbUser = await getUserById(session.user.id);
+    const dbUser = await getUserById(session?.user?.id);
     if (!dbUser) {
         return new Response("User not found in database", { status: 401 });
     }

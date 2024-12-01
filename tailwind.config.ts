@@ -105,6 +105,7 @@ export default {
                     900: "#a27b4f",
                     950: "#5d4327",
                 },
+                cursor: "var(--cursor)",
                 dark: "#090909",
                 light: "#e4e8d5",
                 background: "hsl(var(--background))",

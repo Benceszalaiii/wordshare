@@ -1,20 +1,22 @@
 import { AltNav } from "@/components/alt-nav";
+import { auth } from "@/lib/auth";
 import { isAdmin } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { authOptions } from "../api/auth/[...nextauth]/options";
 
 export default async function Layout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return notFound();
     }
     const user = session.user;
+    if (!user?.id) {
+        return notFound();
+    }
     const hasRights = await isAdmin(user.id);
     if (!hasRights) {
         return notFound();

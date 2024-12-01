@@ -3,23 +3,22 @@ import { Header } from "@/components/blank";
 import StudentClassList from "@/components/class/student";
 import TeacherClassList from "@/components/class/teacher";
 import { Button } from "@/components/ui/button";
+import { auth } from "@/lib/auth";
 import {
     getClassByStudentSession,
     getClassesByTeacherUser,
     getUserById,
 } from "@/lib/db";
 import { getUserElevation } from "@/lib/utils";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
-import { authOptions } from "../api/auth/[...nextauth]/options";
 
 export const metadata = {
     title: "Classes",
 };
 
 export default async function Page() {
-    const auth = await getServerSession(authOptions);
-    const user = auth?.user;
+    const session = await auth();
+    const user = session?.user;
     if (!user?.id) {
         return notAuthorized("Classes");
     }
@@ -45,7 +44,7 @@ export default async function Page() {
         );
     }
     if (elevation === 1) {
-        const studentClasses = await getClassByStudentSession(auth);
+        const studentClasses = await getClassByStudentSession(session);
         return (
             <section className="flex flex-col gap-4">
                 <Header className="flex flex-row flex-wrap items-center justify-start md:flex-nowrap">
@@ -62,7 +61,7 @@ export default async function Page() {
         return (
             <section className="flex flex-col gap-4">
                 <Header className="flex w-full max-w-full flex-row flex-wrap items-center justify-between px-4 md:flex-nowrap md:px-24">
-                    <h1 className=" text-2xl font-bold">Classes</h1>
+                    <h1 className="text-2xl font-bold">Classes</h1>
                     <Link
                         href={`/class/create`}
                         className="pr-4 hover:text-gray-700 hover:underline hover:dark:text-gray-300"

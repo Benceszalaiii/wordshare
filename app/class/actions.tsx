@@ -1,8 +1,7 @@
 "use server";
 
+import { auth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/options";
 import { revalidatePath } from "next/cache";
 
 export async function getBannerWithFallback(
@@ -72,7 +71,7 @@ export async function uploadImage(
     classId: string,
     type: string,
 ) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return { message: "Unauthorized", status: 401 };
     }

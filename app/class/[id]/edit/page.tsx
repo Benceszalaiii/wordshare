@@ -1,17 +1,19 @@
 "use server";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { CropperComponent } from "@/components/image/image-selector";
+import { auth } from "@/lib/auth";
 import { getClassById } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { BannerCropperComponent } from "../../../../components/image/banner-selector";
 
-export default async function Page({ params }: { params: { id: string } }) {
-    const currentClass = await getClassById(params.id);
+type Params = Promise<{id: string}>;
+
+export default async function Page({ params }: { params: Params }) {
+    const { id } = await params;
+    const currentClass = await getClassById(id);
     if (!currentClass) {
         return notFound();
     }
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     const user = session?.user;
     const isOwneer = user?.id === currentClass?.teacherUserId;
     if (!session) {
@@ -29,7 +31,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                     about="Icon"
                     className="flex flex-col items-center justify-center gap-4"
                 >
-                    <CropperComponent classId={params.id} />
+                    <CropperComponent classId={id} />
                     <h2 className="text-lg font-semibold">Change icon</h2>
                 </div>
                 <div

@@ -1,20 +1,22 @@
 "use server";
 import { getEssayById, getUserById } from "@/lib/db";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { Header } from "@/components/blank";
 import CommentWrapper from "@/components/commentwrapper";
 import { ScoreDrawerWrapper } from "@/components/essay/score";
 import { Button } from "@/components/ui/button";
+import { auth } from "@/lib/auth";
 import { countWords } from "@/lib/utils";
-import { getServerSession } from "next-auth";
 
-export default async function Page({ params }: { params: { slug: string } }) {
-    const essay = await getEssayById(params.slug);
+type Params = Promise<{essayId: string}>;
+
+export default async function Page({ params }: { params: Params }) {
+    const { essayId } = await params;
+    const essay = await getEssayById(essayId);
     if (!essay) {
         return <p>Essay not found</p>;
     }
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     const dbUser = await getUserById(session?.user.id);
     const author = await getUserById(essay.userId);
     if (!author) {
@@ -39,7 +41,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     const wordcount = countWords(essay.content);
     return (
         <>
-            <div className=" flex w-full flex-col gap-5 px-4 dark:text-white md:px-32">
+            <div className="flex w-full flex-col gap-5 px-4 dark:text-white md:px-32">
                 <div className="space-between flex w-full flex-row gap-12">
                     <div className="flex flex-row items-start justify-start">
                         <Header className="space-y-2 rounded-xl p-3">
@@ -90,7 +92,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                     {essay.content}
                 </p>
             </div>
-            <CommentWrapper essayId={params.slug} />
+            <CommentWrapper essayId={essayId} />
         </>
     );
 }

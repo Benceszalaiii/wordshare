@@ -1,10 +1,9 @@
+import { auth } from "@/lib/auth";
 import { deleteTemplate, uploadTemplate } from "@/lib/aws";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function GET() {
-    const session = await getServerSession(authOptions);
-    if (session?.user.email !== "szbence2007@gmail.com") {
+    const session = await auth();
+    if (session?.user?.email !== "szbence2007@gmail.com") {
         return new Response("Unauthorized", { status: 401 });
     }
     const res2 = await deleteTemplate();

@@ -1,4 +1,3 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { SignInButton } from "@/components/shared/buttons";
 import {
     getAllStudents,
@@ -7,9 +6,9 @@ import {
     isOwnClass,
 } from "@/lib/db";
 import { User } from "@prisma/client";
-import { getServerSession } from "next-auth";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
+import { auth } from "@/lib/auth";
 
 export interface UserWithClassId extends User {
     classId: string;
@@ -33,8 +32,12 @@ async function getData(classId: string): Promise<UserWithClassId[]> {
     return students;
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
-    const session = await getServerSession(authOptions);
+type Params = Promise<{ id: string }>;
+
+
+export default async function Page({ params }: { params: Params }) {
+    const { id } = await params;
+    const session = await auth();
     if (!session) {
         return (
             <div className="flex flex-col items-center justify-center gap-4">
@@ -53,8 +56,8 @@ export default async function Page({ params }: { params: { id: string } }) {
         );
     }
     const hasAccess =
-        (await isOwnClass(dbUser.id, params.id)) || dbUser.role === "admin";
-    const currentClass = await getClassById(params.id);
+        (await isOwnClass(dbUser.id, id)) || dbUser.role === "admin";
+    const currentClass = await getClassById(id);
     if (!currentClass) {
         return (
             <div className="flex flex-col items-center justify-center gap-4">
@@ -69,7 +72,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
         );
     }
-    const data = await getData(params.id);
+    const data = await getData(id);
     return (
         <section className="flex w-full flex-col items-center justify-center py-8">
             <h1 className="text-xl font-semibold">

@@ -1,6 +1,6 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { SignInButton } from "@/components/shared/buttons";
 import { Button } from "@/components/ui/button";
+import { auth } from "@/lib/auth";
 import {
     checkForPoints,
     getClassById,
@@ -10,11 +10,9 @@ import {
 } from "@/lib/db";
 import { Points, User } from "@prisma/client";
 import { Metadata } from "next";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-
 export interface UserWithClassId extends User {
     classId: string;
     points: number;
@@ -36,8 +34,9 @@ async function getData(
     await checkForPoints(classStudents, classId);
     return students;
 }
-export default async function Page({ params }: { params: { id: string } }) {
-    const session = await getServerSession(authOptions);
+export default async function Page({ params }: { params: Params }) {
+    const session = await auth();
+    const { id } = await params;
     if (!session) {
         return (
             <div className="flex flex-col items-center justify-center gap-4">
@@ -56,8 +55,8 @@ export default async function Page({ params }: { params: { id: string } }) {
         );
     }
     const hasAccess =
-        (await isOwnClass(dbUser.id, params.id)) || dbUser.role === "admin";
-    const currentClass = await getClassStudentsByClassId(params.id);
+        (await isOwnClass(dbUser.id, id)) || dbUser.role === "admin";
+    const currentClass = await getClassStudentsByClassId(id);
     if (!currentClass) {
         return (
             <div className="flex flex-col items-center justify-center gap-4">
@@ -73,7 +72,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         );
     }
     const data: UserWithClassId[] = await getData(
-        params.id,
+        id,
         currentClass.students,
         currentClass.Points,
     );
@@ -103,12 +102,15 @@ export default async function Page({ params }: { params: { id: string } }) {
     );
 }
 
+type Params = Promise<{ id: string }>;
+
 export async function generateMetadata({
     params,
 }: {
-    params: { id: string };
+    params: Params
 }): Promise<Metadata> {
-    const currentClass = await getClassById(params.id);
+    const { id } = await params;
+    const currentClass = await getClassById(id);
     const teacher = await getUserById(currentClass?.teacherUserId);
     if (!currentClass || !teacher) {
         return {
@@ -119,7 +121,7 @@ export async function generateMetadata({
                 title: "Join a class on WordShare!",
                 description:
                     "Learn more about languages and prepare for your exam with WordShare",
-                url: `https://www.wordshare.tech/class/${params.id}`,
+                url: `https://www.wordshare.tech/class/${id}`,
             },
         };
     }

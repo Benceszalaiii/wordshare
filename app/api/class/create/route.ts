@@ -1,21 +1,20 @@
 import { createClass, getTeacher, getUserById } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]/options";
+import { auth } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
     const classLang = req.headers.get("class-lang");
     const className = req.headers.get("class-name");
     const classDesc = req.headers.get("class-desc");
     // return new Response("Sorry, we dont accept any more classes, baddadan", { status: 403, statusText: "Sorry, we dont accept any more classes" });
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return new Response("You need to be signed in to access this page.", {
             status: 401,
             statusText: "Unauthorized",
         });
     }
-    if (!session.user.id) {
+    if (!session?.user?.id) {
         return new Response("You need to be signed in to access this page.", {
             status: 401,
             statusText: "Unauthorized",

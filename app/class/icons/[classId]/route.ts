@@ -1,12 +1,14 @@
 import { supabase } from "@/lib/supabase";
 import { NextRequest } from "next/server";
 
+type Params = Promise<{ classId: string }>;
+
 export async function GET(
     req: NextRequest,
-    { params }: { params: { classId: string } },
+    { params }: { params: Params },
 ) {
     // GET FILE
-    const classId = params.classId;
+    const { classId } = await params;
     if (!classId) {
         const placeholder = await fetch(
             "https://placehold.co/600x400/png?text=C",
@@ -27,10 +29,10 @@ export async function GET(
 
 export async function POST(
     req: NextRequest,
-    { params }: { params: { classId: string } },
+    { params }: { params: Params },
 ) {
     const icon = await req.blob();
-    const classId = params.classId;
+    const { classId } = await params;
     if (!icon) {
         return new Response("No file provided", { status: 418 });
     }

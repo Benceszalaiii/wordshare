@@ -10,7 +10,6 @@ import {
     Shapes,
 } from "lucide-react";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import {
     Sidebar,
     SidebarContent,
@@ -24,13 +23,13 @@ import {
     SidebarMenuItem,
     SidebarSeparator,
 } from "@/components/ui/sidebar";
+import { auth } from "@/lib/auth";
 import { getClassesByIds, getInvites, getUserById } from "@/lib/db";
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@radix-ui/react-collapsible";
-import { getServerSession } from "next-auth";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 import { ClassContextWrapper } from "./class/class-context";
 import { ClassItem } from "./class/sidebaritem";
@@ -151,7 +150,7 @@ const adminNavigation: SideBarItem[] = [
     },
 ];
 export async function AppSidebar() {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
     const user = session?.user;
     const invites = await getInvites(user?.id);

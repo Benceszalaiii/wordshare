@@ -1,15 +1,14 @@
 "use server";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { getAllPointsUser, getUserById } from "@/lib/db";
-import { getServerSession } from "next-auth/next";
+
 import { Bat, Tree } from "../shared/icons";
 import Navbar from "./navbar";
 
 import { fetchBanner } from "@/app/actions";
+import { auth } from "@/lib/auth";
 
 export default async function Nav() {
-    const session = await getServerSession(authOptions);
     const getIcon = () => {
         switch (process.env.EVENT) {
             case "HALLOWEEN":
@@ -24,7 +23,7 @@ export default async function Nav() {
                 return null;
         }
     };
-
+    const session = await auth();
     const getBannerWithFallback = async () => {
         try {
             const res = await fetchBanner();
@@ -40,6 +39,17 @@ export default async function Nav() {
     const res = await getBannerWithFallback();
 
     if (!session) {
+        return (
+            <Navbar
+                bannerProps={res}
+                EventIcon={getIcon()}
+                points={null}
+                session={session}
+                role={null}
+            />
+        );
+    }
+    if (!session.user || !session.user.id) {
         return (
             <Navbar
                 bannerProps={res}

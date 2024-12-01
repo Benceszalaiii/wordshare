@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/lib/auth";
 import {
     getAllRespondents,
     getCommentsByEssayId,
@@ -6,13 +6,12 @@ import {
 } from "@/lib/db";
 import { User } from "@prisma/client";
 import { SendIcon } from "lucide-react";
-import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 import CommentSection from "./comments";
 import { Button } from "./ui/button";
 
 export default async function CommentWrapper({ essayId }: { essayId: string }) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     const user = session?.user;
     const comments = await getCommentsByEssayId(essayId);
     const respondents: User[] = await getAllRespondents(comments);

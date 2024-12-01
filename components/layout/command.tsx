@@ -31,6 +31,7 @@ export function CommandBox({
 }) {
     const { setTheme } = useTheme();
     const router = useRouter();
+    const [open, setOpen] = useState(false);
     const redirect = useCallback(
         (path: string) => {
             router.push("/" + path);
@@ -38,7 +39,6 @@ export function CommandBox({
         },
         [router],
     );
-    const [open, setOpen] = useState(false);
     useEffect(() => {
         const down = (e: KeyboardEvent) => {
             if (e.metaKey || e.ctrlKey) {

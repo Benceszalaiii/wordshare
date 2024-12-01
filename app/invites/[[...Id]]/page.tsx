@@ -1,30 +1,31 @@
 "use server";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { notAuthorized } from "@/components/auth";
 import { AlertWrongAccount } from "@/components/invites/alert";
 import InviteSection from "@/components/invites/section";
+import { auth } from "@/lib/auth";
 import { getInvites, inviteExists } from "@/lib/db";
-import { getServerSession } from "next-auth";
-
 const metadata = {
     title: "Invites",
     description: "View and manage your invitations",
     lastModified: new Date(),
 };
 
+type Params = Promise<{ Id: string | null }>;
+
 export default async function Page({
     params,
 }: {
-    params: { Id: string | null };
+    params: Params;
 }) {
-    const session = await getServerSession(authOptions);
+    const { Id} = await params;
+    const session = await auth();
     if (!session) {
         return notAuthorized("invites");
     }
     const invites = await getInvites(session.user.id);
 
-    const inviteId = params?.Id ? params.Id[0] : null;
+    const inviteId = Id ? Id[0] : null;
 
     if (!inviteId) {
         return (
@@ -67,7 +68,7 @@ export default async function Page({
 }
 
 export async function generateMetadata() {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return metadata;
     }

@@ -1,6 +1,6 @@
 "use server";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/lib/auth";
 import {
     getTimeline,
     getTimelineLengths,
@@ -9,15 +9,14 @@ import {
     pinClassToSidebar,
     unpinClassFromSidebar,
 } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 
 export async function pinClass(classId: string) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return false;
     }
-    const dbUser = await getUserById(session.user.id);
+    const dbUser = await getUserById(session?.user.id);
     if (!dbUser) {
         return false;
     }
@@ -27,11 +26,11 @@ export async function pinClass(classId: string) {
 }
 
 export async function unpinClass(classId: string) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return false;
     }
-    const dbUser = await getUserById(session.user.id);
+    const dbUser = await getUserById(session?.user?.id);
     if (!dbUser) {
         return false;
     }
@@ -41,11 +40,11 @@ export async function unpinClass(classId: string) {
 }
 
 export async function getPinStatus(classId: string) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return false;
     }
-    const res = await isPinned(classId, session.user.id);
+    const res = await isPinned(classId, session?.user?.id);
     return res;
 }
 
@@ -54,7 +53,7 @@ export async function getTimelineWithOffset(
     offset: number,
     filter?: "task" | "announcement",
 ) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return [];
     }

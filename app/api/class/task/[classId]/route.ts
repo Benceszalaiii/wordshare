@@ -1,18 +1,20 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/lib/auth";
 import { getUserById, uploadTask } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
+
+type Params = Promise<{ classId: string }>;
+
 
 export async function POST(
     req: NextRequest,
-    { params }: { params: { classId: string } },
+    { params }: { params: Params },
 ) {
-    const { classId } = params;
+    const { classId } = await params;
     if (!classId) {
         return new Response(null, { status: 400, statusText: "Bad Request" });
     }
-    const session = await getServerSession(authOptions);
-    const dbUser = await getUserById(session?.user.id);
+    const session = await auth();
+    const dbUser = await getUserById(session?.user?.id);
     if (!dbUser) {
         return new Response(null, { status: 401, statusText: "Unauthorized" });
     }

@@ -1,9 +1,9 @@
 import { getUserById } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]/options";
+import { auth } from "@/lib/auth";
+
 export async function POST(req: NextRequest) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return new Response(null, { status: 401 });
     }
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     if (!recipientId) {
         return new Response("No userId provided", { status: 400 });
     }
-    const dbUser = await getUserById(session.user.id);
+    const dbUser = await getUserById(session?.user?.id);
     if (!dbUser) {
         return new Response(null, { status: 401 });
     }

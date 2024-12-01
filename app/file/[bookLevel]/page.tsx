@@ -7,12 +7,16 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { decodeSectionTitle } from "@/lib/utils";
-export default function Page({ params }: { params: { bookLevel: string } }) {
-    if (!BookContent.find((book) => book.bookId === params.bookLevel)) {
+
+type Params = Promise<{ bookLevel: string }>;
+
+export default async function Page({ params }: { params: Params }) {
+    const { bookLevel } = await params;
+    if (!BookContent.find((book) => book.bookId === bookLevel)) {
         return <h1>The book you are searching for does not exist.</h1>;
     }
     const currentBook = BookContent.find(
-        (book) => book.bookId === params.bookLevel,
+        (book) => book.bookId === bookLevel,
     ) as BookType;
     return (
         <>

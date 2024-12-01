@@ -1,24 +1,23 @@
 "use server";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { auth } from "@/lib/auth";
 import { getUserById, isTeacherBySession } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { cookies } from "next/headers";
 import "server-only";
+
 export default async function Layout({
     children,
-    params,
 }: {
     children: React.ReactNode;
-    params: { id: string };
 }) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
     const teacher = await isTeacherBySession(session);
-    const dbUser = await getUserById(session?.user.id);
+    const dbUser = await getUserById(session?.user?.id);
     const isStudent = dbUser?.role === "student";
-    const bannerExists = cookies().get("bannerDismissed")?.value === "false";
+    const cookieStore = await cookies();
+    const bannerExists = cookieStore.get("bannerDismissed")?.value === "false";
     if (isStudent) {
         return (
             <SidebarProvider>

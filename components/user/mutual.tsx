@@ -4,6 +4,8 @@ import { Class } from "@prisma/client";
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
+import ClassCard from "../class/card";
+import CursorWrapper from "./cursor-wrapper";
 
 export default function MutualClassSection({
     currentUserClasses,
@@ -42,8 +44,7 @@ export default function MutualClassSection({
         UserClasses.some((ucls) => ucls.id === cls.id),
     );
     return (
-        <section className="flex flex-col w-full max-w-screen-md gap-2 p-4 mt-8 border rounded-lg border-border">
-            <h2 className="mb-4 text-xl font-semibold ">Mutual classes</h2>
+        <CursorWrapper cursorColor="#2563eb" title="Mutual classes" className="flex flex-col w-full max-w-screen-md gap-2 p-4 mt-8 border rounded-lg border-border">
             {mutualClasses.length > 0 ? (
                 <div className="grid grid-cols-1 gap-4 place-content-center md:grid-cols-3">
                     {mutualClasses
@@ -53,32 +54,7 @@ export default function MutualClassSection({
                         )
                         .map((cls) => {
                             return (
-                                <Card
-                                    className="flex flex-col justify-between h-48 antialiased transition-all duration-500 grow transform-gpu hover:scale-110"
-                                    key={cls.id}
-                                >
-                                    <CardHeader className="flex flex-row items-center gap-2">
-                                        <Avatar>
-                                            <AvatarImage
-                                                src={`https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/${cls.id}/icon`}
-                                            />
-                                            <AvatarFallback>
-                                                {cls.name.slice(0, 2)}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <CardTitle>{cls.name}</CardTitle>
-                                    </CardHeader>
-                                    <CardFooter className="flex flex-row items-end justify-end w-full mt-auto">
-                                        <Link
-                                            href={`/class/${cls.id}`}
-                                            className={buttonVariants({
-                                                variant: "outline",
-                                            })}
-                                        >
-                                            Go to class
-                                        </Link>
-                                    </CardFooter>
-                                </Card>
+                                <ClassCard currentClass={cls} key={cls.id} />
                             );
                         })}
                 </div>
@@ -87,6 +63,6 @@ export default function MutualClassSection({
                     You have no classes in common with {userName}
                 </p>
             )}
-        </section>
+        </CursorWrapper>
     );
 }
