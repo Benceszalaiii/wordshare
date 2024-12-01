@@ -2,10 +2,13 @@ import { auth } from "@/lib/auth";
 import { deletePoints, getUserById, isOwnClass, leaveClass } from "@/lib/db";
 import { NextRequest } from "next/server";
 
+type Params = Promise<{ classId: string }>;
+
 export async function POST(
     req: NextRequest,
-    { params }: { params: { classId: string } },
+    { params }: { params: Params },
 ) {
+    const  { classId } = await params;
     const session = await auth();
     if (!session) {
         return new Response(
@@ -20,7 +23,7 @@ export async function POST(
             { status: 401 },
         );
     }
-    const res = await leaveClass(params.classId, session?.user?.id);
+    const res = await leaveClass(classId, session?.user?.id);
     if (!res.ok) {
         return new Response(
             "Failed to leave class. It is possible that the mistake is on our side.",
@@ -32,8 +35,9 @@ export async function POST(
 
 export async function DELETE(
     req: NextRequest,
-    { params }: { params: { classId: string } },
+    { params }: { params: Params },
 ) {
+    const { classId } = await params;
     const session = await auth();
     if (!session) {
         return new Response(
@@ -53,15 +57,15 @@ export async function DELETE(
         );
     }
     const hasRights =
-        (await isOwnClass(session?.user?.id, params.classId)) ||
+        (await isOwnClass(session?.user?.id, classId)) ||
         dbUser.role === "admin";
     if (!hasRights) {
         return new Response("You do not have elevated access to this class.", {
             status: 401,
         });
     }
-    const res = await leaveClass(params.classId, userId);
-    const res2 = await deletePoints(userId, params.classId);
+    const res = await leaveClass(classId, userId);
+    const res2 = await deletePoints(userId, classId);
     if (!res.ok) {
         return new Response(
             "Failed to kick from class. It is possible that the mistake is on our side.",

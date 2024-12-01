@@ -1,10 +1,12 @@
 import { supabase } from "@/lib/supabase";
 import { NextRequest } from "next/server";
+type Params = Promise<{ classId: string }>;
+
 export async function GET(
     req: NextRequest,
-    { params }: { params: { classId: string } },
+    { params }: { params: Params },
 ) {
-    const classId = params.classId;
+    const { classId } = await params;
     if (!classId) {
         const placeholder = await fetch(
             supabase.storage
@@ -31,10 +33,10 @@ export async function GET(
 
 export async function POST(
     req: NextRequest,
-    { params }: { params: { classId: string } },
+    { params }: { params: Params },
 ) {
+    const { classId } = await params;
     const banner = await req.blob();
-    const classId = params.classId;
     if (!banner) {
         return new Response("No file provided", { status: 418 });
     }

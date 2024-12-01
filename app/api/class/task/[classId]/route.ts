@@ -2,11 +2,14 @@ import { auth } from "@/lib/auth";
 import { getUserById, uploadTask } from "@/lib/db";
 import { NextRequest } from "next/server";
 
+type Params = Promise<{ classId: string }>;
+
+
 export async function POST(
     req: NextRequest,
-    { params }: { params: { classId: string } },
+    { params }: { params: Params },
 ) {
-    const { classId } = params;
+    const { classId } = await params;
     if (!classId) {
         return new Response(null, { status: 400, statusText: "Bad Request" });
     }

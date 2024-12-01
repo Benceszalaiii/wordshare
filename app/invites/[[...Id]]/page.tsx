@@ -11,18 +11,21 @@ const metadata = {
     lastModified: new Date(),
 };
 
+type Params = Promise<{ Id: string | null }>;
+
 export default async function Page({
     params,
 }: {
-    params: { Id: string | null };
+    params: Params;
 }) {
+    const { Id} = await params;
     const session = await auth();
     if (!session) {
         return notAuthorized("invites");
     }
     const invites = await getInvites(session.user.id);
 
-    const inviteId = params?.Id ? params.Id[0] : null;
+    const inviteId = Id ? Id[0] : null;
 
     if (!inviteId) {
         return (

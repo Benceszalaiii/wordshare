@@ -3,13 +3,16 @@ import { sendRequest } from "@/lib/aws";
 import { getClassById, getUserById } from "@/lib/db";
 import { NextRequest } from "next/server";
 
+type Params = Promise<{ classId: string }>;
+
 export async function POST(
     req: NextRequest,
-    { params }: { params: { classId: string } },
+    { params }: { params: Params },
 ) {
+    const { classId } = await params;
     const session = await auth();
     const dbUser = await getUserById(session?.user?.id);
-    const currentClass = await getClassById(params.classId);
+    const currentClass = await getClassById(classId);
     const teacher = await getUserById(currentClass?.teacherUserId);
     if (!dbUser) {
         return new Response("Log in first", { status: 401 });
@@ -40,7 +43,7 @@ export async function POST(
     }
     const res = await sendRequest({
         action_url: `https://www.wordshare.tech/class/${
-            params.classId
+            classId
         }/invite?q=${dbUser.name.replaceAll(" ", "%20")}`,
         class_name: currentClass.name,
         name: teacher.name || `Teacher of ${currentClass.name}`,

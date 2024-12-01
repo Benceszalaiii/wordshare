@@ -5,12 +5,11 @@ import { auth } from "@/lib/auth";
 import { getUserById, isTeacherBySession } from "@/lib/db";
 import { cookies } from "next/headers";
 import "server-only";
+
 export default async function Layout({
     children,
-    params,
 }: {
     children: React.ReactNode;
-    params: { id: string };
 }) {
     const session = await auth();
 

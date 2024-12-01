@@ -34,8 +34,9 @@ async function getData(
     await checkForPoints(classStudents, classId);
     return students;
 }
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: Params }) {
     const session = await auth();
+    const { id } = await params;
     if (!session) {
         return (
             <div className="flex flex-col items-center justify-center gap-4">
@@ -54,8 +55,8 @@ export default async function Page({ params }: { params: { id: string } }) {
         );
     }
     const hasAccess =
-        (await isOwnClass(dbUser.id, params.id)) || dbUser.role === "admin";
-    const currentClass = await getClassStudentsByClassId(params.id);
+        (await isOwnClass(dbUser.id, id)) || dbUser.role === "admin";
+    const currentClass = await getClassStudentsByClassId(id);
     if (!currentClass) {
         return (
             <div className="flex flex-col items-center justify-center gap-4">
@@ -71,7 +72,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         );
     }
     const data: UserWithClassId[] = await getData(
-        params.id,
+        id,
         currentClass.students,
         currentClass.Points,
     );
