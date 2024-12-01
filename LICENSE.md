@@ -1,64 +1,50 @@
-Copyright (c) 2024 Benceszalaiii
-All rights reserved.
+License
 
-Chicken Dance License v0.2
-http://supertunaman.com/cdl/
+**Effective Date**: 2024. December 1
 
-Redistribution and use in source and binary forms, with 
-or without modification, are permitted provided that the 
-following conditions are met:
+**License Grant**:  
+You are granted a limited, non-exclusive, non-transferable license to use the web application ("Software") hosted on the official domain `wordshare.tech` (or other official sources as provided by the project maintainers), subject to the terms and conditions set forth in this license.
 
-    1. Redistributions of source code must retain the 
-        above copyright notice, this list of conditions and 
-        the following disclaimer.
-    2. Redistributions in binary form must reproduce the 
-        above copyright notice, this list of conditions and 
-        the following disclaimer in the documentation and/or 
-        other materials provided with the distribution.
-    3. Neither the name of the WordShare nor the names 
-        of its contributors may be used to endorse or promote 
-        products derived from this software without specific 
-        prior written permission.
-    4. An entity wishing to redistribute in binary form or 
-        include this software in their product without 
-        redistribution of this software's source code with the 
-        product must also submit to these conditions where 
-        applicable: 
-            * For every thousand (1000) units distributed, at 
-                least half of the employees or persons 
-                affiliated with the product must listen to the 
-                "Der Ententanz" (AKA "The Chicken Dance") as 
-                composed by Werner Thomas for no less than two 
-                (2) minutes
-            * For every twenty-thousand (20000) units distributed, 
-                one (1) or more persons affiliated with the entity 
-                must be recorded performing the full Chicken Dance, 
-                in an original video at the entity's own expense,
-                and a video encoded in OGG Theora format or a format
-                and codec specified by <OWNER>, at least three (3) 
-                minutes in length, must be submitted to <OWNER>, 
-                provided <OWNER>'s contact information. Any and all
-                copyrights to this video must be transfered to 
-                <ORGANIZATION>. The dance featured in the video
-                must be based upon the instructions on how to perform 
-                the Chicken Dance that you should have received with
-                this software. 
-            * Any employee or person affiliated with the product 
-                must be prohibited from saying the word "gazorninplat" in 
-                public at all times, as long as distribution of the 
-                product continues. 
+---
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
-ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-POSSIBILITY OF SUCH DAMAGE. WordShare ACCEPTS NO LIABILITY FOR
-ANY INJURIES OR EXPENSES SUSTAINED IN THE ACT OF FULFILLING ANY OF 
-THE ABOVE TERMS AND CONDITIONS, ACCIDENTAL OR OTHERWISE.
+#### **1. Permitted Use**
+
+- You are permitted to **use** the Software solely for personal or internal purposes, and only by accessing it through the official domain (`wordshare.tech`) or other officially authorized sources as made available by the project maintainers.
+- You may modify the Software **for personal or internal use only**. However, modifications may not be redistributed, shared, or copied into other projects.
+
+#### **2. Prohibited Actions**
+
+- **No Redistribution**: You may **not redistribute, share, or sublicense** the Software or any derivative works, in whole or in part, to any third party.
+- **No Copying to Other Projects**: You may not copy, transfer, or adapt the Software's source code or any derivative works into your own projects, repositories, or any other environment, whether for commercial, personal, or internal use, outside the official sources.
+- **No Public Hosting**: You may not host the Software on any server or platform other than those officially provided by the project maintainers.
+
+#### **3. Modifications**
+
+- You may modify the Software for your own use, but you may not distribute, publish, or otherwise share your modifications with others, nor incorporate them into other projects.
+- If you deploy modifications to the Software, you must do so through the official domain or platforms as designated by the project maintainers.
+
+#### **4. No Ownership or Commercial Use**
+
+- This license does not grant you any ownership rights in the Software, including any modifications or derivative works you may create.  
+- You may not use the Software for any commercial purposes, whether directly or indirectly, unless expressly authorized by the project maintainers.
+
+#### **5. No Warranty**
+
+- The Software is provided "as is," without warranty of any kind, express or implied, including but not limited to the warranties of merchantability or fitness for a particular purpose.
+- The project maintainers will not be liable for any damage or loss arising from the use of the Software, including but not limited to loss of data, loss of business, or any other direct or indirect damages.
+
+#### **6. Termination**
+
+- This license will terminate automatically if you violate any of the terms or conditions set forth in this agreement.
+- Upon termination, you must immediately cease all use of the Software and remove any copies from your systems.
+
+#### **7. Additional Conditions**
+
+- You acknowledge and agree that any updates or modifications to the Software, provided by the project maintainers, are subject to the terms of this license.
+- The project maintainers may, at their discretion, modify or discontinue the availability of the Software at any time, without notice.
+
+---
+
+### **Acceptance**
+
+By using the Software, you agree to be bound by the terms of this license. If you do not agree to these terms, you must not use the Software.
