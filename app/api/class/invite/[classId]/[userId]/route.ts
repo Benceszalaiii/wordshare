@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/lib/auth";
 import {
     acceptInvite,
     deleteInvite,
@@ -8,21 +8,20 @@ import {
     inviteUser,
     isOwnClass,
 } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 
 export async function POST(
     req: NextRequest,
     { params }: { params: { classId: string; userId: string } },
 ) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return new Response(
             "You need to be signed in to access this endpoint.",
             { status: 401 },
         );
     }
-    const dbUser = await getUserById(session.user.id);
+    const dbUser = await getUserById(session?.user?.id);
     if (!dbUser) {
         return new Response(
             "You need to be signed in to access this endpoint.",
@@ -30,7 +29,7 @@ export async function POST(
         );
     }
     const elevated =
-        (await isOwnClass(session.user.id, params.classId)) ||
+        (await isOwnClass(session?.user?.id, params.classId)) ||
         dbUser.role === "admin";
     if (!elevated) {
         return new Response("You do not have elevated access to this class.", {
@@ -40,7 +39,7 @@ export async function POST(
     const invite = await inviteUser(
         params.classId,
         params.userId,
-        session.user.id,
+        session?.user?.id,
     );
     if (!invite.ok) {
         return new Response(
@@ -56,21 +55,21 @@ export async function DELETE(
     req: NextRequest,
     { params }: { params: { classId: string; userId: string } },
 ) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
         return new Response(
             "You need to be signed in to access this endpoint.",
             { status: 401 },
         );
     }
-    const dbUser = await getUserById(session.user.id);
+    const dbUser = await getUserById(session?.user?.id);
     if (!dbUser) {
         return new Response(
             "You need to be signed in to access this endpoint.",
             { status: 401 },
         );
     }
-    const owninvite = session.user.id === params.userId;
+    const owninvite = session?.user?.id === (params.userId || "bimbam");
     if (!owninvite) {
         return new Response(
             "You are trying to decline an invite that is not yours.",
@@ -95,7 +94,7 @@ export async function PUT(
     req: NextRequest,
     { params }: { params: { classId: string; userId: string } },
 ) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     const inviteId = req.headers.get("inviteId");
     if (!inviteId) {
         return new Response("No inviteId present in request.", { status: 400 });
@@ -106,14 +105,14 @@ export async function PUT(
             { status: 401 },
         );
     }
-    const dbUser = await getUserById(session.user.id);
+    const dbUser = await getUserById(session?.user?.id);
     if (!dbUser) {
         return new Response(
             "You need to be signed in to access this endpoint.",
             { status: 401 },
         );
     }
-    const owninvite = session.user.id === params.userId;
+    const owninvite = session?.user?.id === (params.userId || "bimbam");
     if (!owninvite) {
         return new Response(
             "You are trying to accept an invite that is not yours. Perhabs you are not signed in to the correct account?",

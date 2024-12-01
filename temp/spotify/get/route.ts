@@ -1,5 +1,4 @@
 "use server";
-import { headers } from "next/headers";
 import { nanoid } from "nanoid";
 
 export async function GET(request: Request) {

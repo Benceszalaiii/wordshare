@@ -1,5 +1,4 @@
 "use server";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { getClassesByUser } from "@/lib/db";
 import {
     BlendIcon,
@@ -9,8 +8,8 @@ import {
     Shapes,
     SquareSlashIcon,
 } from "lucide-react";
-import { getServerSession } from "next-auth";
 import { CommandBox } from "./command";
+import { auth } from "@/lib/auth";
 export interface Command {
     key: string;
     path: string;
@@ -60,7 +59,7 @@ export async function getCommands() {
     return commands;
 }
 export async function CommandProvider() {
-    const session = await getServerSession(authOptions);
-    const classes = await getClassesByUser(session?.user.id || null);
+    const session = await auth();
+    const classes = await getClassesByUser(session?.user?.id || null);
     return <CommandBox commands={commands} classes={classes} />;
 }

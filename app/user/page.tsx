@@ -1,12 +1,11 @@
 "use server";
 
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/options";
+import { auth } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 
 export default async function Page() {
-    const session = await getServerSession(authOptions);
-    if (session){
+    const session = await auth();
+    if (session && session.user){
         redirect("/user/" + session.user.id);
     }
     return notFound();

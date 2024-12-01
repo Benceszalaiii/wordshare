@@ -1,6 +1,5 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { auth } from "@/lib/auth";
 import { AnnounceClass, getUserById, isOwnClass } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 
 export async function POST(
@@ -11,8 +10,8 @@ export async function POST(
         return new Response(null, { status: 400, statusText: "Bad Request" });
     }
     const { classId } = params;
-    const session = await getServerSession(authOptions);
-    const dbUser = await getUserById(session?.user.id);
+    const session = await auth();
+    const dbUser = await getUserById(session?.user?.id);
     if (!dbUser) {
         return new Response(null, { status: 401, statusText: "Unauthorized" });
     }

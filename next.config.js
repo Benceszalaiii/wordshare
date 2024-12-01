@@ -1,6 +1,5 @@
 const nextConfig = {
     reactStrictMode: false,
-    swcMinify: true,
     output: "standalone",
     images: {
         minimumCacheTTL: 60,
