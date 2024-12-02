@@ -90,7 +90,7 @@ export default async function RootLayout({
             <body
                 id="page"
             >
-                <ThemeProvider attribute="class" defaultTheme="dark">
+                <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
                     <CommandProvider />
                     <main className="z-10 flex min-h-screen w-full flex-col">
                         <Nav />

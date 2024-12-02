@@ -271,5 +271,6 @@ export default {
         }),
         require("tailwindcss-animate"),
         require("tailwindcss-motion"),
+        require("tailwindcss-animated")
     ],
 } satisfies Config;

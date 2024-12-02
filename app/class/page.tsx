@@ -3,6 +3,7 @@ import { Header } from "@/components/blank";
 import StudentClassList from "@/components/class/student";
 import TeacherClassList from "@/components/class/teacher";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { auth } from "@/lib/auth";
 import {
     getClassByStudentSession,
@@ -59,7 +60,7 @@ export default async function Page() {
     if (elevation >= 2) {
         const classes = await getClassesByTeacherUser(dbUser.id);
         return (
-            <section className="flex flex-col gap-4">
+            <section className="flex flex-col gap-4 px-4 md:px-16">
                 <Header className="flex w-full max-w-full flex-row flex-wrap items-center justify-between px-4 md:flex-nowrap md:px-24">
                     <h1 className="text-2xl font-bold">Classes</h1>
                     <Link
@@ -69,6 +70,7 @@ export default async function Page() {
                         Create class
                     </Link>
                 </Header>
+                <Separator />
                 <TeacherClassList classes={classes} />
             </section>
         );

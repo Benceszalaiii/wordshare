@@ -23,7 +23,7 @@ body {
 
 @layer base {
     :root {
-        --cursor: #5b21b6;
+        --cursor: 5b21b6; /* Its like that for a reason... i dont want cursor by default unless something gives it */
         --background: 0 0% 100%;
         --foreground: 0 0% 3.9%;
         --card: 0 0% 100%;

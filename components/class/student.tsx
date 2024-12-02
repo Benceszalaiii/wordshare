@@ -1,6 +1,6 @@
 import { Class } from "@prisma/client";
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import {
     Card,
     CardContent,
@@ -9,6 +9,7 @@ import {
     CardHeader,
     CardTitle,
 } from "../ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export default function StudentClassList({
     classes,
@@ -30,17 +31,35 @@ export default function StudentClassList({
     return (
         <section className="flex flex-col justify-center gap-4 px-4 md:px-24 ">
             {classes.map((c) => (
-                <Card key={c.id}>
-                    <CardHeader>
-                        <CardTitle>{c.name}</CardTitle>
+                    <Card
+                    className="motion-preset-focus flex h-48 grow transform-gpu flex-col justify-between antialiased"
+                    key={c.id}
+                >
+                    <CardHeader className="flex flex-row items-center gap-2">
+                        <Avatar>
+                            <AvatarImage
+                                src={`https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/${c.id}/icon`}
+                            />
+                            <AvatarFallback>
+                                {c.name.slice(0, 2)}
+                            </AvatarFallback>
+                        </Avatar>
+                        <CardTitle className="cursor-default">
+                            {c.name}
+                        </CardTitle>
                     </CardHeader>
-                    <CardContent>
-                        <CardDescription>{c.description}</CardDescription>
+                    <CardContent className="line-clamp-3 text-neutral-700 dark:text-neutral-300">
+                        {c.description}
                     </CardContent>
-                    <CardFooter>
-                        <Button asChild>
-                            <Link href={`/class/${c.id}`}>Open</Link>
-                        </Button>
+                    <CardFooter className="mt-auto flex w-full flex-row items-end justify-end">
+                        <Link
+                            href={`/class/${c.id}`}
+                            className={buttonVariants({
+                                variant: "outline",
+                            })}
+                        >
+                            Go to class
+                        </Link>
                     </CardFooter>
                 </Card>
             ))}
