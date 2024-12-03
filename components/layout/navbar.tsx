@@ -85,7 +85,7 @@ export default function NavBar({
                             <div className="group flex flex-row items-center gap-1">
                                 {EventIcon && (EventIcon as ReactNode)}
                                 <p
-                                    className={`tracking-wider hover:motion-safe:motion-preset-shake motion-duration-500 text-main-600 shadow-main-700 group-hover:text-main-700 dark:text-main-600 dark:group-hover:text-main-500 ${caveat.className} `}
+                                    className={`tracking-wider duration-500 group-hover:motion-preset-confetti text-main-600 shadow-main-700 group-hover:text-main-700 dark:text-main-600 dark:group-hover:text-main-500 ${caveat.className} `}
                                 >
                                     WordShare
                                 </p>

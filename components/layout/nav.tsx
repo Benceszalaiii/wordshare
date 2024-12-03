@@ -7,6 +7,7 @@ import Navbar from "./navbar";
 
 import { fetchBanner } from "@/app/actions";
 import { auth } from "@/lib/auth";
+import { Rabbit } from "lucide-react";
 
 export default async function Nav() {
     const getIcon = () => {
@@ -19,6 +20,14 @@ export default async function Nav() {
                 return (
                     <Tree className="text-green-700 transition-colors duration-500 group-hover:text-main-700" />
                 );
+            case "NEWYEAR":
+                return (
+                    <span className="group-hover:motion-preset-confetti motion-duration-700">🥂</span>
+                )
+            case "EASTER":
+                return (
+                    <Rabbit className="text-main-700 group-hover:animate-jump ease-spring-bouncy" />
+                )
             default:
                 return null;
         }
