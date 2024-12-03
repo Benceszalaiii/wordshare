@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
-// gotta edit this to make it dynamic, ugh \\\\\\\\\\/\z
+// gotta edit this to make it dynamic, ugh \\\\\\\\\\/\z\
 
 interface EventScheme {
     palette: {
@@ -34,23 +34,54 @@ const halloweenScheme: EventScheme = {
         950: "#461604",
     },
 };
-
-const xmasScheme: EventScheme = {
+const newYearScheme: EventScheme = {
     palette: {
-        50: "#fef2f2",
-        100: "#fde8e6",
-        200: "#fbd0d0",
-        300: "#f8a9aa",
-        400: "#f3797d",
-        500: "#ea4952",
-        600: "#d6283a",
-        700: "#b01b2e",
-        800: "#971a2e",
-        900: "#811a2e",
-        950: "#480914",
+        50: "#faf9ec",
+        100: "#f4f0cd",
+        200: "#ebdf9d",
+        300: "#dfc865",
+        400: "#d4af37",
+        500: "#c59b2d",
+        600: "#aa7a24",
+        700: "#885920",
+        800: "#724921",
+        900: "#623e21",
+        950: "#382010",
     },
 };
 
+const easterScheme: EventScheme = {
+    palette: {
+        "50": "#fdf2f6",
+        '100': '#e0f8e1',
+        "200": "#f8c8dc",
+        '300': '#93e29a',
+        "400": "#ee78a4",
+        '500': '#36b140',
+        "600": "#d32f5f",
+        '700': '#227329',
+        "800": "#971d3c",
+        '900': '#1c4b22',
+        "950": "#4d0a1b",
+    },
+};
+
+const xmasScheme: EventScheme = {
+    palette: {
+        "50": "#e8f5e9",   // Light Evergreen
+        "100": "#ffebee",  // Soft Holly Red
+        "200": "#c8e6c9",  // Frosted Pine
+        "300": "#ffcdd2",  // Candy Cane Red
+        "400": "#81c784",  // Mistletoe Green
+        "500": "#f44336",  // Classic Christmas Red
+        "600": "#388e3c",  // Deep Fir Green
+        "700": "#d32f2f",  // Cranberry Red
+        "800": "#2e7d32",  // Forest Night
+        "900": "#b71c1c",  // Burgundy Ribbon
+        "950": "#1b5e20"   // Dark Pine Shadow
+    },
+};
+// Main scheme is based on violet builtin
 const mainScheme: EventScheme = {
     palette: {
         50: "#f5f3ff",
@@ -73,6 +104,10 @@ const currentScheme = () => {
             return halloweenScheme;
         case "XMAS":
             return xmasScheme;
+        case "NEWYEAR":
+            return newYearScheme;
+        case "EASTER":
+            return easterScheme;
         default:
             return mainScheme;
     }
@@ -271,6 +306,6 @@ export default {
         }),
         require("tailwindcss-animate"),
         require("tailwindcss-motion"),
-        require("tailwindcss-animated")
+        require("tailwindcss-animated"),
     ],
 } satisfies Config;

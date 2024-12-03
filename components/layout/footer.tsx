@@ -32,7 +32,7 @@ export default function Footer() {
                 {eventText && (
                     <p className="py-4 text-left font-display text-lg font-light">
                         {eventText && eventText[0]}{" "}
-                        <b className="font-extrabold text-main-600">
+                        <b className="font-extrabold text-main-700">
                             {eventText && (eventText[1] || "")}
                         </b>
                     </p>
