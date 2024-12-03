@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -21,9 +21,14 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { twMerge } from "tailwind-merge";
 import { z } from "zod";
+import { LoadingDots, LoadingSpinner } from "../shared/icons";
+import LoaderDots from "../loader/dots";
+import LoaderSpinner from "../loader/spinner";
 
 interface Language {
     name: string;
@@ -69,7 +74,10 @@ export default function CreateForm() {
         },
     });
     const router = useRouter();
+    const [submitted, setSubmitted] = useState(false);
     function onSubmit(data: z.infer<typeof FormSchema>) {
+        if (submitted) return;
+        setSubmitted(true);
         fetch("/api/class/create", {
             method: "POST",
             headers: {
@@ -176,7 +184,21 @@ export default function CreateForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Create class</Button>
+                <Button
+                    disabled={submitted}
+                    className={
+                        submitted
+                            ? twMerge(
+                                  "motion-preset-confetti w-28 dark:text-white text-dark animate-pulse motion-duration-700",
+                                  buttonVariants({ variant: "outline" }),
+                              )
+                            : twMerge("w-28",buttonVariants({ variant: "default" }))
+                    }
+                    
+                    type="submit"
+                >
+                    {submitted ? <LoaderSpinner text={false} variation="normal" className="size-4" /> : "Create class"}
+                </Button>
             </form>
         </Form>
     );

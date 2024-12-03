@@ -191,10 +191,10 @@ export default function ClassLegend({
                 </div>
                 <Image
                     about="Banner"
-                    className="my-4 aspect-[41/16] h-full max-w-screen-lg rounded-xl"
+                    className="my-4 min-w-full aspect-[41/16] rounded-xl"
                     src={bannerUrl}
                     alt="Class banner"
-                    priority={false}
+                    priority={true}
                     unoptimized
                     placeholder="empty"
                     width={820}

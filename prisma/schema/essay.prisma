@@ -1,8 +1,7 @@
 model Essay {
   id            String          @id @default(cuid())
   title         String
-  content       String
-  wordCount     Int           @default(0)
+  wordCount     Int             @default(0)
   userId        String
   createdAt     DateTime        @default(now())
   user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)

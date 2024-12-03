@@ -10,9 +10,9 @@ import { caveat } from "../fonts";
 import { auth } from "@/lib/auth";
 const styling = {
     section: "flex flex-col gap-2 items-center pt-12",
-    h1: "text-2xl font-serif mb-8",
-    completed: "font-serif text-lg text-neutral-400",
-    active: "font-serif text-lg",
+    h1: "text-2xl font-display mb-8",
+    completed: "font-display text-lg text-neutral-400",
+    active: "font-display text-lg",
 };
 
 export default async function Page() {

@@ -155,6 +155,7 @@ export function AnnouncementModal({
                                         <Input
                                             placeholder="Hello Class!"
                                             {...field}
+                                            value={field.value || ""}
                                         />
                                     </FormControl>
                                     <FormMessage />

@@ -3,7 +3,7 @@
 import {
     getBannerUrlWithFallback,
     getBannerWithFallback,
-} from "@/app/class/actions";
+} from "@/app/(sidebar)/class/actions";
 import { ImageCropper } from "@/components/image/icon-cropper";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React, { useEffect } from "react";

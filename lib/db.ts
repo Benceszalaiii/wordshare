@@ -5,40 +5,21 @@ import "server-only";
 import { auth } from "./auth";
 import { sendInviteMail } from "./aws";
 import prisma from "./prisma";
-import { countWords } from "./utils";
 interface Essay {
     title: string;
     content: string;
     wordCount: number;
 }
 
-export async function dangerouslyRevalidateWordCounts() {
-    const essays = await prisma.essay.findMany({ where: { wordCount: 0 } });
-    for (const essay of essays) {
-        const wordCount = countWords(essay.content);
-        await prisma.essay.update({
-            where: { id: essay.id },
-            data: { wordCount: wordCount },
-        });
-    }
-}
-
 export async function uploadEssay(essay: Essay, userId: string) {
     const created = await prisma.essay.create({
         data: {
             title: essay.title,
-            content: essay.content,
             userId: userId,
             wordCount: essay.wordCount,
         },
     });
-    if (!created) {
-        return new Response(null, {
-            status: 500,
-            statusText:
-                "For some reason, the database couldn't handle your request. Try again later.",
-        });
-    }
+    return created;
 }
 
 export async function getEssaysByUserId(userId: string) {
@@ -53,36 +34,18 @@ export async function getEssays() {
     const session = await auth();
     const user = session?.user;
     if (!user) {
-        return new Response(null, {
-            status: 401,
-            statusText: "No user found.",
-        });
-    }
-    if (user.email === null) {
-        return new Response(null, {
-            status: 401,
-            statusText: "User has no email connected.",
-        });
+        return [];
     }
     const dbUser = await prisma.user.findUnique({
-        where: { email: user.email },
+        where: { id: user.id },
     });
     if (!dbUser) {
-        return new Response(null, {
-            status: 401,
-            statusText: "No user found in database.",
-        });
+        return []
     }
     const essays = await prisma.essay.findMany({
         where: { userId: dbUser.id },
     });
-    if (!essays) {
-        return new Response(null, {
-            status: 404,
-            statusText: "No essays found.",
-        });
-    }
-    return Response.json({ essays: essays });
+    return essays
 }
 export async function getEssayById(id: string) {
     const essay = await prisma.essay.findUnique({ where: { id: id } });
@@ -539,7 +502,10 @@ export async function isOwnClass(userId: string | undefined, classId: string) {
     return false;
 }
 
-export async function getClassPoints(classId: string, userId: string | undefined) {
+export async function getClassPoints(
+    classId: string,
+    userId: string | undefined,
+) {
     if (!userId) {
         return 0;
     }
@@ -770,7 +736,7 @@ export async function unpinClassFromSidebar(classId: string, userId: string) {
 }
 
 export async function isPinned(classId: string, userId: string | undefined) {
-    if (!userId){
+    if (!userId) {
         return false;
     }
     const pins = await prisma.user.findUnique({

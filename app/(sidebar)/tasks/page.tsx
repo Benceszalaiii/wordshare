@@ -2,7 +2,7 @@
 
 import { notAuthorized } from "@/components/auth";
 import { auth } from "@/lib/auth";
-import StudentTaskTable from "../../components/task/studentoverview/component";
+import StudentTaskTable from "@/components/task/studentoverview/component";
 import { getFilteredTasks } from "./actions";
 export default async function Page() {
     const session = await auth();

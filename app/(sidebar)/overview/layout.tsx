@@ -1,8 +1,6 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SignInButton } from "@/components/shared/buttons";
 import { auth } from "@/lib/auth";
 import React from "react";
-import { SignInButton } from "../../components/shared/buttons";
 export const metadata = {
     title: "Overview",
 };
@@ -23,12 +21,8 @@ export default async function Layout({
         );
     }
     return (
-        <SidebarProvider>
-            <AppSidebar />
-            <main className="mx-4 w-full">
-                <SidebarTrigger className="" />
-                <section className=" ">{children}</section>
-            </main>
-        </SidebarProvider>
+        <>
+{children}
+        </>
     );
 }

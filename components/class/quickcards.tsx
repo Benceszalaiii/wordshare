@@ -268,7 +268,7 @@ function CardWithIcon({
                                                 }`,
                                             )}
                                         />
-                                        <CardTitle className="hyphens-auto text-wrap lg:hyphens-none">
+                                        <CardTitle className="hyphens-auto text-wrap text-left lg:hyphens-none">
                                             {title}
                                         </CardTitle>
                                     </CardHeader>

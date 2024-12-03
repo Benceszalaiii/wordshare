@@ -1,5 +1,5 @@
 "use client";
-import { getPinStatus, pinClass, unpinClass } from "@/app/class/[id]/actions";
+import { getPinStatus, pinClass, unpinClass } from "@/app/(sidebar)/class/[id]/actions";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MenubarCheckboxItem } from "../ui/menubar";
 

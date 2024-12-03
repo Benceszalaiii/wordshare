@@ -33,7 +33,7 @@ import { AnnouncementViewModal, TaskViewModal } from "./viewmodals";
 import {
     getClassTimelineLength,
     getTimelineWithOffset,
-} from "@/app/class/[id]/actions";
+} from "@/app/(sidebar)/class/[id]/actions";
 import useSWR from "swr";
 import { DateTooltip } from "../shared/date-tooltip";
 
