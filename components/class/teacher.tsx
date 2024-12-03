@@ -2,14 +2,14 @@
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 import { Class } from "@prisma/client";
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { buttonVariants } from "../ui/button";
 
 export default function TeacherClassList({
     classes,
@@ -24,19 +24,37 @@ export default function TeacherClassList({
         );
     return (
         <>
-            <section className="flex flex-col justify-center gap-4 px-4 md:px-24 ">
+            <section className="grid grid-flow-dense h-full grid-cols-1 gap-4 px-4 sm:grid-cols-2 md:px-24 xl:grid-cols-3">
                 {classes.map((c) => (
-                    <Card key={c.id}>
-                        <CardHeader>
-                            <CardTitle>{c.name}</CardTitle>
+                    <Card
+                        className="motion-preset-focus h-48 transform-gpu antialiased"
+                        key={c.id}
+                    >
+                        <CardHeader className="flex flex-row items-center gap-2">
+                            <Avatar>
+                                <AvatarImage
+                                    src={`https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/${c.id}/icon`}
+                                />
+                                <AvatarFallback>
+                                    {c.name.slice(0, 2)}
+                                </AvatarFallback>
+                            </Avatar>
+                            <CardTitle className="cursor-default">
+                                {c.name}
+                            </CardTitle>
                         </CardHeader>
-                        <CardContent>
-                            <CardDescription>{c.description}</CardDescription>
+                        <CardContent className="truncate w-full text-neutral-700 dark:text-neutral-300">
+                            {c.description}
                         </CardContent>
-                        <CardFooter>
-                            <Button asChild>
-                                <Link href={`/class/${c.id}`}>Open</Link>
-                            </Button>
+                        <CardFooter className="flex w-full flex-row items-end justify-end">
+                            <Link
+                                href={`/class/${c.id}`}
+                                className={buttonVariants({
+                                    variant: "outline",
+                                })}
+                            >
+                                Go to class
+                            </Link>
                         </CardFooter>
                     </Card>
                 ))}

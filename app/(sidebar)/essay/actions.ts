@@ -1,7 +1,8 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { dangerouslyRevalidateWordCounts, uploadEssay } from "@/lib/db";
+import { uploadEssay } from "@/lib/db";
+import { uploadEssayContent } from "@/lib/supabase";
 export async function uploadEssayAction(essay: {
     title: string;
     content: string;
@@ -23,10 +24,12 @@ export async function uploadEssayAction(essay: {
         });
     }
     const res = await uploadEssay(essay, user.id);
-}
-
-export async function revalidateAllEssay(bom: string) {
-    return null;
-    const res = await dangerouslyRevalidateWordCounts();
-    return 1 << 2;
+    if (!res) {
+        return new Response(null, {
+            status: 500,
+            statusText: "Error uploading essay.",
+        });
+    }
+     const data = await uploadEssayContent(res.id, res.userId, essay.content);
+     return data;
 }

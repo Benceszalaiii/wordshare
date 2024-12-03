@@ -1,5 +1,5 @@
 "use client";
-import { unpinClass } from "@/app/class/[id]/actions";
+import { unpinClass } from "@/app/(sidebar)/class/[id]/actions";
 import {
     ContextMenu,
     ContextMenuContent,

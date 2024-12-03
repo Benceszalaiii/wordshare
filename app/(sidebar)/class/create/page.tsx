@@ -18,10 +18,10 @@ export default async function Page() {
     if (elevation < 2) {
         return (
             <section className="mt-24 flex flex-col items-center justify-center gap-4">
-                <h1>You need to be a teacher to access this page.</h1>
+                <h1>You need to be a teacher to create classes.</h1>
                 <p>
                     To join a class, navigate to{" "}
-                    <Link href={"/class/join"} className="underline">
+                    <Link href={"/invites"} className="underline">
                         your invitations
                     </Link>
                 </p>

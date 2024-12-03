@@ -1,6 +1,5 @@
-import WipPage from "../../components/wip";
-import { caveat } from "../fonts";
-
+import WipPage from "@/components/wip";
+import { caveat } from "@/app/fonts";
 export default function Page() {
     return (
         <>

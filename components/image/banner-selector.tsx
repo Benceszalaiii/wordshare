@@ -1,6 +1,6 @@
 "use client";
 
-import { getBannerUrlWithFallback } from "@/app/class/actions";
+import { getBannerUrlWithFallback } from "@/app/(sidebar)/class/actions";
 import { ImageCropper } from "@/components/image/banner-cropper";
 import Image from "next/image";
 import React, { useEffect } from "react";

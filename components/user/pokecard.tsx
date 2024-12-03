@@ -13,30 +13,28 @@ export default function PokeCards({
     streak: number;
     essays: number;
 }) {
-    const cursorColor = "#dc2626";
     return (
-        <CursorWrapper cursorColor={cursorColor} title="Statistics">
+        <CursorWrapper title="Statistics">
             <div className="flex flex-col items-center w-full gap-4 justify-evenly md:flex-row md:gap-8">
                 <TiltCard
                     title="WordStreak"
                     value={streak}
                     unit="days"
                     colorVariant="orange"
-                    sectionCursorColor={cursorColor}
+
                 />
                 <TiltCard
                     title="Words written"
                     value={wordCount}
                     unit="words"
                     colorVariant="sky"
-                    sectionCursorColor={cursorColor}
+
                 />
                 <TiltCard
                     title="Essays"
                     value={essays}
                     unit="essays"
                     colorVariant="emerald"
-                    sectionCursorColor={cursorColor}
                 />
             </div>
         </CursorWrapper>

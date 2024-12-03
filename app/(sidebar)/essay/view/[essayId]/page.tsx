@@ -6,9 +6,10 @@ import CommentWrapper from "@/components/commentwrapper";
 import { ScoreDrawerWrapper } from "@/components/essay/score";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
+import { getEssayContent } from "@/lib/supabase";
 import { countWords } from "@/lib/utils";
 
-type Params = Promise<{essayId: string}>;
+type Params = Promise<{ essayId: string }>;
 
 export default async function Page({ params }: { params: Params }) {
     const { essayId } = await params;
@@ -16,12 +17,13 @@ export default async function Page({ params }: { params: Params }) {
     if (!essay) {
         return <p>Essay not found</p>;
     }
-    const session = await auth();
-    const dbUser = await getUserById(session?.user.id);
     const author = await getUserById(essay.userId);
     if (!author) {
         return <p>Author not found</p>;
     }
+    const content = await getEssayContent(essayId, author.id);
+    const session = await auth();
+    const dbUser = await getUserById(session?.user.id);
     const ownEssay = dbUser?.id === essay.userId;
     const canEdit =
         dbUser?.role === "admin" ||
@@ -38,7 +40,7 @@ export default async function Page({ params }: { params: Params }) {
             second: "numeric",
         },
     );
-    const wordcount = countWords(essay.content);
+    const wordcount = countWords(content || "");
     return (
         <>
             <div className="flex w-full flex-col gap-5 px-4 dark:text-white md:px-32">
@@ -89,7 +91,7 @@ export default async function Page({ params }: { params: Params }) {
                     </div>
                 </div>
                 <p className="space-y-2 whitespace-pre-wrap px-4 text-justify font-serif leading-relaxed text-neutral-700 dark:text-neutral-300 md:text-lg">
-                    {essay.content}
+                    {content}
                 </p>
             </div>
             <CommentWrapper essayId={essayId} />

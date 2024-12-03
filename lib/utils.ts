@@ -74,13 +74,6 @@ export function countWords(str: string) {
     return inp.split(/\s+/).length;
 }
 
-export interface Essay {
-    id: string;
-    title: string;
-    content: string;
-    userId: string;
-    createdAt: Date;
-}
 export function removeClassFromName(name: string) {
     const pattern = new RegExp("^\\d{1,2}(\\/\\d{1,2})?[A-Z]?_");
     return name.replace(pattern, "").replaceAll("_", " ").trim();

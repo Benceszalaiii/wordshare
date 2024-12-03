@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { default as WipPage } from "../../components/wip";
+import { default as WipPage } from "@/components/wip";
 export default async function Page() {
     const session = await auth();
     return (

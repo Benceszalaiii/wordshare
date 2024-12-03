@@ -18,7 +18,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { getBannerWithFallback, uploadImage } from "@/app/class/actions";
+import { getBannerWithFallback, uploadImage } from "@/app/(sidebar)/class/actions";
 import { FileWithPreview } from "@/components/image/image-selector";
 import { CropIcon, Trash2Icon } from "lucide-react";
 import Image from "next/image";

@@ -1,12 +1,6 @@
 "use client";
 
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
     Dialog,
     DialogClose,
@@ -79,11 +73,6 @@ export default function SubmitTaskModal({
                                                 {t.title}
                                             </CardTitle>
                                         </CardHeader>
-                                        <CardContent>
-                                            <p className="line-clamp-2">
-                                                {t.content}
-                                            </p>
-                                        </CardContent>
                                         <CardFooter className="mt-auto self-end">
                                             <Button variant={"gooeyLeft"}>
                                                 Select
