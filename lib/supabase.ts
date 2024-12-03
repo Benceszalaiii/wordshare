@@ -7,6 +7,8 @@ export const supabase = createClient(
 
 
 
+
+
 export async function getEssayContent(essayId: string, authorId: string){
     const { data, error } = await supabase.storage
         .from("essays")

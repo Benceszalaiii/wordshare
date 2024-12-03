@@ -3,7 +3,7 @@ import { CropperComponent } from "@/components/image/image-selector";
 import { auth } from "@/lib/auth";
 import { getClassById } from "@/lib/db";
 import { notFound } from "next/navigation";
-import { BannerCropperComponent } from "../../../../components/image/banner-selector";
+import { BannerCropperComponent } from "@/components/image/banner-selector";
 
 type Params = Promise<{id: string}>;
 
