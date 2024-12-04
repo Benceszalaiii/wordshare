@@ -23,11 +23,7 @@ export default async function CommentWrapper({ essayId }: { essayId: string }) {
                     action={async (e) => {
                         "use server";
                         const content = e.get("content")?.toString();
-                        const response = await uploadComment(
-                            content,
-                            session,
-                            essayId,
-                        );
+                        await uploadComment(content, session, essayId);
                         revalidatePath(`/essay/view/${essayId}`);
                     }}
                 >

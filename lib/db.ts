@@ -48,7 +48,7 @@ export async function getEssays() {
     return essays
 }
 export async function getEssayById(id: string) {
-    const essay = await prisma.essay.findUnique({ where: { id: id } });
+    const essay = await prisma.essay.findUnique({ where: { id: id } , include: {Score: true}});
     if (!essay) {
         return null;
     }
@@ -1111,4 +1111,10 @@ export async function changePrivacyById(userId: string, updated: boolean) {
         return false;
     }
     return true;
+}
+
+
+export async function getAllTeachers(){
+    const teachers = await prisma.teacher.findMany({include: {user: true}});
+    return teachers;
 }

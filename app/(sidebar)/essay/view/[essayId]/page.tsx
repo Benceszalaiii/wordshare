@@ -1,10 +1,12 @@
 "use server";
-import { getEssayById, getUserById } from "@/lib/db";
+import { getEssayById, getSchoolById, getUserById } from "@/lib/db";
 
 import { Header } from "@/components/blank";
 import CommentWrapper from "@/components/commentwrapper";
+import RequestWrapper from "@/components/essay/requestwrapper";
 import { ScoreDrawerWrapper } from "@/components/essay/score";
 import { Button } from "@/components/ui/button";
+import UserHoverCard from "@/components/user/user-hover";
 import { auth } from "@/lib/auth";
 import { getEssayContent } from "@/lib/supabase";
 import { countWords } from "@/lib/utils";
@@ -25,9 +27,7 @@ export default async function Page({ params }: { params: Params }) {
     const session = await auth();
     const dbUser = await getUserById(session?.user.id);
     const ownEssay = dbUser?.id === essay.userId;
-    const canEdit =
-        dbUser?.role === "admin" ||
-        (dbUser?.role === "teacher" && dbUser?.teacherVerified);
+    const canScore = dbUser?.role === "admin"; //! subject to change
     const createdAtReadable = new Date(essay.createdAt).toLocaleDateString(
         "en-GB",
         {
@@ -40,52 +40,59 @@ export default async function Page({ params }: { params: Params }) {
             second: "numeric",
         },
     );
+    const authorSchool = await getSchoolById(author.schoolId);
     const wordcount = countWords(content || "");
     return (
         <>
             <div className="flex w-full flex-col gap-5 px-4 dark:text-white md:px-32">
                 <div className="space-between flex w-full flex-row gap-12">
                     <div className="flex flex-row items-start justify-start">
-                        <Header className="space-y-2 rounded-xl p-3">
+                        <Header className="space-y-4 rounded-xl p-3">
                             <h1 className="mb-2 text-3xl font-bold">
                                 {essay.title}
                             </h1>
-                            <div className="ml-2 text-neutral-600">
+                            <div className="ml-2 leading-loose text-neutral-500">
+                                Created by:{" "}
+                                <UserHoverCard
+                                    schoolName={
+                                        authorSchool?.name || "no school"
+                                    }
+                                    className="pb-0 pl-0 text-start text-neutral-500"
+                                    variant={{ variant: "link" }}
+                                    user={author}
+                                />
                                 <p>
-                                    Created by:{" "}
-                                    <span className="text-neutral-500">
-                                        {" "}
-                                        {author.name}
-                                    </span>
-                                </p>
-                                <p>
-                                    Submitted at:{" "}
+                                    Written:{" "}
                                     <span className="text-neutral-500">
                                         {createdAtReadable}
                                     </span>
                                 </p>
                                 <p>
-                                    Task:{" "}
-                                    <span className="text-neutral-500">-</span>
-                                </p>
-                                <p>
-                                    Word count:{" "}
+                                    Word Count:{" "}
                                     <span className="text-neutral-500">
-                                        {wordcount} / 240 (hard-coded number,
-                                        Work in Progress to make it task based)
+                                        {wordcount}
                                     </span>
                                 </p>
-                                <p className="mt-2">
+                                <p className="">
                                     Score:{" "}
                                     <span className="text-neutral-500">
                                         No score yet
                                     </span>
                                 </p>
                             </div>
-                            {canEdit && (
+                            {canScore && (
                                 <ScoreDrawerWrapper writerId={essay.userId}>
-                                    <Button variant={"ghost"}>Score</Button>
+                                    <Button variant={"ghost"}>
+                                        Grade essay
+                                    </Button>
                                 </ScoreDrawerWrapper>
+                            )}
+                            {ownEssay && (
+                                <RequestWrapper essayId={essayId}>
+                                    <Button variant={"ghost"}>
+                                        Request Review
+                                    </Button>
+                                </RequestWrapper>
                             )}
                         </Header>
                     </div>
