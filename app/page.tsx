@@ -13,7 +13,7 @@ export default async function Home() {
             </Suspense>
             <div className=" w-full max-w-4xl px-5 py-36 xl:px-0">
                 <div className="mb-[50vh] flex flex-col items-center gap-24">
-                    <h1 className="h-full bg-gradient-to-br motion-preset-expand motion-duration-1000 from-main-400 to-main-300 bg-clip-text text-center font-display text-5xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm [text-wrap:balance] dark:from-white dark:to-main-400 md:text-7xl md:leading-[5rem]">
+                    <h1 className="h-full bg-gradient-to-br  motion-preset-expand motion-duration-1000 from-main-400 to-main-300 bg-clip-text text-center font-display text-5xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm [text-wrap:balance] dark:from-white dark:to-main-400 md:text-7xl md:leading-[5rem]">
                         Practice for your next{" "}
                         <span className="text-main-500 ">language exam</span>{" "}
                         with ease.

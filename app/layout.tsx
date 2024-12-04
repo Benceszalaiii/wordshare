@@ -55,7 +55,7 @@ export default async function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className={cx(sfPro.variable, inter.variable, caveat.variable, "scroll-smooth")} suppressHydrationWarning>
+        <html lang="en" className={cx(sfPro.variable, inter.variable, caveat.variable, "scroll-smooth subpixel-antialiased")} suppressHydrationWarning>
             <head>
                 <link
                     rel="apple-touch-icon"
