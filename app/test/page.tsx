@@ -1,6 +1,7 @@
 "use server";
 import { Button, styleVariants } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import TextRevealByWord from "@/components/ui/text-reveal";
 import UserHoverCard from "@/components/user/user-hover";
 import ConnectionGame from "@/components/wordplay/connectiongame";
 import { auth } from "@/lib/auth";
@@ -50,6 +51,7 @@ export default async function Page() {
                 allWords={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
                 goodWords={["2", "4", "6"]}
             />
+            <TextRevealByWord text="This is a test of the text reveal component" />
             <div className="min-h-screen w-full rounded-lg" />
         </section>
     );
