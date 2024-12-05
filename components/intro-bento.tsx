@@ -7,18 +7,20 @@ import {
 } from "@tabler/icons-react";
 import { SignatureIcon } from "lucide-react";
 import React from "react";
+import { AnimatedGradientText } from "./ui/gradient-text";
 
 type BentoItem = {
-    title: string;
-    description: string;
+    title: string | React.ReactNode;
+    description: string | React.ReactNode;
     header?: React.ReactNode;
     icon?: React.ReactNode;
     className?: string;
+    descriptionClassName?: string;
 };
 
 export default function IntroBento() {
     return (
-        <BentoGrid className="mx-auto max-w-4xl">
+        <BentoGrid className="mx-auto max-w-4xl ">
             {items.map((item, i) => (
                 <BentoGridItem
                     key={i}
@@ -26,11 +28,8 @@ export default function IntroBento() {
                     description={item.description}
                     header={item.header}
                     icon={item.icon}
-                    className={
-                        i === 3
-                            ? cn("md:col-span-3", item.className)
-                            : item.className
-                    }
+                    className={cn("",item.className)}
+                    descriptionClassName={item.descriptionClassName}
                 />
             ))}
         </BentoGrid>
@@ -53,20 +52,20 @@ const items: BentoItem[] = [
         description:
             "Learn new words and phrases to express yourself more effectively.",
         icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
-        className: "dark:!border-main-600/50 ",
+        className: "dark:!border-main-600/50",
+    },
+
+    {
+        title: "Join Classes",
+        className: "dark:!border-sky-500/50 md:row-span-2",
+        description: "Join classes to learn with others and get feedback from teachers.",
+        icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
     },
     {
         title: "Earn rewards for daily learning",
         description:
             "Get WordPoints for completing tasks and participate in challenges.",
-        className: "dark:!border-yellow-500/50 ",
-        icon: <IconTableColumn className="h-4 w-4 text-neutral-500" />,
-    },
-    {
-        title: "Join Classes",
-        className: "dark:!border-sky-500/50 ",
-        description:
-            "Participate in classes to learn with others and share your knowledge.",
-        icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
-    },
+            icon: <IconTableColumn className="h-4 w-4 text-neutral-500 " />,
+            className: "dark:!border-yellow-500/50 md:col-span-2",
+    }
 ];

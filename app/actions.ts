@@ -1,6 +1,7 @@
 "use server";
 
 import { getBanner } from "@/lib/db";
+import { getRandomTopic } from "@/lib/gemini";
 import { cookies } from "next/headers";
 
 export async function dismissBanner(bannerId: string) {
