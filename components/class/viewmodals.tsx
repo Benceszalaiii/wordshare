@@ -1,5 +1,8 @@
+"use client";
 import { differenceInDays } from "date-fns";
+import { useState } from "react";
 import { TaskWithProps } from "../task/studentoverview/component";
+import SubmitTaskModal from "../task/submittask";
 import { Button } from "../ui/button";
 import {
     Dialog,
@@ -20,8 +23,10 @@ export function TaskViewModal({
     task: TaskProp | TaskWithProps;
     trigger?: React.ReactNode;
 }) {
+    const [open, setOpen] = useState(false);
+    
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild className="text-end">
                 {trigger ? trigger : <Button>Go to task</Button>}
             </DialogTrigger>
@@ -33,8 +38,13 @@ export function TaskViewModal({
                     </DialogDescription>
                 </DialogHeader>
                 <DialogDescription>{task.content}</DialogDescription>
-                <DialogFooter>
-                    <DialogClose>Close</DialogClose>
+                <DialogFooter className="flex flex-col gap-4 md:flex-row">
+                    <SubmitTaskModal
+                        parentOpenAction={setOpen}
+                        taskId={task.id}
+                    >
+                        <Button variant={"outline"}>Attach Essay</Button>
+                    </SubmitTaskModal>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

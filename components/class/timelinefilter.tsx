@@ -43,7 +43,7 @@ export function TimelineFilter({ classId }: { classId: string }) {
     const [viewMode, setViewMode] = useState("both");
     const [page, setPage] = useState(1);
     const [filteredTimeline, setFilteredTimeline] = useState([] as MixProps[]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const { data, isLoading } = useSWR(classId, getClassTimelineLength);
     useEffect(() => {}, []);
     const getLengths = () => {
@@ -122,7 +122,11 @@ export function TimelineFilter({ classId }: { classId: string }) {
             </header>
             <Separator className="hidden md:block" />
             <div className="flex flex-col gap-4 px-4">
-                {filteredTimeline.length > 0 ? (
+                {isLoading || loading ? (
+                    <p className="w-full text-center font-semibold text-gray-600 dark:text-gray-400">Loading Timeline...</p>
+                )
+                :
+                filteredTimeline.length > 0 ? (
                     filteredTimeline.map((item, index) => {
                         if (item.type === "task") {
                             return (

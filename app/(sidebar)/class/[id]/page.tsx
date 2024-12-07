@@ -17,7 +17,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getBannerUrlWithFallback } from "../actions";
 
-const dynamic = 'force-dynamic'
+const dynamic = 'force-dynamic';
+
 
 type Params = Promise<{ id: string }>;
 
