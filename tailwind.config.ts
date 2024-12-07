@@ -205,6 +205,7 @@ export default {
             },
             animation: {
                 shine: "shine 8s ease-in-out infinite",
+                "shine-border": "shine-border var(--duration) infinite linear",
                 "fade-up": "fade-up 0.5s",
                 "fade-down": "fade-down 0.5s",
                 "slide-up-fade":
@@ -214,8 +215,26 @@ export default {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
                 gradient: "gradient 8s linear infinite",
+                "border-beam":
+                    "border-beam calc(var(--duration)*1s) infinite linear",
             },
             keyframes: {
+                "border-beam": {
+                    "100%": {
+                        "offset-distance": "100%",
+                    },
+                },
+                "shine-border": {
+                    "0%": {
+                      "background-position": "0% 0%",
+                    },
+                    "50%": {
+                      "background-position": "100% 100%",
+                    },
+                    to: {
+                      "background-position": "0% 0%",
+                    },
+                  },
                 gradient: {
                     to: {
                         backgroundPosition: "var(--bg-size) 0",

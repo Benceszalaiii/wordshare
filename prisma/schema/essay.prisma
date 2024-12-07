@@ -48,3 +48,10 @@ model ReviewRequest {
   user      User     @relation(fields: [userId], references: [id])
   teacher   Teacher  @relation(fields: [teacherId], references: [id])
 }
+
+model EssayTopic {
+  id       String @id @default(cuid())
+  title    String
+  level    String
+  language String
+}

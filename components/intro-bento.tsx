@@ -2,12 +2,14 @@ import { cn } from "@/lib/utils";
 import { BentoGrid, BentoGridItem } from "@/ui/bento-grid";
 import {
     IconFileBroken,
+    IconSchool,
     IconSignature,
+    IconSignatureOff,
     IconTableColumn,
+    IconVocabulary,
 } from "@tabler/icons-react";
-import { SignatureIcon } from "lucide-react";
+import { SignatureIcon, SparkleIcon } from "lucide-react";
 import React from "react";
-import { AnimatedGradientText } from "./ui/gradient-text";
 
 type BentoItem = {
     title: string | React.ReactNode;
@@ -44,28 +46,28 @@ const items: BentoItem[] = [
         title: "Improve Your Writing",
         description:
             "Enhance your writing skills with engaging tasks or randomly given topics.",
-        icon: <SignatureIcon className="h-4 w-4 text-neutral-500" />,
-        className: "dark:!border-red-500/50 ",
+        icon: <IconSignature className="size-6 text-neutral-500" />,
+        className: "",
     },
     {
         title: "Expand Your Vocabulary",
         description:
             "Learn new words and phrases to express yourself more effectively.",
-        icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
-        className: "dark:!border-main-600/50",
+        icon: <IconVocabulary className="size-6 text-neutral-500" />,
+        className: "",
     },
 
     {
         title: "Join Classes",
-        className: "dark:!border-sky-500/50 md:row-span-2",
+        className: " md:row-span-2",
         description: "Join classes to learn with others and get feedback from teachers.",
-        icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
+        icon: <IconSchool className="size-6 text-neutral-500" />,
     },
     {
         title: "Earn rewards for daily learning",
         description:
             "Get WordPoints for completing tasks and participate in challenges.",
-            icon: <IconTableColumn className="h-4 w-4 text-neutral-500 " />,
-            className: "dark:!border-yellow-500/50 md:col-span-2",
+            icon: <SparkleIcon className="size-6 text-neutral-500 " />,
+            className: " md:col-span-2",
     }
 ];

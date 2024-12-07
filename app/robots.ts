@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
             userAgent: "*",
             disallow: ["/api", "/essay/write", "/quickstart", "/admin"],
         },
-        sitemap: "https://www.wordshare.tech/sitemap",
+        sitemap: "https://www.wordshare.tech/sitemap.xml",
     };
 }
