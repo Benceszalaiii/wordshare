@@ -2,6 +2,7 @@
 import { caveat } from "@/app/fonts";
 import UserDropdown from "@/components/layout/userdropdown";
 import useScroll from "@/lib/hooks/use-scroll";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/ui/tooltip';
 import { Points } from "@prisma/client";
 import { DashboardIcon } from "@radix-ui/react-icons";
 import { Session } from "next-auth";
@@ -13,7 +14,6 @@ import { AllPoints } from "../shared/points";
 import ThemeSwitch from "../theme";
 import Banner from "./banner";
 import SignInModal from "./signinmodal";
-import {TooltipContent, TooltipProvider, TooltipTrigger, Tooltip} from '@/ui/tooltip';
 export default function NavBar({
     session,
     role,
@@ -89,6 +89,7 @@ export default function NavBar({
                                 <p
                                     className={`tracking-wider duration-500 group-hover:motion-preset-confetti text-main-600 shadow-main-700 group-hover:text-main-700 dark:text-main-600 dark:group-hover:text-main-500 ${caveat.className} `}
                                     >
+
                                     WordShare
                                 </p>
                             </div>

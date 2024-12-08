@@ -48,6 +48,7 @@ export default async function Page({ params }: { params: Params }) {
                 <div className="space-between flex w-full flex-row gap-12">
                     <div className="flex flex-row items-start justify-start" suppressHydrationWarning>
                         <Header className="space-y-4 rounded-xl p-3" suppressHydrationWarning>
+
                             <h1 className="mb-2 text-3xl font-bold">
                                 {essay.title}
                             </h1>
