@@ -8,17 +8,11 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 export default async function LandingPage() {
     return (
-        <div className="flex flex-col items-center">
-            <Suspense
-                fallback={
-                    <div className="fixed left-0 top-0 -z-10 m-0 h-full w-full bg-light object-contain p-0 dark:bg-dark" />
-                }
-            >
-                <div className="fixed left-0 top-0 -z-10 m-0 h-full w-full bg-main-light bg-cover bg-center bg-no-repeat p-0 dark:bg-main-dark" />
-            </Suspense>
-            <div className=" w-full max-w-4xl px-5 py-36 xl:px-0">
-                <div className="mb-[50vh] flex flex-col items-center gap-24">
-                    <h1 className="h-full bg-gradient-to-br motion-preset-expand motion-duration-1000 from-main-400 to-main-300 bg-clip-text text-center font-display text-5xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm [text-wrap:balance] dark:from-white dark:to-main-400 md:text-7xl md:leading-[5rem]">
+        <div className="flex w-full flex-col items-center">
+            <div className="fixed left-0 top-0 -z-10 m-0 h-full w-full bg-[radial-gradient(circle_at_bottom_center,_var(--tw-gradient-stops))] from-dark/20 via-main-300 to-background p-0 dark:bg-[radial-gradient(circle_at_top_center,_var(--tw-gradient-stops))] dark:from-background dark:via-main-500/15" />
+            <div className="h-full w-full max-w-4xl px-5 pt-32">
+                <div className="flex flex-col items-center sm:gap-24 sm:py-12">
+                    <div className="h-64 bg-gradient-to-br from-main-600 to-main-600 bg-clip-text text-center font-display text-3xl font-bold tracking-[-0.02em] text-transparent drop-shadow-sm motion-duration-1000 motion-blur-in-md [text-wrap:balance] dark:from-white dark:to-main-500 sm:h-full sm:text-5xl sm:leading-[5rem] md:text-7xl">
                         Practice for your next{" "}
                         <WordRotate
                             className="inline-block text-main-700"
