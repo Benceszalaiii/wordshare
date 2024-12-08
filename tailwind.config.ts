@@ -98,7 +98,7 @@ const mainScheme: EventScheme = {
     },
 };
 
-const currentScheme = () => {
+export const currentScheme = () => {
     switch (process.env.EVENT) {
         case "HALLOWEEN":
             return halloweenScheme;

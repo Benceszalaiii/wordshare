@@ -13,6 +13,7 @@ import { AllPoints } from "../shared/points";
 import ThemeSwitch from "../theme";
 import Banner from "./banner";
 import SignInModal from "./signinmodal";
+import {TooltipContent, TooltipProvider, TooltipTrigger, Tooltip} from '@/ui/tooltip';
 export default function NavBar({
     session,
     role,
@@ -64,29 +65,30 @@ export default function NavBar({
     if (role === "admin") {
         return (
             <div className="sticky top-0 z-50 mb-12 flex w-full flex-col items-center justify-center transition-all">
+                <TooltipProvider>
                 <Banner bannerProps={bannerProps} />
                 <div
                     className={`flex w-full items-center justify-center px-4 ${
                         needsExpand
-                            ? " justify-center bg-white/50 backdrop-blur-xl dark:bg-black/70"
-                            : "bg-white/0 dark:bg-black/0 "
-                    } ${
-                        isSideBar
+                        ? " justify-center bg-white/50 backdrop-blur-xl dark:bg-black/70"
+                        : "bg-white/0 dark:bg-black/0 "
+                        } ${
+                            isSideBar
                             ? "border-b border-border bg-gray-200 dark:bg-neutral-900"
                             : ""
-                    } transition-all duration-300`}
-                >
+                            } transition-all duration-300`}
+                            >
                     <div
                         className={`mx-2 flex h-16 w-full items-center justify-between transition-all duration-500 ease-in-out ${
                             needsExpand ? `max-w-full` : `max-w-screen-md`
-                        }`}
-                    >
+                            }`}
+                            >
                         <Link href="/" className="flex font-display text-2xl">
                             <div className="group flex flex-row items-center gap-1">
                                 {EventIcon && (EventIcon as ReactNode)}
                                 <p
                                     className={`tracking-wider duration-500 group-hover:motion-preset-confetti text-main-600 shadow-main-700 group-hover:text-main-700 dark:text-main-600 dark:group-hover:text-main-500 ${caveat.className} `}
-                                >
+                                    >
                                     WordShare
                                 </p>
                             </div>
@@ -94,31 +96,39 @@ export default function NavBar({
                         <div className="flex flex-row items-center justify-center gap-2">
                             {points && (
                                 <AllPoints
-                                    isClassPoints={isClassPoints}
-                                    points={calculatedPoints}
+                                isClassPoints={isClassPoints}
+                                points={calculatedPoints}
                                 />
                             )}
                             <div className={`pr-0`}>
                                 {session ? (
                                     <UserDropdown
-                                        session={session}
-                                        role={role}
+                                    session={session}
+                                    role={role}
                                     />
                                 ) : (
                                     <SignInModal />
                                 )}
                             </div>
+                            <Tooltip>
+                            <TooltipTrigger asChild>
                             <ThemeSwitch className="" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Switch Appearance</p>
+                            </TooltipContent>
+                            </Tooltip>
                             <Link
                                 href={"/admin"}
                                 className="flex items-center"
                                 passHref
-                            >
+                                >
                                 <DashboardIcon className="h-6 w-6 text-black dark:text-white" />
                             </Link>
                         </div>
                     </div>
                 </div>
+            </TooltipProvider>
             </div>
         );
     }

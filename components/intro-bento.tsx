@@ -1,14 +1,7 @@
 import { cn } from "@/lib/utils";
 import { BentoGrid, BentoGridItem } from "@/ui/bento-grid";
-import {
-    IconFileBroken,
-    IconSchool,
-    IconSignature,
-    IconSignatureOff,
-    IconTableColumn,
-    IconVocabulary,
-} from "@tabler/icons-react";
-import { SignatureIcon, SparkleIcon } from "lucide-react";
+import { IconSchool, IconSignature, IconVocabulary } from "@tabler/icons-react";
+import { SparkleIcon } from "lucide-react";
 import React from "react";
 
 type BentoItem = {
@@ -22,7 +15,7 @@ type BentoItem = {
 
 export default function IntroBento() {
     return (
-        <BentoGrid className="mx-auto max-w-4xl ">
+        <BentoGrid className="mx-auto max-w-4xl">
             {items.map((item, i) => (
                 <BentoGridItem
                     key={i}
@@ -30,7 +23,7 @@ export default function IntroBento() {
                     description={item.description}
                     header={item.header}
                     icon={item.icon}
-                    className={cn("",item.className)}
+                    className={cn("motion-safe:motion-preset-expand", item.className)}
                     descriptionClassName={item.descriptionClassName}
                 />
             ))}
@@ -60,14 +53,15 @@ const items: BentoItem[] = [
     {
         title: "Join Classes",
         className: " md:row-span-2",
-        description: "Join classes to learn with others and get feedback from teachers.",
+        description:
+            "Join classes to learn with others and get feedback from teachers.",
         icon: <IconSchool className="size-6 text-neutral-500" />,
     },
     {
         title: "Earn rewards for daily learning",
         description:
             "Get WordPoints for completing tasks and participate in challenges.",
-            icon: <SparkleIcon className="size-6 text-neutral-500 " />,
-            className: " md:col-span-2",
-    }
+        icon: <SparkleIcon className="size-6 text-neutral-500" />,
+        className: " md:col-span-2",
+    },
 ];
