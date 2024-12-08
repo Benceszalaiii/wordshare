@@ -13,6 +13,10 @@
       "@/components/*": [
         "components/*"
       ],
+      "@/ui/*": [
+        "components/ui/*"
+      ]
+      ,
       "@/pages/*": [
         "pages/*"
       ],

@@ -2,11 +2,14 @@
 
 import { auth } from "@/lib/auth";
 import {
+    getEssaysByUserId,
+    getSubmissionById,
     getTimeline,
     getTimelineLengths,
     getUserById,
     isPinned,
     pinClassToSidebar,
+    submitEssayToTask,
     unpinClassFromSidebar,
 } from "@/lib/db";
 import { revalidatePath } from "next/cache";
@@ -64,4 +67,36 @@ export async function getTimelineWithOffset(
 export async function getClassTimelineLength(classId: string) {
     const res = await getTimelineLengths(classId);
     return res;
+}
+
+
+export async function getEssays(){
+    const session = await auth();
+    if (!session) {
+        return [];
+    }
+    const res = await getEssaysByUserId(session?.user.id);
+    return res;
+
+}
+export async function submitEssay(taskId: number, essayId: string) {
+    const session = await auth();
+    if (!session) {
+        return "Session expired. Please login again.";
+    }
+    const res = await submitEssayToTask(taskId, essayId);
+    return res;
+
+}
+
+export async function isTaskSubmitted(taskId: number){
+    const session = await auth();
+    if (!session) {
+        return false;
+    }
+    const res = await getSubmissionById(taskId, session?.user.id);
+    if (res){
+        return true;
+    }
+    return false;
 }

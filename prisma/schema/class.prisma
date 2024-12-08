@@ -46,7 +46,6 @@ model Task {
   createdAt  DateTime     @default(now())
   Class      Class?       @relation(fields: [classId], references: [id])
   classId    String?
-  Essay      Essay[]
   Submission Submission[]
 }
 
@@ -69,12 +68,11 @@ model Milestone {
 }
 
 model Submission {
-  id         String   @id @default(cuid())
-  userId     String
-  taskId     Int
-  essayId    String
-  additional String
-  createdAt  DateTime @default(now())
-  Task       Task     @relation(fields: [taskId], references: [id])
-  essay      Essay    @relation(fields: [essayId], references: [id])
+  id        String   @id @default(cuid())
+  userId    String
+  taskId    Int
+  essayId   String
+  createdAt DateTime @default(now())
+  Task      Task     @relation(fields: [taskId], references: [id])
+  essay     Essay    @relation(fields: [essayId], references: [id])
 }

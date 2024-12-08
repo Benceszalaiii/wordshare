@@ -53,32 +53,32 @@ const newYearScheme: EventScheme = {
 const easterScheme: EventScheme = {
     palette: {
         "50": "#fdf2f6",
-        '100': '#e0f8e1',
+        "100": "#e0f8e1",
         "200": "#f8c8dc",
-        '300': '#93e29a',
+        "300": "#93e29a",
         "400": "#ee78a4",
-        '500': '#36b140',
+        "500": "#36b140",
         "600": "#d32f5f",
-        '700': '#227329',
+        "700": "#227329",
         "800": "#971d3c",
-        '900': '#1c4b22',
+        "900": "#1c4b22",
         "950": "#4d0a1b",
     },
 };
 
 const xmasScheme: EventScheme = {
     palette: {
-        "50": "#e8f5e9",   // Light Evergreen
-        "100": "#ffebee",  // Soft Holly Red
-        "200": "#c8e6c9",  // Frosted Pine
-        "300": "#ffcdd2",  // Candy Cane Red
-        "400": "#81c784",  // Mistletoe Green
-        "500": "#f44336",  // Classic Christmas Red
-        "600": "#388e3c",  // Deep Fir Green
-        "700": "#d32f2f",  // Cranberry Red
-        "800": "#2e7d32",  // Forest Night
-        "900": "#b71c1c",  // Burgundy Ribbon
-        "950": "#1b5e20"   // Dark Pine Shadow
+        "50": "#e8f5e9", // Light Evergreen
+        "100": "#ffebee", // Soft Holly Red
+        "200": "#c8e6c9", // Frosted Pine
+        "300": "#ffcdd2", // Candy Cane Red
+        "400": "#81c784", // Mistletoe Green
+        "500": "#f44336", // Classic Christmas Red
+        "600": "#388e3c", // Deep Fir Green
+        "700": "#d32f2f", // Cranberry Red
+        "800": "#2e7d32", // Forest Night
+        "900": "#b71c1c", // Burgundy Ribbon
+        "950": "#1b5e20", // Dark Pine Shadow
     },
 };
 // Main scheme is based on violet builtin
@@ -98,7 +98,7 @@ const mainScheme: EventScheme = {
     },
 };
 
-const currentScheme = () => {
+export const currentScheme = () => {
     switch (process.env.EVENT) {
         case "HALLOWEEN":
             return halloweenScheme;
@@ -205,6 +205,7 @@ export default {
             },
             animation: {
                 shine: "shine 8s ease-in-out infinite",
+                "shine-border": "shine-border var(--duration) infinite linear",
                 "fade-up": "fade-up 0.5s",
                 "fade-down": "fade-down 0.5s",
                 "slide-up-fade":
@@ -213,12 +214,37 @@ export default {
                     "slide-down-fade 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
+                gradient: "gradient 8s linear infinite",
+                "border-beam":
+                    "border-beam calc(var(--duration)*1s) infinite linear",
             },
             keyframes: {
+                "border-beam": {
+                    "100%": {
+                        "offset-distance": "100%",
+                    },
+                },
+                "shine-border": {
+                    "0%": {
+                      "background-position": "0% 0%",
+                    },
+                    "50%": {
+                      "background-position": "100% 100%",
+                    },
+                    to: {
+                      "background-position": "0% 0%",
+                    },
+                  },
+                gradient: {
+                    to: {
+                        backgroundPosition: "var(--bg-size) 0",
+                    },
+                },
                 shine: {
                     from: { backgroundPosition: "200% 0" },
                     to: { backgroundPosition: "-200% 0" },
                 },
+
                 "accordion-down": {
                     from: { height: "0" },
                     to: { height: "var(--radix-accordion-content-height)" },

@@ -6,8 +6,6 @@ model Essay {
   createdAt     DateTime        @default(now())
   user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   comments      Comment[]
-  task          Task?           @relation(fields: [taskId], references: [id])
-  taskId        Int?
   ReviewRequest ReviewRequest[]
   Score         Score[]
   Submission    Submission[]
@@ -47,4 +45,11 @@ model ReviewRequest {
   Essay     Essay    @relation(fields: [essayId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
   teacher   Teacher  @relation(fields: [teacherId], references: [id])
+}
+
+model EssayTopic {
+  id       String @id @default(cuid())
+  title    String
+  level    String
+  language String
 }

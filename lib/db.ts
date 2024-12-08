@@ -30,6 +30,13 @@ export async function getEssaysByUserId(userId: string) {
     return dbUser?.Essay || [];
 }
 
+export async function getSubmissionById(taskId: number, userId: string) {
+    const submitted = await prisma.submission.findFirst({
+        where: { taskId: taskId, userId: userId },
+    });
+    return submitted;
+}
+
 export async function getEssays() {
     const session = await auth();
     const user = session?.user;
@@ -40,15 +47,18 @@ export async function getEssays() {
         where: { id: user.id },
     });
     if (!dbUser) {
-        return []
+        return [];
     }
     const essays = await prisma.essay.findMany({
         where: { userId: dbUser.id },
     });
-    return essays
+    return essays;
 }
 export async function getEssayById(id: string) {
-    const essay = await prisma.essay.findUnique({ where: { id: id } , include: {Score: true}});
+    const essay = await prisma.essay.findUnique({
+        where: { id: id },
+        include: { Score: true },
+    });
     if (!essay) {
         return null;
     }
@@ -1113,8 +1123,31 @@ export async function changePrivacyById(userId: string, updated: boolean) {
     return true;
 }
 
-
-export async function getAllTeachers(){
-    const teachers = await prisma.teacher.findMany({include: {user: true}});
+export async function getAllTeachers() {
+    const teachers = await prisma.teacher.findMany({ include: { user: true } });
     return teachers;
+}
+
+export async function submitEssayToTask(taskId: number, essayId: string) {
+    const task = await prisma.task.findUnique({ where: { id: taskId } });
+    if (!task) {
+        return "The task you are trying to submit to does not exist.";
+    }
+    const essay = await prisma.essay.findUnique({ where: { id: essayId } });
+    if (!essay) {
+        return "The essay you are trying to submit does not exist.";
+    }
+    const submission = await prisma.submission.findFirst({
+        where: { taskId: taskId },
+    });
+    if (submission) {
+        return "You have already submitted to this task.";
+    }
+    const submitted = await prisma.submission.create({
+        data: { taskId: taskId, essayId: essayId, userId: essay.userId },
+    });
+    if (!submitted) {
+        return "Error submitting essay. Contact support.";
+    }
+    return "Essay submitted successfully.";
 }

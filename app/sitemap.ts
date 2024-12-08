@@ -35,11 +35,6 @@ export default async function sitemap() {
             lastModified: new Date(),
             priority: 0.8,
         },
-        {
-            url: baseUrl + "/roadmap",
-            lastModified: new Date(),
-            priority: 0.8,
-        },
         ...fetchedClasses,
     ];
 }
