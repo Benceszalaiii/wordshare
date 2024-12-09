@@ -1,7 +1,7 @@
 import { notAuthorized } from "@/components/auth";
 import CreateForm from "@/components/class/createform";
 import { auth } from "@/lib/auth";
-import { getTeacher, getUserById } from "@/lib/db";
+import { getUserById } from "@/lib/db";
 import { getUserElevation } from "@/lib/utils";
 import Link from "next/link";
 
@@ -28,7 +28,7 @@ export default async function Page() {
             </section>
         );
     }
-    const teacher = await getTeacher(dbUser.id);
+    const teacher = await getUserById(dbUser.id);
     if (!teacher && dbUser.role !== "admin") {
         return (
             <section className="flex flex-col items-center justify-center gap-4">

@@ -10,6 +10,15 @@ interface Essay {
     content: string;
     wordCount: number;
 }
+export async function getUser(){
+    const session = await auth();
+    if (!session) {
+        return null;
+    }
+    const dbUser = await prisma.user.findUnique({where: {id: session.user.id}});
+    return dbUser;
+}
+
 
 export async function uploadEssay(essay: Essay, userId: string) {
     const created = await prisma.essay.create({
@@ -182,25 +191,19 @@ export async function isOwnEssay(essayId: string) {
     return false;
 }
 
-export async function changeRoleById(id: string, value: string | null) {
-    const updated = await prisma.user.update({
-        where: { id: id },
-        data: { role: value },
-    });
-    if (!updated) {
-        return new Response(null, {
-            status: 500,
-            statusText: "Error updating role.",
-        });
+export async function changeRole(value: "teacher" | "student") {
+    const dbUser = await getUser();
+    if (!dbUser){
+        throw new Error("No user found.");
     }
-    if (!value) {
-        await prisma.user.update({ where: { id: id }, data: { role: null } });
-        return new Response(null, {
-            status: 200,
-            statusText: "User role cleared.",
-        });
+    const updated = await prisma.user.update({where: {id: dbUser.id}, data: {role: value}});
+    if (value === "student"){
+        await prisma.teacher.delete({where: {userId: dbUser.id}});
     }
-    return new Response(null, { status: 200, statusText: "Role updated." });
+    if (value === "teacher"){
+        await prisma.teacher.create({data: {userId: dbUser.id}});
+    }
+    return updated;
 }
 
 export async function getCommentsByEssayId(essayId: string) {
@@ -348,72 +351,23 @@ export async function deleteTeacher(userId: string) {
     return new Response(null, { status: 200, statusText: "Teacher deleted." });
 }
 
-export async function getTeacher(userId: string) {
-    const teacher = await prisma.teacher.findUnique({
-        where: { userId: userId },
-    });
-    return teacher;
-}
 
-interface ClassObject {
-    classname: string;
+
+interface ClassDataProps {
+    name: string;
     description: string;
     language: string;
+    teacherId: string;
 }
 
-export async function createClass(datajson: ClassObject) {
-    const session = await auth();
-    if (!session) {
-        return new Response("Please sign in", {
-            status: 401,
-            statusText: "Please sign in.",
-        });
-    }
-    const user = session.user;
-    if (!user) {
-        return new Response("No user found.", {
-            status: 401,
-            statusText: "No user found.",
-        });
-    }
-    const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-    if (!dbUser) {
-        return new Response("No user found", {
-            status: 401,
-            statusText: "No user found.",
-        });
-    }
-    let teacher = await getTeacher(dbUser.id);
-    const admin = await isAdmin(dbUser.id);
-    if (!(teacher || admin)) {
-        return new Response("You are not a teacher.", {
-            status: 401,
-            statusText: "You are not a teacher.",
-        });
-    }
-    if (admin && !teacher) {
-        await addTeacher(dbUser.id);
-        teacher = await getTeacher(dbUser.id);
-    }
-    if (!datajson.classname || !datajson.language) {
-        return new Response(null, {
-            status: 400,
-            statusText: "No name, language or teacherId found.",
-        });
-    }
-    if (!teacher) {
-        return new Response(null, {
-            status: 401,
-            statusText: "You are not a verified teacher.",
-        });
-    }
+export async function createClass(classData: ClassDataProps) {
+
     const newclass = await prisma.class.create({
         data: {
-            name: datajson.classname,
-            description: datajson.description,
-            language: datajson.language,
-            teacherId: teacher.id,
-            teacherUserId: dbUser.id,
+            name: classData.name,
+            description: classData.description,
+            language: classData.language,
+            teacherId: classData.teacherId
         },
     });
 
@@ -445,7 +399,7 @@ export async function getClassesByTeacherUser(userId: string | undefined) {
         return [];
     }
     const classes = await prisma.class.findMany({
-        where: { teacherUserId: userId },
+        where: { teacherId: userId },
     });
     return classes;
 }
@@ -458,27 +412,7 @@ export async function getClassById(id: string | null) {
     return c;
 }
 
-export async function isTeacherBySession(session: Session | null) {
-    if (!session) {
-        return false;
-    }
-    if (!session.user) {
-        return false;
-    }
-    const user = await prisma.user.findUnique({
-        where: { id: session.user.id },
-    });
-    if (!user) {
-        return false;
-    }
-    const teacher = await prisma.teacher.findUnique({
-        where: { userId: user.id },
-    });
-    if (!teacher) {
-        return false;
-    }
-    return true;
-}
+
 
 export async function getAllClasses() {
     const classes = await prisma.class.findMany();
@@ -498,6 +432,15 @@ export async function getAllStudents() {
     return students;
 }
 
+export async function getClassWithTasks(classId: string){
+    const c = await prisma.class.findUnique({
+        where: { id: classId },
+        include: { Tasks: true },
+    });
+    return c;
+}
+
+
 export async function isOwnClass(userId: string | undefined, classId: string) {
     if (!userId) {
         return false;
@@ -506,7 +449,7 @@ export async function isOwnClass(userId: string | undefined, classId: string) {
     if (!c) {
         return false;
     }
-    if (c.teacherUserId === userId) {
+    if (c.teacherId === userId) {
         return true;
     }
     return false;
@@ -770,7 +713,7 @@ export async function isPartofClass(userId: string, classId: string) {
     const isStudent = currentClass.students.some(
         (student) => student.id === userId,
     );
-    const isTeacher = currentClass.teacherUserId === userId;
+    const isTeacher = currentClass.teacherId === userId;
     return isStudent || isTeacher;
 }
 
@@ -813,6 +756,7 @@ export async function getAnnouncementsByClassId(classId: string) {
     });
     return announcements;
 }
+
 
 export async function getTasksByClassId(classId: string) {
     const currentClass = await prisma.class.findUnique({
@@ -874,7 +818,7 @@ export async function getClassesByUser(userId: string | null) {
     }
     if (dbUser.role === "teacher" || dbUser.role === "admin") {
         const classes = await prisma.class.findMany({
-            where: { teacherUserId: userId },
+            where: { teacherId: userId },
         });
         return classes;
     }
@@ -980,18 +924,22 @@ export async function addUserToSchool(
     userId: string,
     role: string,
 ) {
-    if (role === "student") {
+    const dbUser = await prisma.user.findUnique({ where: { id: userId }, include: {Teacher: true} });
+    if (!dbUser) {
+        return null;
+    }
+    if (dbUser.role === "student") {
         const res = await prisma.school.update({
             where: { id: schoolId },
             data: { students: { connect: { id: userId } } },
         });
         return res;
     }
-    if (role === "teacher") {
+    if (dbUser.role === "teacher" && dbUser.Teacher) {
         const res = await prisma.school.update({
             where: { id: schoolId },
-            data: { teachers: { connect: { id: userId } } },
-        });
+            data: { Teachers: { connect: { id: dbUser.Teacher.id } } },
+        })
         return res;
     }
     return null;
@@ -1124,7 +1072,7 @@ export async function changePrivacyById(userId: string, updated: boolean) {
 }
 
 export async function getAllTeachers() {
-    const teachers = await prisma.teacher.findMany({ include: { user: true } });
+    const teachers = await prisma.teacher.findMany();
     return teachers;
 }
 

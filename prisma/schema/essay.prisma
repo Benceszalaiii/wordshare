@@ -21,7 +21,6 @@ model Score {
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   essay     Essay    @relation(fields: [essayId], references: [id], onDelete: Cascade)
-  teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
@@ -44,7 +43,6 @@ model ReviewRequest {
   createdAt DateTime @default(now())
   Essay     Essay    @relation(fields: [essayId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
-  teacher   Teacher  @relation(fields: [teacherId], references: [id])
 }
 
 model EssayTopic {

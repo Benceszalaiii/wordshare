@@ -3,5 +3,13 @@ model School {
   name     String
   url      String?
   students User[]
-  teachers Teacher[]
+  Teachers  Teacher[]
+}
+
+model Teacher {
+  id       Int     @id @default(autoincrement())
+  userId   String  @unique
+  user     User    @relation(fields: [userId], references: [id])
+  schoolId Int?
+  school   School? @relation(fields: [schoolId], references: [id])
 }

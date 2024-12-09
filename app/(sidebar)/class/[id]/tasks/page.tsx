@@ -1,7 +1,8 @@
 "use server";
 
-import { getClassById } from "@/lib/db";
+import { getClassById, getClassWithTasks } from "@/lib/db";
 import { notFound } from "next/navigation";
+import StudentTaskTable from '../../../../../components/task/studentoverview/component';
 
 type Params = Promise<{ id: string }>;
 type searchParams = Promise<{ mode: string | undefined }>;
@@ -14,10 +15,11 @@ export default async function Page({
 }) {
     const { id } = await params;
     const { mode } = await searchParams;
-    const currentClass = await getClassById(id);
+    const currentClass = await getClassWithTasks(id);
     if (!currentClass) {
         return notFound();
     }
+
     return (
         <div>
             <h1>{currentClass.name}</h1>
