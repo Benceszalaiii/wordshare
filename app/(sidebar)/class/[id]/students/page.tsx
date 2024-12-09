@@ -111,7 +111,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
     const { id } = await params;
     const currentClass = await getClassById(id);
-    const teacher = await getUserById(currentClass?.teacherUserId);
+    const teacher = await getUserById(currentClass?.teacherId);
     if (!currentClass || !teacher) {
         return {
             title: "Class not found",
