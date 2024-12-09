@@ -13,7 +13,7 @@ export async function POST(
     const session = await auth();
     const dbUser = await getUserById(session?.user?.id);
     const currentClass = await getClassById(classId);
-    const teacher = await getUserById(currentClass?.teacherUserId);
+    const teacher = await getUserById(currentClass?.teacherId);
     if (!dbUser) {
         return new Response("Log in first", { status: 401 });
     }

@@ -71,7 +71,7 @@ export async function AppSidebar() {
                                         {classes.map((item) => (
                                             <ClassContextWrapper
                                                 canEdit={
-                                                    item.teacherUserId ===
+                                                    item.teacherId ===
                                                         dbUser?.id ||
                                                     dbUser?.role === "admin"
                                                 }
