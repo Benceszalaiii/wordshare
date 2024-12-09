@@ -5,8 +5,6 @@ model Class {
   language      String
   teacherId     String
   createdAt     DateTime       @default(now())
-  teacher       Teacher        @relation(fields: [teacherId], references: [id])
-  teacherUserId String
   students      User[]
   Words         Words[]
   Tasks         Task[]
@@ -24,18 +22,6 @@ model Announcement {
   createdAt DateTime @default(now())
   Class     Class?   @relation(fields: [classId], references: [id])
   classId   String?
-}
-
-model Teacher {
-  id            String          @id @default(cuid())
-  userId        String          @unique
-  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  classes       Class[]
-  verified      Boolean         @default(false)
-  ReviewRequest ReviewRequest[]
-  Score         Score[]
-  School        School?         @relation(fields: [schoolId], references: [id])
-  schoolId      Int?
 }
 
 model Task {

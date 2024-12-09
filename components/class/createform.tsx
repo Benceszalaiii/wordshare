@@ -1,5 +1,6 @@
 "use client";
 
+import { createClassAction } from "@/app/(sidebar)/class/create/actions";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
     Form,
@@ -26,8 +27,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
-import { LoadingDots, LoadingSpinner } from "../shared/icons";
-import LoaderDots from "../loader/dots";
 import LoaderSpinner from "../loader/spinner";
 
 interface Language {
@@ -54,7 +53,7 @@ const FormSchema = z.object({
     language: z.string({
         required_error: "Please select a language.",
     }),
-    classname: z
+    name: z
         .string({
             required_error: "Please enter a class name.",
         })
@@ -69,7 +68,7 @@ export default function CreateForm() {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            classname: "",
+            name: "",
             description: "",
         },
     });
@@ -78,26 +77,10 @@ export default function CreateForm() {
     function onSubmit(data: z.infer<typeof FormSchema>) {
         if (submitted) return;
         setSubmitted(true);
-        fetch("/api/class/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "class-lang": data.language,
-                "class-name": data.classname,
-                "class-desc": data.description,
-            },
-        })
+        createClassAction(data.name, data.language, data.description)
             .then((res) => {
-                if (res.ok) {
-                    res.text().then((text) => {
-                        toast.success(`Success: ${text}`);
-                    });
-                    router.push("/class/");
-                } else {
-                    res.text().then((text) => {
-                        toast.error(`Error: ${text}`);
-                    });
-                }
+                toast.success(res);
+                router.push("/class/");
             })
             .catch((err) => {
                 toast.error(`Error creating class. Error: ${err}`);
@@ -111,7 +94,7 @@ export default function CreateForm() {
             >
                 <FormField
                     control={form.control}
-                    name="classname"
+                    name="name"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Class name</FormLabel>
@@ -189,15 +172,25 @@ export default function CreateForm() {
                     className={
                         submitted
                             ? twMerge(
-                                  "motion-preset-confetti w-28 dark:text-white text-dark animate-pulse motion-duration-700",
+                                  "motion-preset-confetti w-28 animate-pulse text-dark motion-duration-700 dark:text-white",
                                   buttonVariants({ variant: "outline" }),
                               )
-                            : twMerge("w-28",buttonVariants({ variant: "default" }))
+                            : twMerge(
+                                  "w-28",
+                                  buttonVariants({ variant: "default" }),
+                              )
                     }
-                    
                     type="submit"
                 >
-                    {submitted ? <LoaderSpinner text={false} variation="normal" className="size-4" /> : "Create class"}
+                    {submitted ? (
+                        <LoaderSpinner
+                            text={false}
+                            variation="normal"
+                            className="size-4"
+                        />
+                    ) : (
+                        "Create class"
+                    )}
                 </Button>
             </form>
         </Form>

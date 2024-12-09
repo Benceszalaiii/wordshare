@@ -11,6 +11,7 @@ import {
     CardHeader,
     CardTitle,
 } from "../ui/card";
+import { setRoleAction } from "@/app/quickstart/actions";
 
 export function RoleForm({}) {
     const router = useRouter();
@@ -33,7 +34,7 @@ export function RoleForm({}) {
                             onClick={async (e) => {
                                 toast.promise(
                                     async () => {
-                                        await fetch("/api/role/?role=student");
+                                        await setRoleAction("student");
                                         router.refresh();
                                     },
                                     {
@@ -71,7 +72,7 @@ export function RoleForm({}) {
                             onClick={async (e) => {
                                 toast.promise(
                                     async () => {
-                                        await fetch("/api/role/?role=teacher");
+                                        await setRoleAction("teacher");
                                         router.refresh();
                                     },
                                     {
@@ -87,9 +88,6 @@ export function RoleForm({}) {
                         >
                             Select
                         </button>
-                        <CardDescription className=" text-neutral-500 dark:text-neutral-500">
-                            Teacher status has to be verified first.
-                        </CardDescription>
                     </CardFooter>
                 </Card>
             </div>

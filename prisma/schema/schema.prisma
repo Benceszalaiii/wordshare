@@ -1,5 +1,3 @@
-// This is your Prisma schema file,
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["prismaSchemaFolder"]
@@ -22,18 +20,18 @@ model User {
   sessions        Session[]
   role            String?
   teacherVerified Boolean         @default(false)
+  Teacher         Teacher?
   Essay           Essay[]
   Comment         Comment[]
-  Teacher         Teacher?
   Classes         Class[]
   grade           Int?
   pinnedClassIds  String[]
   Points          Points[]
   ReviewRequest   ReviewRequest[]
   Score           Score[]
-  School          School?         @relation(fields: [schoolId], references: [id])
   schoolId        Int?
   private         Boolean         @default(false)
+  School          School?         @relation(fields: [schoolId], references: [id])
 }
 
 model Points {
