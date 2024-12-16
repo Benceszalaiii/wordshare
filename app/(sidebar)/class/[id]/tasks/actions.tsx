@@ -4,14 +4,18 @@ import { StatusMethods } from "@/components/task/studentoverview/component";
 import { auth } from "@/lib/auth";
 import { getClassWithTasks, getSubmissionsForStudent } from "@/lib/db";
 
-export async function getTasksForClass(id: string, method: "teacher" | "student") {
+export async function getTasksForClass(
+    id: string,
+    method: "teacher" | "student",
+) {
     const currentClass = await getClassWithTasks(id);
     const session = await auth();
-    if (!session){
+    if (!session) {
         return [];
     }
-    if (method === "student"){
-        const userSubmissions = await getSubmissionsForStudent(session?.user.id);
+    if (method === "student") {
+        const userSubmissions =
+            (await getSubmissionsForStudent(session?.user.id)) || [];
         const filtered = currentClass?.Tasks.map((task) => {
             const submission = userSubmissions.find(
                 (sub) => sub.taskId === task.id,
@@ -29,6 +33,7 @@ export async function getTasksForClass(id: string, method: "teacher" | "student"
                 } else {
                     taskStatus = "overdue";
                 }
-            }})
+            }
+        });
     }
 }

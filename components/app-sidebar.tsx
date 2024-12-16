@@ -8,18 +8,12 @@ import {
     SidebarGroupContent,
     SidebarGroupLabel,
     SidebarMenu,
-    SidebarMenuBadge,
-    SidebarMenuButton,
     SidebarMenuItem,
-    SidebarSeparator,
+    SidebarRail,
+    SidebarSeparator
 } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { getClassesByIds, getInvites, getUserById } from "@/lib/db";
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@radix-ui/react-collapsible";
 import { ClassContextWrapper } from "./class/class-context";
 import { ClassItem } from "./class/sidebaritem";
 import SidebarRefresher from "./sidebar-navigation";
@@ -33,7 +27,7 @@ export async function AppSidebar() {
     const dbUser = await getUserById(user?.id);
     const classes = await getClassesByIds(dbUser?.pinnedClassIds || []);
     return (
-        <Sidebar className="bg-gray-200 pt-20 dark:bg-neutral-900">
+        <Sidebar collapsible="icon" className="bg-gray-200 pt-20 dark:bg-neutral-900">
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>Navigation</SidebarGroupLabel>
@@ -49,24 +43,14 @@ export async function AppSidebar() {
                 <SidebarSeparator />
                 {classes && classes.length > 0 ? (
                     <SidebarGroup>
-                        <Collapsible
-                            defaultOpen={true}
-                            className="group/collapsible"
-                        >
                             <SidebarGroupContent>
-                                <CollapsibleTrigger asChild>
                                     <SidebarMenu>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton>
+                                            <SidebarGroupLabel>
                                                 Pinned Classes
-                                            </SidebarMenuButton>
-                                            <SidebarMenuBadge>
-                                                {classes.length}
-                                            </SidebarMenuBadge>
+                                            </SidebarGroupLabel>
                                         </SidebarMenuItem>
                                     </SidebarMenu>
-                                </CollapsibleTrigger>
-                                <CollapsibleContent>
                                     <SidebarMenu>
                                         {classes.map((item) => (
                                             <ClassContextWrapper
@@ -83,20 +67,19 @@ export async function AppSidebar() {
                                             </ClassContextWrapper>
                                         ))}
                                     </SidebarMenu>
-                                </CollapsibleContent>
                             </SidebarGroupContent>
-                        </Collapsible>
                     </SidebarGroup>
                 ) : null}
             </SidebarContent>
-            <SidebarFooter className="w-full justify-end">
+            <SidebarFooter className="w-full justify-end text-gray-800 dark:text-gray-400 group-data-[collapsible=icon]:ml-auto">
                 <div
-                    className="flex flex-row items-center justify-end gap-1 px-4 text-gray-800 dark:text-gray-400"
+                    className="flex flex-row items-center justify-end gap-1 px-4 group-data-[collapsible=icon]:pr-2"
                     title="Press ⌘B to toggle sidebar"
                 >
                     ⌘B
                 </div>
             </SidebarFooter>
+            <SidebarRail />
         </Sidebar>
     );
 }

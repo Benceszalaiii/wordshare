@@ -1,5 +1,6 @@
 import { CommandProvider } from "@/components/layout/commandprovider";
 import Footer from "@/components/layout/footer";
+import Nav from "@/components/layout/nav";
 import { Toaster } from "@/components/toaster";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -8,8 +9,6 @@ import { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { caveat, inter, sfPro } from "./fonts";
 import "./globals.css";
-import { Suspense } from "react";
-import Nav from "@/components/layout/nav";
 export const metadata: Metadata = {
     metadataBase: new URL("http://localhost:3000"),
     title: {
@@ -55,7 +54,16 @@ export default async function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className={cx(sfPro.variable, inter.variable, caveat.variable, "scroll-smooth subpixel-antialiased")} suppressHydrationWarning>
+        <html
+            lang="en"
+            className={cx(
+                sfPro.variable,
+                inter.variable,
+                caveat.variable,
+                "scroll-smooth subpixel-antialiased",
+            )}
+            suppressHydrationWarning
+        >
             <head>
                 <link
                     rel="apple-touch-icon"
@@ -87,10 +95,15 @@ export default async function RootLayout({
                     content="width=device-width, initial-scale=1.0"
                 />
             </head>
-            <body
-                id="page"
-            >
-                <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+            <body id="page">
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    disableTransitionOnChange
+                >
+                <noscript>
+                    <div className="fixed z-[100] top-0 left-0 flex h-full min-h-screen w-full items-center text-white justify-center bg-black font-display text-4xl">You need to enable javascript to use <span className="font-caveat mx-1">WordShare</span>!</div>
+                </noscript>
                     <CommandProvider />
                     <main className="z-10 flex min-h-screen w-full flex-col">
                         <Nav />

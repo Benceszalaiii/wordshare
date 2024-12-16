@@ -15,6 +15,7 @@ import {
     DialogClose,
     DialogContent,
     DialogFooter,
+    DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
 
@@ -147,6 +148,7 @@ export function ImageCropper({
                 />
             </DialogTrigger>
             <DialogContent className="gap-0 p-0">
+                <DialogTitle>Crop Banner</DialogTitle>
                 <div className="size-full p-6">
                     <ReactCrop
                         crop={crop}

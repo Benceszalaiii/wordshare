@@ -8,7 +8,7 @@ import { ImageCropper } from "@/components/image/icon-cropper";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React, { useEffect } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
-import LoaderSpinner from "../loader/spinner";
+import LoaderDots from "../loader/dots";
 
 export type FileWithPreview = FileWithPath & {
     preview: string;
@@ -64,7 +64,7 @@ export function CropperComponent({ classId }: { classId: string }) {
     });
 
     return (
-        <div className="relative ">
+        <div className="relative">
             {selectedFile ? (
                 <ImageCropper
                     dialogOpen={isDialogOpen}
@@ -78,7 +78,7 @@ export function CropperComponent({ classId }: { classId: string }) {
                     <input {...getInputProps()} />
                     <AvatarImage src={url} alt="Class icon" />
                     <AvatarFallback>
-                        <LoaderSpinner text variation="normal" />
+                        <LoaderDots className="mt-4" />
                     </AvatarFallback>
                 </Avatar>
             )}

@@ -25,9 +25,7 @@ export async function getFilteredTasks(userId: string) {
     const tasks = await getTasksforStudent(dbUser.id, dbUser.Classes);
     const userSubmissions = await getSubmissionsForStudent(dbUser.id);
     const filtered = tasks.map((task) => {
-        const submission = userSubmissions.find(
-            (sub) => sub.taskId === task.id,
-        );
+        const submission = userSubmissions?.find((x)=> x.taskId === task.id)
         let taskStatus: StatusMethods = "pending";
         if (submission) {
             if (submission.createdAt > task.dueDate) {

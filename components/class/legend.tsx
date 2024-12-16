@@ -29,6 +29,7 @@ import {
     AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import RequestInviteButton from "./requestbutton";
+import { pinClass } from "@/app/(sidebar)/class/[id]/actions";
 const styles = {
     separator: "md:block hidden",
     action: "text-center w-full",
@@ -180,7 +181,9 @@ export default function ClassLegend({
                                       signInText={`Sign in to interact with ${currentClass.name}`}
                                   />
                               )
-                            : null}
+                            : <Button variant={"signin"} onClick={()=> {
+                                pinClass(currentClass.id)
+                            }}>Pin class</Button>}
                     </div>
                     <p className={`ml-2 text-gray-800 dark:text-gray-400`}>
                         {currentClass.description}

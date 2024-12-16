@@ -2,9 +2,13 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run local server with bun",
+            "label": "Sync with remote",
             "type": "shell",
             "command": "git pull;bun prisma validate;",
+            "icon": {
+                "color": "terminal.ansiGreen",
+                "id": "sync"
+            },
             "problemMatcher": [],
             "runOptions": {
                 "runOn": "folderOpen"
@@ -28,6 +32,17 @@
             "label": "Lint workspace",
             "type": "shell",
             "command": "bun lint",
+            "problemMatcher": []
+        },
+        {
+            "label": "server",
+            "type": "shell",
+            
+            "command": "bun dev",
+            "icon": {
+                "color": "terminal.ansiRed",
+                "id": "zap"
+            },
             "problemMatcher": []
         }
     ]

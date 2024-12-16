@@ -26,7 +26,7 @@ export function ClassContextWrapper({
 }) {
     const router = useRouter();
     return (
-        <ContextMenu>
+        <ContextMenu modal={false}>
             <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
             <ContextMenuContent>
                 <ContextMenuItem

@@ -18,6 +18,9 @@ const nextConfig: NextConfig = {
             {
                 hostname: "xhzwexjdzphrgjiilpid.supabase.co",
             },
+            {
+                hostname: "assets.aceternity.com",
+            },
         ],
     },
 

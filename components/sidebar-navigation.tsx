@@ -169,7 +169,7 @@ export default function SidebarNavigationMenu({
         <>
             {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
+                    <SidebarMenuButton asChild tooltip={item.title}>
                         <Link
                             href={item.url}
                             className={item.url === path ? "font-bold" : ""}
