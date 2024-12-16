@@ -3,7 +3,6 @@ import ClassLegend from "@/components/class/legend";
 import { TimelineSkeleton } from "@/components/class/loading-components";
 import ClassMenubar from "@/components/class/menubar";
 import NoAuthClassPage from "@/components/class/no-auth";
-import { QuickCards } from "@/components/class/quickcards";
 import ClassTimeline from "@/components/class/timeline";
 import { auth } from "@/lib/auth";
 import {

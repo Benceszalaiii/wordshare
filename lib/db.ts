@@ -1,7 +1,7 @@
 "use server";
-import "server-only";
 import { Class, Comment, User } from "@prisma/client";
 import { Session } from "next-auth";
+import "server-only";
 import { auth } from "./auth";
 import { sendInviteMail } from "./aws";
 import prisma from "./prisma";
@@ -10,15 +10,17 @@ interface Essay {
     content: string;
     wordCount: number;
 }
-export async function getUser(){
+
+export async function getUser() {
     const session = await auth();
     if (!session) {
         return null;
     }
-    const dbUser = await prisma.user.findUnique({where: {id: session.user.id}});
+    const dbUser = await prisma.user.findUnique({
+        where: { id: session.user.id },
+    });
     return dbUser;
 }
-
 
 export async function uploadEssay(essay: Essay, userId: string) {
     const created = await prisma.essay.create({
@@ -193,15 +195,18 @@ export async function isOwnEssay(essayId: string) {
 
 export async function changeRole(value: "teacher" | "student") {
     const dbUser = await getUser();
-    if (!dbUser){
+    if (!dbUser) {
         throw new Error("No user found.");
     }
-    const updated = await prisma.user.update({where: {id: dbUser.id}, data: {role: value}});
-    if (value === "student"){
-        await prisma.teacher.delete({where: {userId: dbUser.id}});
+    const updated = await prisma.user.update({
+        where: { id: dbUser.id },
+        data: { role: value },
+    });
+    if (value === "student") {
+        await prisma.teacher.delete({ where: { userId: dbUser.id } });
     }
-    if (value === "teacher"){
-        await prisma.teacher.create({data: {userId: dbUser.id}});
+    if (value === "teacher") {
+        await prisma.teacher.create({ data: { userId: dbUser.id } });
     }
     return updated;
 }
@@ -351,8 +356,6 @@ export async function deleteTeacher(userId: string) {
     return new Response(null, { status: 200, statusText: "Teacher deleted." });
 }
 
-
-
 interface ClassDataProps {
     name: string;
     description: string;
@@ -361,13 +364,12 @@ interface ClassDataProps {
 }
 
 export async function createClass(classData: ClassDataProps) {
-
     const newclass = await prisma.class.create({
         data: {
             name: classData.name,
             description: classData.description,
             language: classData.language,
-            teacherId: classData.teacherId
+            teacherId: classData.teacherId,
         },
     });
 
@@ -412,8 +414,6 @@ export async function getClassById(id: string | null) {
     return c;
 }
 
-
-
 export async function getAllClasses() {
     const classes = await prisma.class.findMany();
     return classes;
@@ -432,14 +432,13 @@ export async function getAllStudents() {
     return students;
 }
 
-export async function getClassWithTasks(classId: string){
+export async function getClassWithTasks(classId: string) {
     const c = await prisma.class.findUnique({
         where: { id: classId },
         include: { Tasks: true },
     });
     return c;
 }
-
 
 export async function isOwnClass(userId: string | undefined, classId: string) {
     if (!userId) {
@@ -757,7 +756,6 @@ export async function getAnnouncementsByClassId(classId: string) {
     return announcements;
 }
 
-
 export async function getTasksByClassId(classId: string) {
     const currentClass = await prisma.class.findUnique({
         where: { id: classId },
@@ -924,7 +922,10 @@ export async function addUserToSchool(
     userId: string,
     role: string,
 ) {
-    const dbUser = await prisma.user.findUnique({ where: { id: userId }, include: {Teacher: true} });
+    const dbUser = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { Teacher: true },
+    });
     if (!dbUser) {
         return null;
     }
@@ -939,7 +940,7 @@ export async function addUserToSchool(
         const res = await prisma.school.update({
             where: { id: schoolId },
             data: { Teachers: { connect: { id: dbUser.Teacher.id } } },
-        })
+        });
         return res;
     }
     return null;
@@ -972,7 +973,6 @@ export async function getTasksforStudent(userId: string, classes: Class[]) {
     });
     return tasks;
 }
-
 export async function getTimeline(
     classId: string,
     offset: number,
@@ -1038,12 +1038,18 @@ export async function getTimeline(
 }
 
 export async function getSubmissionsForStudent(userId: string) {
-    const submissions = await prisma.user.findUnique({where: {id: userId}, include: {Submission: true}});
-    return submissions;
+    const submissions = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { Submission: true },
+    });
+    return submissions?.Submission;
 }
 
-export async function getSubmissionsForClass(classId: string){
-    const submissions = await prisma.submission.findMany({where: {Task: {classId: classId}}, include: {User: true, essay: true, Task: true}})
+export async function getSubmissionsForClass(classId: string) {
+    const submissions = await prisma.submission.findMany({
+        where: { Task: { classId: classId } },
+        include: { User: true, essay: true, Task: true },
+    });
     return submissions;
 }
 

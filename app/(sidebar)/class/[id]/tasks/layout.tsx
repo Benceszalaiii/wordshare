@@ -1,6 +1,7 @@
 "use server";
 
-import { getUser } from "@/lib/db";
+import { notAuthorized } from "@/components/auth";
+import { getUser, getUserById } from "@/lib/db";
 
 export default async function Layout({student, teacher, children}: {student: React.ReactNode, teacher: React.ReactNode, children: React.ReactNode}){
     const dbUser = await getUser();
