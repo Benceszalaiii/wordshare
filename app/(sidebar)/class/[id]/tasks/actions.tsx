@@ -11,10 +11,10 @@ export async function getTasksForClass(id: string, method: "teacher" | "student"
         return [];
     }
     if (method === "student"){
-        const userSubmissions = await getSubmissionsForStudent(session?.user.id);
+        const userSubmissions = await getSubmissionsForStudent(session?.user.id) || [];
         const filtered = currentClass?.Tasks.map((task) => {
             const submission = userSubmissions.find(
-                (sub) => sub.taskId === task.id,
+                (sub) => sub.Submission.filter((sub) => sub.taskId === task.id),
             );
             let taskStatus: StatusMethods = "pending";
             if (submission) {

@@ -1,7 +1,7 @@
 "use server";
+import "server-only";
 import { Class, Comment, User } from "@prisma/client";
 import { Session } from "next-auth";
-import "server-only";
 import { auth } from "./auth";
 import { sendInviteMail } from "./aws";
 import prisma from "./prisma";
@@ -1038,9 +1038,12 @@ export async function getTimeline(
 }
 
 export async function getSubmissionsForStudent(userId: string) {
-    const submissions = await prisma.submission.findMany({
-        where: { userId: userId },
-    });
+    const submissions = await prisma.user.findMany({where: {id: userId}, include: {Submission: true}});
+    return submissions;
+}
+
+export async function getSubmissionsForClass(classId: string){
+    const submissions = await prisma.submission.findMany({where: {Task: {classId: classId}}, include: {User: true, essay: true, Task: true}})
     return submissions;
 }
 

@@ -60,5 +60,6 @@ model Submission {
   essayId   String
   createdAt DateTime @default(now())
   Task      Task     @relation(fields: [taskId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
   essay     Essay    @relation(fields: [essayId], references: [id])
 }

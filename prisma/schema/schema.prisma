@@ -32,7 +32,9 @@ model User {
   schoolId        Int?
   private         Boolean         @default(false)
   School          School?         @relation(fields: [schoolId], references: [id])
+  Submission Submission[]
 }
+
 
 model Points {
   id      String @id @default(cuid())

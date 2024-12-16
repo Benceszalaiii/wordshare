@@ -1,31 +1,33 @@
 "use client";
-import {
-    Menubar,
-    MenubarContent,
-    MenubarItem,
-    MenubarMenu,
-    MenubarSeparator,
-    MenubarTrigger,
-} from "@/components/ui/menubar";
+import { FloatingDock } from "@/components/ui/dock";
 import { Class } from "@prisma/client";
 import {
-    ClipboardPlusIcon,
+    CalendarPlus2Icon,
+    ClipboardListIcon,
+    Clock4Icon,
     CogIcon,
-    HouseIcon,
     LucideIcon,
-    SquareGanttChartIcon,
-    UserRoundPlusIcon,
-    UsersRoundIcon,
+    SendHorizontalIcon,
+    SendIcon,
+    UserCog2Icon,
+    UserPlus2Icon,
 } from "lucide-react";
-import Link from "next/link";
+import React from "react";
 // import { useRouter } from "next/navigation";
-import { ReactNode, useState } from "react";
-import { twMerge } from "tailwind-merge";
-import { MenubarPinCheck } from "./pin";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useIsMobile } from "@/lib/hooks/use-mobile";
-import { NewTaskModal, NewTaskForm } from './newtaskmodal';
-import { Dialog, DialogTrigger } from "../ui/dialog";
-import { Drawer, DrawerTrigger } from "../ui/drawer";
+import { AnnouncementModal } from "./announcemodal";
+import { ExpandingCard } from "./expanding";
+import { NewTaskForm } from "./newtaskmodal";
+
+export type CardType = {
+    description: string;
+    title: string;
+    content: () => React.ReactNode;
+    Icon: LucideIcon;
+    iconName: string;
+};
 
 export default function ClassMenubar({
     currentClass,
@@ -34,118 +36,132 @@ export default function ClassMenubar({
     currentClass: Class;
     isTeacher: boolean;
 }) {
+    const studentList: {
+        title: string;
+        icon: React.ReactNode;
+        href: string;
+    }[] = [
+        {
+            title: currentClass.name,
+            icon: (
+                <Avatar className="h-full w-full">
+                    <AvatarImage
+                        src={`https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/${currentClass.id}/icon`}
+                    ></AvatarImage>
+                    <AvatarFallback>
+                        {currentClass.name.slice(0, 3)}
+                    </AvatarFallback>
+                </Avatar>
+            ),
+            href: `/class/${currentClass.id}`,
+        },
+        {
+            title: "Tasks",
+            icon: (
+                <ClipboardListIcon className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: `/class/${currentClass.id}/tasks`,
+        },
+        {
+            title: "My submissions",
+            icon: (
+                <SendIcon className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: `/class/${currentClass.id}/submissions`,
+        },
+    ];
+    const links: { title: string; icon: React.ReactNode; href: string }[] = [
+        {
+            title: currentClass.name,
+            icon: (
+                <Avatar className="h-full w-full">
+                    <AvatarImage
+                        src={`https://xhzwexjdzphrgjiilpid.supabase.co/storage/v1/object/public/class/${currentClass.id}/icon`}
+                    ></AvatarImage>
+                    <AvatarFallback>
+                        {currentClass.name.slice(0, 3)}
+                    </AvatarFallback>
+                </Avatar>
+            ),
+            href: `/class/${currentClass.id}`,
+        },
+        {
+            title: `Edit ${currentClass.name}`,
+            icon: (
+                <CogIcon className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: `/class/${currentClass.id}/edit`,
+        },
+        {
+            title: "Tasks",
+            icon: (
+                <Clock4Icon className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: `/class/${currentClass.id}/tasks`,
+        },
+        {
+            title: "Submissions",
+            icon: (
+                <SendHorizontalIcon className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: `/class/${currentClass.id}/submissions`,
+        },
+        {
+            title: "Invite Students",
+            icon: (
+                <UserPlus2Icon className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "#",
+        },
+        {
+            // Should migrate this to manage class
+            title: "Manage Students",
+            icon: (
+                <UserCog2Icon className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "#",
+        },
+    ];
     // const router = useRouter();
     const isMobile = useIsMobile();
-    const ModalTrigger = isMobile ? DrawerTrigger : DialogTrigger;
-    const ModalWrapper = isMobile ? Drawer : Dialog;
-    const [modalOpen, setModalOpen] = useState(false);
-    if (isTeacher) {
-        return (
-            <ModalWrapper open={modalOpen} onOpenChange={setModalOpen}>
-                <Menubar className="py-2">
-                    <MenubarMenu>
-                        <MenubarTrigger>{currentClass.name}</MenubarTrigger>
-                        <MenubarContent>
-                                <MenubarPinCheck classId={currentClass.id} />
-                                <MenubarSeparator/>
-                                <ItemWithIcon href={`/class/${currentClass.id}/`} Icon={HouseIcon}>
-                                    Front page
-                                </ItemWithIcon>
-                            <ItemWithIcon href={`/class/${currentClass.id}/edit`} Icon={CogIcon}>
-                                Class Settings
-                            </ItemWithIcon>
-                        </MenubarContent>
-                    </MenubarMenu>
-                    <MenubarMenu>
-                        <MenubarTrigger>Tasks</MenubarTrigger>
-                        <MenubarContent>
-                            <ModalTrigger asChild>
-                            <ItemWithIcon Icon={ClipboardPlusIcon}>
-                                New Task
-                            </ItemWithIcon>
-                            </ModalTrigger>
-                            <ItemWithIcon href={`/class/${currentClass.id}/tasks`} Icon={SquareGanttChartIcon}>
-                                View Tasks
-                            </ItemWithIcon>
-                        </MenubarContent>
-                    </MenubarMenu>
-                    <MenubarMenu>
-                        <MenubarTrigger>Students</MenubarTrigger>
-                        <MenubarContent>
-                            <ItemWithIcon href={`/class/${currentClass.id}/invite`} Icon={UserRoundPlusIcon}>
-                                Invite Students
-                            </ItemWithIcon>
-                            <ItemWithIcon href={`/class/${currentClass.id}/students`} Icon={UsersRoundIcon}>
-                                Manage Students
-                            </ItemWithIcon>
-                        </MenubarContent>
-                    </MenubarMenu>
-                </Menubar>
-                <NewTaskForm classId={currentClass.id} isMobile={isMobile}></NewTaskForm>
-            </ModalWrapper>
-        );
-    }
+    const cards: CardType[] = [
+        {
+            title: "New Task",
+            description: "Assign a new Task to the class",
+            Icon: CalendarPlus2Icon,
+            iconName: "task",
+            content: () => {
+                return (
+                    <NewTaskForm
+                        classId={currentClass.id}
+                        isMobile={isMobile}
+                    />
+                );
+            },
+        },
+        {
+            title: "New Announcement",
+            description: "Send a new announcement to the class",
+            Icon: SendIcon,
+            iconName: "announcement",
+            content: ()=> {
+                return (
+                    <AnnouncementModal classId={currentClass.id} currentClassName={currentClass.name} />
+                )
+            }
+        }
+    ];
+
     return (
         <>
-            <Menubar>
-            <MenubarMenu>
-                        <MenubarTrigger>{currentClass.name}</MenubarTrigger>
-                        <MenubarContent>
-                                <MenubarPinCheck classId={currentClass.id} />
-                                <MenubarSeparator/>
-                                <ItemWithIcon href={`/class/${currentClass.id}/`} Icon={HouseIcon}>
-                                    Front page
-                                </ItemWithIcon>
-                        </MenubarContent>
-                    </MenubarMenu>
-                    <MenubarMenu>
-                        <MenubarTrigger>Tasks</MenubarTrigger>
-                        <MenubarContent>
-                            <ItemWithIcon href={`/class/${currentClass.id}/tasks`} Icon={SquareGanttChartIcon}>
-                                View Tasks
-                            </ItemWithIcon>
-                        </MenubarContent>
-                    </MenubarMenu>
-            </Menubar>
+            {isTeacher && (
+                <section className="grid w-full my-4 max-w-screen-md grid-cols-1 place-items-center gap-4 md:grid-cols-2">
+                    <ExpandingCard cards={cards} />
+                </section>
+            )}
+            <div className="fixed -inset-x-4 bottom-4 z-30 w-fit mx-auto md:inset-x-0 ">
+                <FloatingDock items={isTeacher ? links : studentList} />
+            </div>
         </>
     );
 }
-
-const ItemWithIcon = ({
-    Icon,
-    className,
-    children,
-    href,
-    onClick
-}: {
-    Icon: LucideIcon;
-    className?: string;
-    children: ReactNode;
-    href?: string;
-    onClick?: () => void;
-}) => {
-    if (href) {
-        return (
-            <Link href={href}>
-                <MenubarItem
-                    className={twMerge(
-                        "flex flex-row items-center gap-2",
-                        className,
-                    )}
-                >
-                    <Icon className="h-4 w-4 text-neutral-700 dark:text-neutral-300" />
-                    {children}
-                </MenubarItem>
-            </Link>
-        );
-    }
-    return (
-        <MenubarItem
-        onClick={onClick}
-            className={twMerge("flex flex-row items-center gap-2", className)}
-        >
-            <Icon className="h-4 w-4 text-neutral-700 dark:text-neutral-300" />
-            {children}
-        </MenubarItem>
-    );
-};

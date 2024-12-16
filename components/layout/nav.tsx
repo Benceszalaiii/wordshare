@@ -22,12 +22,14 @@ export default async function Nav() {
                 );
             case "NEWYEAR":
                 return (
-                    <span className="group-hover:motion-preset-confetti motion-duration-700">🥂</span>
-                )
+                    <span className="motion-duration-700 group-hover:motion-preset-confetti">
+                        🥂
+                    </span>
+                );
             case "EASTER":
                 return (
-                    <Rabbit className="text-main-700 group-hover:animate-jump ease-spring-bouncy" />
-                )
+                    <Rabbit className="text-main-700 ease-spring-bouncy group-hover:animate-jump" />
+                );
             default:
                 return null;
         }

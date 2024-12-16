@@ -17,9 +17,6 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getBannerUrlWithFallback } from "../actions";
 
-const dynamic = 'force-dynamic';
-
-
 type Params = Promise<{ id: string }>;
 
 export default async function Page({ params }: { params: Params }) {
@@ -56,20 +53,13 @@ export default async function Page({ params }: { params: Params }) {
         );
     }
     return (
-        <section className="flex flex-col items-center">
-            <div className="sticky top-20 z-30">
-                <ClassMenubar currentClass={currentClass} isTeacher={canEdit} />
-            </div>
+        <section className="flex flex-col items-center md:px-24 px-4">
             <ClassLegend
                 bannerUrl={bannerUrl}
                 canEdit={canEdit}
                 currentClass={currentClass}
             />
-            <QuickCards
-                currentClassName={currentClass.name}
-                classId={currentClass.id}
-                auth={canEdit ? "teacher" : "student"}
-            />
+            <ClassMenubar currentClass={currentClass} isTeacher={canEdit} />
             <Suspense fallback={<TimelineSkeleton />}>
                 <ClassTimeline currentClass={currentClass} />
             </Suspense>
