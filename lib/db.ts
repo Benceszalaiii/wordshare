@@ -1038,7 +1038,7 @@ export async function getTimeline(
 }
 
 export async function getSubmissionsForStudent(userId: string) {
-    const submissions = await prisma.user.findMany({where: {id: userId}, include: {Submission: true}});
+    const submissions = await prisma.user.findUnique({where: {id: userId}, include: {Submission: true}});
     return submissions;
 }
 
