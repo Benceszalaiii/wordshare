@@ -16,6 +16,7 @@ export default async function Page({ params }: { params: Params }) {
     const session = await auth();
     const user = session?.user;
     const isOwner = user?.id === currentClass?.teacherId;
+
     if (!session) {
     }
     return (
