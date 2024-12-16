@@ -15,6 +15,7 @@ export async function getTasksForClass(id: string, method: "teacher" | "student"
         const filtered = currentClass?.Tasks.map((task) => {
             const submission = userSubmissions.find(
                 (sub) => sub.Submission.filter((sub) => sub.taskId === task.id),
+
             );
             let taskStatus: StatusMethods = "pending";
             if (submission) {
