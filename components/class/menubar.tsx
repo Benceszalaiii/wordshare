@@ -111,15 +111,15 @@ export default function ClassMenubar({
             icon: (
                 <UserPlus2Icon className="h-full w-full text-neutral-500 dark:text-neutral-300" />
             ),
-            href: "#",
+            href: `/class/${currentClass.id}/invite`,
         },
         {
-            // Should migrate this to manage class
+            //? Should migrate this to manage class
             title: "Manage Students",
             icon: (
                 <UserCog2Icon className="h-full w-full text-neutral-500 dark:text-neutral-300" />
             ),
-            href: "#",
+            href: `/class/${currentClass.id}/students`,
         },
     ];
     // const router = useRouter();
@@ -159,7 +159,7 @@ export default function ClassMenubar({
                     <ExpandingCard cards={cards} />
                 </section>
             )}
-            <div className="fixed -inset-x-4 bottom-4 z-30 w-fit mx-auto md:inset-x-0 ">
+            <div className="fixed inset-x-4 bottom-4 z-30 w-fit md:mr-auto ml-auto md:inset-x-0">
                 <FloatingDock items={isTeacher ? links : studentList} />
             </div>
         </>
